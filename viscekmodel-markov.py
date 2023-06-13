@@ -186,7 +186,7 @@ for i in range(time):
     # Plot the agents as arrows
     ax.clear()
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color='red',
-              units='xy', scale=0.05, headwidth=2)
+              units='xy', scale=0.1, headwidth=2)
     ax.set_xlim(0, box_size)
     ax.set_ylim(0, box_size)
     plt.pause(0.01)
