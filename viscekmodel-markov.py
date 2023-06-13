@@ -7,9 +7,9 @@ import math
 box_size = 10
 num_agents = 20
 speed = 0.05
-noise = 0.0001
+noise = 0.001
 radius = 0
-time = 200
+time = 1000
 const = 10
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size
@@ -89,11 +89,19 @@ for i in range(time):
     markov= random.choices(sample, weights=(markovprob, 1-markovprob), k=1)
 
     if markov[0] == 0 and radius == 0:
-        print("switch")
+        print("Schooling")
+        ax.set_title("Schooling")
+        speed = 0.05
+        noise = 0.005
         radius = 1
+        const = 10
     elif markov[0] == 0 and radius != 0:
-        print("switch")
+        print("Resting")
+        ax.set_title("Resting")
+        speed = 0.05
+        noise = 0.005
         radius = 0
+        const = 12
 
 
 
@@ -178,7 +186,7 @@ for i in range(time):
     # Plot the agents as arrows
     ax.clear()
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color='red',
-              units='xy', scale=0.1, headwidth=2)
+              units='xy', scale=0.05, headwidth=2)
     ax.set_xlim(0, box_size)
     ax.set_ylim(0, box_size)
     plt.pause(0.01)
