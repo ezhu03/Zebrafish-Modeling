@@ -6,15 +6,15 @@ import math
 # Set up the simulation parameters
 box_size = 10
 num_agents = 20
-speed = 0.05
-noise = 0.001
+speed = 0.1
+noise = 0.005
 radius = 0
 time = 1000
 const = 10
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
-
+print("Resting")
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
@@ -48,7 +48,9 @@ def update_velocities(positions, velocities, radius, speed, noise):
             velocities[i]+=noise_vector[i]
         else:
             velocities[i] = mean_direction[i] * speed + noise_vector[i]
-
+    normv = np.linalg.norm(velocities, axis=1)
+    normv[normv == 0] = 1  # Avoid division by zero
+    velocities = velocities/normv[:, np.newaxis] * speed
     #for i in range(num_agents):
         #sum_direction = np.zeros(2)
         #count = 0
@@ -91,15 +93,15 @@ for i in range(time):
     if markov[0] == 0 and radius == 0:
         print("Schooling")
         ax.set_title("Schooling")
-        speed = 0.05
-        noise = 0.005
+        #speed = 0.05
+        #noise = 0.01
         radius = 1
         const = 10
     elif markov[0] == 0 and radius != 0:
         print("Resting")
         ax.set_title("Resting")
-        speed = 0.05
-        noise = 0.005
+        #speed = 0.1
+        #noise = 0.01
         radius = 0
         const = 12
 
