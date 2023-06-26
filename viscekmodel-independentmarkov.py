@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 import math
-import random
 
 class MarkovChain:
     def __init__(self):
