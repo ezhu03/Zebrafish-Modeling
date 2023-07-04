@@ -57,7 +57,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
         count = 0
         for j in neighbors:
             if j[0] == i:
-                weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]])/speed[i])
+                weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]]))
                 #sum_direction += weight * velocities[j[1]]
                 #count += weight
                 sum_direction += velocities[j[1]]*speed[j[1]]*weight
