@@ -45,10 +45,16 @@ velocities = np.random.uniform(size=(num_agents, 2)) * speed
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
-    
+    #print(distances)
+    neighbors=[]
     # Find the indices of the neighbors within the specified radius
-    neighbors = np.argwhere(distances < radius)
-    
+    for i in range(num_agents):
+       tempneigh = np.argwhere(distances<radius[i])
+       for j in tempneigh:
+           if j[0]==i:
+               neighbors.append(j)
+    #neighbors = np.argwhere(distances < radius)
+    #print(neighbors)
     
     # Compute the average direction of the neighbors
     mean_direction = np.zeros((num_agents, 2))
@@ -129,19 +135,19 @@ for i in range(time):
             speed[j] = 0.05
             colors[j] = 'black'
             noise = 0.005
-            radius = 1
+            radius[j] = 1
             const = 10
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
             noise = 0.005
-            radius = 0.1
+            radius[j] = 0.1
             const = 15
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
             noise = 0.0005
-            radius = 0
+            radius[j] = 0
             const = 20
         a=10000; b=10000; c=10000; d=10000;
         if velocities[j][0]>0:
