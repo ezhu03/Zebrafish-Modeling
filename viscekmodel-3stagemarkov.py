@@ -30,7 +30,7 @@ num_agents = 20
 speed = 0.1
 noise = 0.01
 radius = 1
-time = 1000
+time = 2000
 const = 10
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size

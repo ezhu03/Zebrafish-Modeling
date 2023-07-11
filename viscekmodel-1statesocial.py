@@ -7,8 +7,8 @@ import math
 box_size = 10
 num_agents = 20
 speed = 0.05
-noise = 0
-radius = 1
+noise = 0.001
+radius = 2
 time = 200
 const = 10
 social = []
@@ -24,7 +24,13 @@ def update_velocities(positions, velocities, radius, speed, noise):
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
     
     # Find the indices of the neighbors within the specified radius
-    neighbors = np.argwhere(distances < radius * social)
+    neighbors=[]
+    # Find the indices of the neighbors within the specified radius
+    for i in range(num_agents):
+       tempneigh = np.argwhere(distances<radius*social[i])
+       for j in tempneigh:
+           if j[0]==i:
+               neighbors.append(j)
     
     
     # Compute the average direction of the neighbors

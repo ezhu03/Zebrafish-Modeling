@@ -29,7 +29,7 @@ box_size = 10
 num_agents = 20
 speed = 0.1*np.ones([num_agents,1])
 noise = 0.01
-radius = 1
+radius = np.zeros(num_agents)
 time = 1000
 const = 10
 mc = []
@@ -49,7 +49,13 @@ def update_velocities(positions, velocities, radius, speed, noise):
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
     
     # Find the indices of the neighbors within the specified radius
-    neighbors = np.argwhere(distances < radius)
+    neighbors=[]
+    # Find the indices of the neighbors within the specified radius
+    for i in range(num_agents):
+       tempneigh = np.argwhere(distances<(radius[i]*social[i]))
+       for j in tempneigh:
+           if j[0]==i:
+               neighbors.append(j)
     
     
     # Compute the average direction of the neighbors
@@ -134,19 +140,19 @@ for i in range(time):
             speed[j] = 0.05
             colors[j] = 'black'
             noise = 0.005
-            radius = 2 * social[j]
+            radius[j] = 2 * social[j]
             const = 10
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
             noise = 0.005
-            radius = 0.2 * social[j]
+            radius[j] = 0.2 * social[j]
             const = 15
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
             noise = 0.0005
-            radius = 0
+            radius[j] = 0
             const = 20
         a=10000; b=10000; c=10000; d=10000;
         if velocities[j][0]>0:
@@ -225,7 +231,7 @@ for i in range(time):
     cmap = plt.get_cmap('Blues')
     cols = cmap(social)
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=cols,
-              units='xy', scale=0.1, headwidth=2)
+              units='xy', scale=0.1, scale_units='xy', headwidth=2)
     ax.set_xlim(0, box_size)
     ax.set_ylim(0, box_size)
     #if current_state == 'A':
