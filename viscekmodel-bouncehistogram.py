@@ -8,7 +8,7 @@ box_size = 10
 num_agents = 20
 speed = 0.05
 noise = 0
-radius = 0
+radius = 0.5
 time = 200
 const = 10
 # Set up the initial positions and velocities of the agents
@@ -91,7 +91,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     
     return velocities
 # Run the simulation and display the results
-fig, ax = plt.subplots()
+fig, (ax1,ax2) = plt.subplots(1,2)
 
 disthist = np.zeros((time, num_agents))
 for i in range(time):
@@ -117,8 +117,7 @@ for i in range(time):
             if a<0:
                 a=0
             distance = a * speed
-            if i==randtime:
-                disthist[j]=distance
+            disthist[i][j]=distance
 
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
@@ -132,8 +131,7 @@ for i in range(time):
             if b<0:
                 b=0
             distance = b * speed
-            if i==randtime:
-                disthist[j]=distance
+            disthist[i][j]=distance
 
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
@@ -147,8 +145,8 @@ for i in range(time):
                 c=0
             distance = c * speed
             
-            if i==randtime:
-                disthist[j]=distance
+            disthist[i][j]=distance
+
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
@@ -160,8 +158,7 @@ for i in range(time):
             if d<0:
                 d=0
             distance = d * speed
-            if i==randtime:
-                disthist[j]=distance
+            disthist[i][j]=distance
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
@@ -175,14 +172,22 @@ for i in range(time):
     #positions %= box_size
     
     # Plot the agents as arrows
-    ax.clear()
-    ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color='red',
+    ax1.clear()
+    ax1.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color='red',
               units='xy', scale=0.1, headwidth=2)
-    ax.set_xlim(0, box_size)
-    ax.set_ylim(0, box_size)
-    plt.pause(0.01)
+    ax1.set_xlim(0, box_size)
+    ax1.set_ylim(0, box_size)
+    ax2.clear()
+    ax2.hist(disthist[i], bins=5)
+    ax2.set_xlim(0, box_size+4)
+    ax2.set_ylim(0, num_agents)
+    plt.pause(0.001)
 
-plt.show()
-#plt.close()
-#plt.hist(disthist, bins=10)
 #plt.show()
+#plt.close()
+#fig, ax = plt.subplots()
+plt.show()
+plt.close()
+plt.hist(disthist.flatten(), bins=40)
+plt.xlim(0, box_size+4)
+plt.show()
