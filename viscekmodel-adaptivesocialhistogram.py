@@ -66,8 +66,17 @@ def update_velocities(positions, velocities, radius, speed, noise):
     for i in range(num_agents):
         sum_direction = np.zeros(2)
         count = 0
+        mystate = mc[i].get_state()
+        school = 0
+        swim = 0
         for j in neighbors:
             if j[0] == i:
+                state = mc[j[1]].get_state()
+                if state == 'A':
+                    school += 1
+                elif state == 'B':
+                    swim += 1
+
                 weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]]))
                 #sum_direction += weight * velocities[j[1]]
                 #count += weight
@@ -75,6 +84,37 @@ def update_velocities(positions, velocities, radius, speed, noise):
                 count += speed[j[1]]*weight
         if count > 0:
             mean_direction[i] = sum_direction / count
+        if mystate == 'A' or mystate == 'B':
+            if school != 0 and swim !=0:
+                matrix = {
+                    'A': {'A': 0.995-.005*math.pow((swim/school),2), 'B': .005*math.pow((swim/school),2), 'C': 0.005},
+                    'B': {'A': .005*math.pow((school/swim),2), 'B': 0.995-.005*math.pow((school/swim),2), 'C': 0.005},
+                    'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
+                }
+                mc[i].set_transition(matrix)
+            elif school == 0 and swim !=0:
+                matrix = {
+                    'A': {'A': 0.795-swim*0.05, 'B': .20+swim*.05, 'C': 0.005},
+                    'B': {'A': .001, 'B': 0.994, 'C': 0.005},
+                    'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
+                }
+                mc[i].set_transition(matrix)
+            elif school != 0 and swim ==0:
+                matrix = {
+                    'A': {'A': 0.994, 'B':0.001, 'C': 0.005},
+                    'B': {'A': .20+school*.05, 'B': 0.796-school*.05, 'C': 0.005},
+                    'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
+                }
+                mc[i].set_transition(matrix)
+            else:
+                matrix = {
+                    'A': {'A': 0.99, 'B': 0.005, 'C': 0.005},
+                    'B': {'A': 0.005, 'B': 0.99, 'C': 0.005},
+                    'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
+                }
+                mc[i].set_transition(matrix)
+
+
     
     # Add some random noise to the direction
     noise_vector = np.random.normal(size=(num_agents, 2)) * noise
@@ -121,7 +161,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     
     return velocities
 # Run the simulation and display the results
-fig, (ax1,ax2) = plt.subplots(1,2)
+fig, (ax1,ax2,ax3) = plt.subplots(1,3)
 
 disthist = np.zeros((time, num_agents))
 for i in range(time):
@@ -142,20 +182,20 @@ for i in range(time):
             speed[j] = 0.05
             colors[j] = 'black'
             noise = 0.005
-            radius[j] = 2 * social[j]
-            const = 10
+            radius[j] = 4 * social[j]
+            const = 8
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
             noise = 0.005
-            radius[j] = 0.2 * social[j]
+            radius[j] = 0.25 * social[j]
             const = 12
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
             noise = 0.0005
             radius[j] = 0
-            const = 20
+            const = 2
         a=10000; b=10000; c=10000; d=10000;
         if velocities[j][0]>0:
             a=(box_size-positions[j][0])/velocities[j][0]
@@ -236,7 +276,12 @@ for i in range(time):
     ax2.hist(disthist[i], bins=5)
     ax2.set_xlim(0, box_size+4)
     ax2.set_ylim(0, num_agents)
-    plt.pause(0.001)
+    ax3.clear()
+    ax3.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
+              units='xy', scale=0.1, headwidth=2)
+    ax3.set_xlim(0, box_size)
+    ax3.set_ylim(0, box_size)
+    plt.pause(0.0001)
 
 #plt.show()
 #plt.close()
