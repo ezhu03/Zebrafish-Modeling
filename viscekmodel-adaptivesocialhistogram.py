@@ -29,7 +29,7 @@ class MarkovChain:
 
 # Set up the simulation parameters
 box_size = 10
-num_agents = 20
+num_agents = 40
 speed = 0.1*np.ones([num_agents,1])
 noise = 0.01
 radius = np.zeros(num_agents)
@@ -41,7 +41,7 @@ social = []
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
-    social.append(np.random.rand())
+    social.append(0.5 * np.random.rand() + 0.5) 
     
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size
