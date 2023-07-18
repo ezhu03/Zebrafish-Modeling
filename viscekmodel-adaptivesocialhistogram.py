@@ -38,6 +38,7 @@ const = 10
 mc = []
 colors = []
 social = []
+vradius = 1
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
@@ -59,31 +60,30 @@ def update_velocities(positions, velocities, radius, speed, noise):
        for j in tempneigh:
            if j[0]==i:
                neighbors.append(j)
-    
+    nearby = np.argwhere(distances < vradius)
     
     # Compute the average direction of the neighbors
     mean_direction = np.zeros((num_agents, 2))
     for i in range(num_agents):
-        sum_direction = np.zeros(2)
-        count = 0
         mystate = mc[i].get_state()
         school = 0
         swim = 0
+        sum_direction = np.zeros(2)
+        count = 0
         for j in neighbors:
+            if j[0] == i:
+                weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]]))
+                #sum_direction += weight * velocities[j[1]]
+                #count += weight
+                sum_direction += velocities[j[1]]*speed[j[1]]*weight
+                count += speed[j[1]]*weight
+        for j in nearby:
             if j[0] == i:
                 state = mc[j[1]].get_state()
                 if state == 'A':
                     school += 1
                 elif state == 'B':
                     swim += 1
-
-                weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]]))
-                #sum_direction += weight * velocities[j[1]]
-                #count += weight
-                sum_direction += velocities[j[1]]*speed[j[1]]*weight
-                count += speed[j[1]]*weight
-        if count > 0:
-            mean_direction[i] = sum_direction / count
         if mystate == 'A' or mystate == 'B':
             if school != 0 and swim !=0:
                 matrix = {
@@ -113,6 +113,9 @@ def update_velocities(positions, velocities, radius, speed, noise):
                     'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
                 }
                 mc[i].set_transition(matrix)
+        if count > 0:
+            mean_direction[i] = sum_direction / count
+        
 
 
     
