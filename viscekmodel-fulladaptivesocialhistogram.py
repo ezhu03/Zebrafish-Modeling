@@ -274,22 +274,48 @@ for i in range(time):
               units='xy', scale=0.5, headwidth=5)
     ax1.set_xlim(0, box_size)
     ax1.set_ylim(0, box_size)
+    # Calculate the histogram using numpy
+    counts, bins = np.histogram(disthist[i], bins='auto')
+
+    # Convert counts to percentages
+    total_data_points = len(disthist[i])
+    percentages = (counts / total_data_points)
     ax2.clear()
-    ax2.hist(disthist[i], bins=5)
+    # Plot the histogram
+    ax2.bar(bins[:-1], percentages, width=np.diff(bins), align='edge')
+
+# Add labels and title
+    ax2.set_xlabel('Bins')
+    ax2.set_ylabel('Percentage')
+    ax2.set_title('Histogram with Y-axis as Percentage')
     ax2.set_xlim(0, box_size+4)
-    ax2.set_ylim(0, num_agents)
+    ax2.set_ylim(0,1)
     ax3.clear()
     ax3.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
               units='xy', scale=0.5, headwidth=5)
     ax3.set_xlim(0, box_size)
     ax3.set_ylim(0, box_size)
-    plt.pause(0.001)
+    plt.pause(0.01)
 
 #plt.show()
 #plt.close()
 #fig, ax = plt.subplots()
 plt.show()
 plt.close()
-plt.hist(disthist.flatten(), bins=60)
+
+# Calculate the histogram using numpy
+counts, bins = np.histogram(disthist.flatten(), bins='auto')
+
+# Convert counts to percentages
+total_data_points = len(disthist.flatten())
+percentages = (counts / total_data_points)
+
+# Plot the histogram
+plt.bar(bins[:-1], percentages, width=np.diff(bins), align='edge')
+
+# Add labels and title
+plt.xlabel('Bins')
+plt.ylabel('Percentage')
+plt.title('Histogram with Y-axis as Percentage')
 plt.xlim(0, box_size+4)
 plt.show()
