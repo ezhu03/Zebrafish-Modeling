@@ -115,9 +115,6 @@ def update_velocities(positions, velocities, radius, speed, noise):
                 mc[i].set_transition(matrix)
         if count > 0:
             mean_direction[i] = sum_direction / count
-        
-
-
     
     # Add some random noise to the direction
     noise_vector = np.random.normal(size=(num_agents, 2)) * noise

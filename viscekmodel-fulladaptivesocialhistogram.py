@@ -29,9 +29,9 @@ class MarkovChain:
 
 # Set up the simulation parameters
 box_size = 10
-num_agents = 40
-speed = 0.1*np.ones([num_agents,1])
-noise = 0.01
+num_agents = 20
+speed = 0.05*np.ones([num_agents,1])
+noise = 0.005
 radius = np.zeros(num_agents)
 time = 100
 const = 10
@@ -181,19 +181,19 @@ for i in range(time):
         current_state = mc[j].next_state()
         #print(current_state)
         if current_state == 'A':
-            speed[j] = 0.1
+            speed[j] = 0.05
             colors[j] = 'black'
             noise = 0.005
             radius[j] = 4 * social[j]
             const = 8
         elif current_state == 'B':
-            speed[j] = 0.1
+            speed[j] = 0.05
             colors[j] = 'blue'
             noise = 0.005
             radius[j] = 0.25 * social[j]
             const = 12
         else:
-            speed[j] = 0.01
+            speed[j] = 0.005
             colors[j] = 'grey'
             noise = 0.0005
             radius[j] = 0
@@ -208,11 +208,13 @@ for i in range(time):
             c=(box_size-positions[j][1])/velocities[j][1]
         else:
             d=(0-positions[j][1])/velocities[j][1]
+        #print(a,b,c,d)
         weight = 0
         if a<b and a<c and a<d:
             if a<0:
                 a=0
             distance = a * speed[j] 
+            #print(distance)
             disthist[i][j]=distance
 
             weight = math.exp(-const*distance/box_size)
@@ -226,9 +228,9 @@ for i in range(time):
         elif b<c and b<d:
             if b<0:
                 b=0
+
             distance = b * speed[j]
-            #if i==randtime:
-                #disthist[j]=distance
+            disthist[i][j]=distance
 
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
@@ -270,13 +272,13 @@ for i in range(time):
     cols = cmap(social)
     # Plot the agents as arrows
     ax1.clear()
-    ax1.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=cols,
-              units='xy', scale=0.5, headwidth=5)
+    ax1.quiver(positions[:, 0], positions[:, 1], velocities[:, 0]*4, velocities[:, 1]*4, color=cols,
+              units='xy', scale=0.2, headwidth=10)
     ax1.set_xlim(0, box_size)
     ax1.set_ylim(0, box_size)
     # Calculate the histogram using numpy
-    counts, bins = np.histogram(disthist[i], bins='auto')
-
+    counts, bins = np.histogram(disthist[i], bins=[0,2,4,6,8,10,12])
+    #print(disthist[i])
     # Convert counts to percentages
     total_data_points = len(disthist[i])
     percentages = (counts / total_data_points)
@@ -291,22 +293,23 @@ for i in range(time):
     ax2.set_xlim(0, box_size+4)
     ax2.set_ylim(0,1)
     ax3.clear()
-    ax3.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
-              units='xy', scale=0.5, headwidth=5)
+    ax3.quiver(positions[:, 0], positions[:, 1], velocities[:, 0]*4, velocities[:, 1]*4, color=colors,
+              units='xy', scale=0.2, headwidth=10)
     ax3.set_xlim(0, box_size)
     ax3.set_ylim(0, box_size)
-    plt.pause(0.01)
+    plt.pause(0.0001)
 
 #plt.show()
 #plt.close()
 #fig, ax = plt.subplots()
 plt.show()
 plt.close()
-
+allbins = np.arange(0,14,0.5)
 # Calculate the histogram using numpy
-counts, bins = np.histogram(disthist.flatten(), bins='auto')
+counts, bins = np.histogram(disthist.flatten(), bins= allbins)
 
 # Convert counts to percentages
+#print(disthist.flatten())
 total_data_points = len(disthist.flatten())
 percentages = (counts / total_data_points)
 
