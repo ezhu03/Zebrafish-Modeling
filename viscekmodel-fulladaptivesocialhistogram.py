@@ -272,8 +272,8 @@ for i in range(time):
     cols = cmap(social)
     # Plot the agents as arrows
     ax1.clear()
-    ax1.quiver(positions[:, 0], positions[:, 1], velocities[:, 0]*4, velocities[:, 1]*4, color=cols,
-              units='xy', scale=0.2, headwidth=10)
+    ax1.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=cols,
+              units='xy', scale=0.1, headwidth=10)
     ax1.set_xlim(0, box_size)
     ax1.set_ylim(0, box_size)
     # Calculate the histogram using numpy
@@ -293,8 +293,13 @@ for i in range(time):
     ax2.set_xlim(0, box_size+4)
     ax2.set_ylim(0,1)
     ax3.clear()
-    ax3.quiver(positions[:, 0], positions[:, 1], velocities[:, 0]*4, velocities[:, 1]*4, color=colors,
-              units='xy', scale=0.2, headwidth=10)
+    plotnormx = []
+    plotnormy = []
+    for i in range(num_agents):
+        plotnormx.append(0.5*velocities[i,0]/speed[i])
+        plotnormy.append(0.5*velocities[i,1]/speed[i])
+    ax3.quiver(positions[:, 0], positions[:, 1], plotnormx, plotnormy, color=colors,
+              units='xy', scale=1, headwidth=10)
     ax3.set_xlim(0, box_size)
     ax3.set_ylim(0, box_size)
     plt.pause(0.0001)
