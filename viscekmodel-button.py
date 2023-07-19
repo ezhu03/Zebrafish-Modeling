@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.widgets import Button
 import random
 import math
 
@@ -31,7 +32,7 @@ class MarkovChain:
 box_size = 10
 num_agents = 20
 speed = 0.05*np.ones([num_agents,1])
-noise = 0.005
+noise = 0.005*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
 time = 100
 const = 10
@@ -50,6 +51,8 @@ positions = np.random.uniform(size=(num_agents, 2)) * box_size
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
+    global mc
+    global num_agents
     # Compute the distances between all pairs of agents
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
     
@@ -166,7 +169,21 @@ def update_velocities(positions, velocities, radius, speed, noise):
 # Run the simulation and display the results
 fig, (ax1,ax2,ax3) = plt.subplots(1,3)
 disthist = np.zeros((time, num_agents))
-for i in range(time):
+def update_quiver(frame):
+    global current_frame
+    global box_size
+    global num_agents
+    global speed
+    global noise
+    global radius
+    global const
+    global mc
+    global colors
+    global social
+    global vradius
+    global positions
+    global velocities
+    current_frame=frame
     # Update the velocities of the agents
     
 
@@ -183,19 +200,19 @@ for i in range(time):
         if current_state == 'A':
             speed[j] = 0.05
             colors[j] = 'black'
-            noise = 0.005
+            noise[j] = 0.005
             radius[j] = 4 * social[j]
             const = 8
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
-            noise = 0.005
+            noise[j] = 0.005
             radius[j] = 0.25 * social[j]
             const = 12
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
-            noise = 0.0005
+            noise[j] = 0.0005
             radius[j] = 0
             const = 10
         a=10000; b=10000; c=10000; d=10000;
@@ -215,54 +232,54 @@ for i in range(time):
                 a=0
             distance = a * speed[j] 
             #print(distance)
-            disthist[i][j]=distance
+            disthist[current_frame][j]=distance
 
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
-                velocities[j][0]=-1*velocities[j][0]+veladj[0]
+                veladj = np.random.normal(size=2) * noise[j]
+                velocities[j][0]=(-1.*velocities[j,0])+veladj[0]
                 velocities[j][1]+=veladj[1]
         elif b<c and b<d:
             if b<0:
                 b=0
 
             distance = b * speed[j]
-            disthist[i][j]=distance
+            disthist[current_frame][j]=distance
 
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
-                velocities[j][0]=-1*velocities[j][0]+veladj[0]
+                veladj = np.random.normal(size=2) * noise[j]
+                velocities[j][0]=(-1.*velocities[j,0])+veladj[0]
                 velocities[j][1]+=veladj[1]
         elif c<d:
             if c<0:
                 c=0
             distance = c * speed[j]
             
-            disthist[i][j]=distance
+            disthist[current_frame][j]=distance
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
-                velocities[j][1]=-1*velocities[j][1]+veladj[0]
+                veladj = np.random.normal(size=2) * noise[j]
+                velocities[j][1]=(-1.*velocities[j,1])+veladj[0]
                 velocities[j][0]+=veladj[1]
         else:
             if d<0:
                 d=0
             distance = d * speed[j]
-            disthist[i][j]=distance
+            disthist[current_frame][j]=distance
             weight = math.exp(-const*distance/box_size)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
-                velocities[j][1]=-1*velocities[j][1]+veladj[0]
+                veladj = np.random.normal(size=2) * noise[j]
+                velocities[j][1]=(-1.*velocities[j,1])+veladj[0]
                 velocities[j][0]+=veladj[1]
     
     positions += velocities
@@ -277,10 +294,10 @@ for i in range(time):
     ax1.set_xlim(0, box_size)
     ax1.set_ylim(0, box_size)
     # Calculate the histogram using numpy
-    counts, bins = np.histogram(disthist[i], bins=[0,2,4,6,8,10,12])
+    counts, bins = np.histogram(disthist[current_frame], bins=[0,2,4,6,8,10,12])
     #print(disthist[i])
     # Convert counts to percentages
-    total_data_points = len(disthist[i])
+    total_data_points = len(disthist[current_frame])
     percentages = (counts / total_data_points)
     ax2.clear()
     # Plot the histogram
@@ -302,7 +319,34 @@ for i in range(time):
               units='xy', scale=1, headwidth=10)
     ax3.set_xlim(0, box_size)
     ax3.set_ylim(0, box_size)
-    plt.pause(0.0001)
+    plt.draw()
+
+update_quiver(current_frame)
+
+# Function to handle the 'Next' button click event
+def next_frame(event):
+    frame = (current_frame + 1) % time
+    update_quiver(frame)
+
+# Function to handle the 'Previous' button click event
+def prev_frame(event):
+    frame = (current_frame - 1) % time
+    update_quiver(frame)
+
+# Create the quiver plot
+
+
+# Define the position and size of the buttons
+button_next = plt.axes([0.81, 0.01, 0.1, 0.075])
+button_prev = plt.axes([0.7, 0.01, 0.1, 0.075])
+
+# Create the 'Next' and 'Previous' buttons
+button_next = Button(button_next, 'Next')
+button_prev = Button(button_prev, 'Previous')
+
+# Connect the button click events to their respective functions
+button_next.on_clicked(next_frame)
+button_prev.on_clicked(prev_frame)
 
 #plt.show()
 #plt.close()
