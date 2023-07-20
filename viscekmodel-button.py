@@ -33,14 +33,14 @@ num_agents = 20
 speed = 0.05*np.ones([num_agents,1])
 noise = 0.005*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
-time = 10000
+time = 1000
 const = 10
 mc = []
 colors = []
 social = []
 vradius = 1
 current_frame = 0
-delt = 1000
+delt = 100
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
