@@ -325,34 +325,45 @@ update_quiver(current_frame)
 
 # Function to handle the 'Next' button click event
 def next_frame(event):
-    frame = (current_frame + 1) % time
+    frame = (current_frame + 1)
     update_quiver(frame)
 
 # Function to handle the 'Previous' button click event
 def prev_frame(event):
-    frame = (current_frame - 1) % time
+    frame = (current_frame - 1)
     update_quiver(frame)
 
 # Create the quiver plot
-
+def close_plot(event):
+    plt.close()
+def play_plot(time):
+    for i in range(time):
+        frame = (current_frame+1)
+        update_quiver(frame)
 
 # Define the position and size of the buttons
 button_next = plt.axes([0.81, 0.01, 0.1, 0.075])
 button_prev = plt.axes([0.7, 0.01, 0.1, 0.075])
+# Create the 'Close' button
+button_close = plt.axes([0.59, 0.01, 0.1, 0.075])
+button_play = plt.axes([0.59, 0.01, 0.1, 0.075])
+button_close = Button(button_close, 'Close')
 
 # Create the 'Next' and 'Previous' buttons
 button_next = Button(button_next, 'Next')
 button_prev = Button(button_prev, 'Previous')
-
+button_play = Button(button_close, 'Play')
 # Connect the button click events to their respective functions
 button_next.on_clicked(next_frame)
-button_prev.on_clicked(prev_frame)
-
+button_prev.on_clicked(prev_frame)# Connect the button click event to the 'close_plot' function
+button_close.on_clicked(close_plot)
+button_play.on_clicked(play_plot)
+plt.show()
 #plt.show()
 #plt.close()
 #fig, ax = plt.subplots()
-plt.show()
-plt.close()
+
+
 allbins = np.arange(0,14,0.5)
 # Calculate the histogram using numpy
 counts, bins = np.histogram(disthist.flatten(), bins= allbins)
