@@ -33,14 +33,14 @@ num_agents = 20
 speed = 0.05*np.ones([num_agents,1])
 noise = 0.005*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
-time = 50
+time = 10000
 const = 10
 mc = []
 colors = []
 social = []
 vradius = 1
 current_frame = 0
-delt = 100
+delt = 1000
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
@@ -355,7 +355,7 @@ def play_plot(event):
     global disthist
     global delt
     global current_frame
-    if time - current_frame <= delt-1:
+    if time - current_frame <= delt+1:
         size = delt-(time-current_frame)+1
         time += size
         for b in range(size):
