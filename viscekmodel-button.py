@@ -169,6 +169,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
 # Run the simulation and display the results
 fig, (ax1,ax2,ax3) = plt.subplots(1,3)
 disthist = np.zeros((time, num_agents))
+
 def update_quiver(frame):
     global current_frame
     global box_size
@@ -350,6 +351,7 @@ def prev_frame(event):
 # Create the quiver plot
 def close_plot(event):
     plt.close()
+
 def play_plot(event):
     global time
     global disthist
