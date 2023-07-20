@@ -93,22 +93,22 @@ def update_velocities(positions, velocities, radius, speed, noise):
                     sleep += 1
         if school != 0 and swim !=0:
             matrix = {
-                'A': {'A': 1-(0.005*(1+sleep))-.005*math.pow((swim/school),2), 'B': .005*math.pow((swim/school),2), 'C': 0.005*(1+sleep)},
-                'B': {'A': .005*math.pow((school/swim),2), 'B': 1-(0.005*(1+sleep))-.005*math.pow((school/swim),2), 'C': 0.005*(1+sleep)},
+                'A': {'A': 1-(0.005*(1+sleep))-.005*math.pow((swim/school),1), 'B': .005*math.pow((swim/school),1), 'C': 0.005*(1+sleep)},
+                'B': {'A': .005*math.pow((school/swim),1), 'B': 1-(0.005*(1+sleep))-.005*math.pow((school/swim),1), 'C': 0.005*(1+sleep)},
                 'C': {'A': (1/5)*(1-0.995*(sleep/(swim+school))), 'B': (4/5)*(1-0.995*(sleep/(swim+school))), 'C': 0.995*(sleep/(swim+school))}
             }
             mc[i].set_transition(matrix)
         elif school == 0 and swim !=0:
             matrix = {
-                'A': {'A': 0.795-sleep*0.005-swim*0.05, 'B': .20+swim*.05, 'C': 0.005*(1+sleep)},
-                'B': {'A': .001, 'B': .999-(0.005*(1+sleep)), 'C': 0.005*(1+sleep)},
+                'A': {'A': 0.895-sleep*0.005-swim*0.05, 'B': .10+swim*.05, 'C': 0.005*(1+sleep)},
+                'B': {'A': .01, 'B': .99-(0.005*(1+sleep)), 'C': 0.005*(1+sleep)},
                 'C': {'A': (1/5)*(1-0.995*(sleep/(swim+school))), 'B': (4/5)*(1-0.995*(sleep/(swim+school))), 'C': 0.995*(sleep/(swim+school))}
             }
             mc[i].set_transition(matrix)
         elif school != 0 and swim ==0:
             matrix = {
-                'A': {'A': 0.999-(0.005*(1+sleep)), 'B':0.001, 'C': 0.005*(1+sleep)},
-                'B': {'A': .20+school*.05, 'B': 0.795-sleep*0.005-school*.05, 'C': 0.005*(1+sleep)},
+                'A': {'A': 0.99-(0.005*(1+sleep)), 'B':0.01, 'C': 0.005*(1+sleep)},
+                'B': {'A': .10+school*.05, 'B': 0.895-sleep*0.005-school*.05, 'C': 0.005*(1+sleep)},
                 'C': {'A': (1/5)*(1-0.995*(sleep/(swim+school))), 'B': (4/5)*(1-0.995*(sleep/(swim+school))), 'C': 0.995*(sleep/(swim+school))}
             }
             mc[i].set_transition(matrix)
