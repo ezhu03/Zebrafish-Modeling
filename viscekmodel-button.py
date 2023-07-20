@@ -34,7 +34,7 @@ num_agents = 20
 speed = 0.05*np.ones([num_agents,1])
 noise = 0.005*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
-time = 100
+time = 1000
 const = 10
 mc = []
 colors = []
@@ -326,6 +326,7 @@ def update_quiver(frame):
     ax3.set_xlabel('x')
     ax3.set_ylabel('y')
     ax3.set_title('Position with State')
+    plt.suptitle('Time = ' + str(current_frame))
     plt.draw()
 
 update_quiver(current_frame)
@@ -349,10 +350,10 @@ def close_plot(event):
 def play_plot(event):
     global time
     global delt
-    if time - current_frame < 100:
-        size = 100-(time-current_frame)
+    if time - current_frame < delt:
+        size = delt-(time-current_frame)
         for b in range(size):
-
+            disthist.append(0)
     for a in range(delt):
         frame = (current_frame+1)
         update_quiver(frame)
@@ -382,8 +383,10 @@ plt.show()
 
 
 allbins = np.arange(0,14,0.5)
+def remove_zeros(arr):
+    return arr[arr != 0]
 # Calculate the histogram using numpy
-counts, bins = np.histogram(disthist.flatten(), bins= allbins)
+counts, bins = np.histogram(remove_zeros(disthist.flatten()), bins= allbins)
 
 # Convert counts to percentages
 #print(disthist.flatten())
