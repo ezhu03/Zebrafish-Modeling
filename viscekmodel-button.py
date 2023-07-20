@@ -38,7 +38,7 @@ const = 10
 mc = []
 colors = []
 social = []
-vradius = 1
+vradius = 0.5
 current_frame = 0
 delt = 100
 for i in range(num_agents):
@@ -364,7 +364,7 @@ def play_plot(event):
     for a in range(delt):
         frame = (current_frame+1)
         update_quiver(frame)
-        plt.pause(0.001)
+        plt.pause(0.00001)
 
 # Define the position and size of the buttons
 button_next = plt.axes([0.81, 0.005, 0.1, 0.05])
