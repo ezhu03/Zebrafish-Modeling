@@ -116,7 +116,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
             matrix = {
                 'A': {'A': 0.995-.0005*sleep, 'B': 0.005, 'C': 0.005*sleep},
                 'B': {'A': 0.005, 'B': 0.995-0.005*sleep, 'C': 0.005*sleep},
-                'C': {'A': 0.001, 'B': 0.004-(0.01*sleep/num_agents), 'C': 0.995+(0.01*sleep/num_agents)}
+                'C': {'A': 0.002, 'B': 0.008-(0.01*sleep/num_agents), 'C': 0.99+(0.01*sleep/num_agents)}
             }
             mc[i].set_transition(matrix)
         if count > 0:
