@@ -27,14 +27,13 @@ class MarkovChain:
         self.transition_matrix=matrix
 
 # Usage example
-
 # Set up the simulation parameters
 box_size = 10
 num_agents = 20
 speed = 0.05*np.ones([num_agents,1])
 noise = 0.005*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
-time = 1000
+time = 50
 const = 10
 mc = []
 colors = []
@@ -333,14 +332,18 @@ update_quiver(current_frame)
 
 # Function to handle the 'Next' button click event
 def next_frame(event):
-    if current_frame == time:
+    global time
+    global disthist
+    global current_frame
+    if current_frame-1 == time:
         time += 1
-        disthist.append(0)
+        disthist=np.append(disthist,np.zeros(num_agents))
     frame = (current_frame + 1)
     update_quiver(frame)
 
 # Function to handle the 'Previous' button click event
 def prev_frame(event):
+    global current_frame
     frame = (current_frame - 1)
     update_quiver(frame)
 
@@ -349,11 +352,15 @@ def close_plot(event):
     plt.close()
 def play_plot(event):
     global time
+    global disthist
     global delt
-    if time - current_frame < delt:
-        size = delt-(time-current_frame)
+    global current_frame
+    if time - current_frame <= delt-1:
+        size = delt-(time-current_frame)+1
+        time += size
         for b in range(size):
-            disthist.append(0)
+            disthist=np.append(disthist, np.zeros(num_agents))
+            print("added " + str(size))
     for a in range(delt):
         frame = (current_frame+1)
         update_quiver(frame)
