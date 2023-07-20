@@ -41,6 +41,7 @@ colors = []
 social = []
 vradius = 1
 current_frame = 0
+delt = 100
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
@@ -293,6 +294,9 @@ def update_quiver(frame):
               units='xy', scale=0.1, headwidth=10)
     ax1.set_xlim(0, box_size)
     ax1.set_ylim(0, box_size)
+    ax1.set_xlabel('x')
+    ax1.set_ylabel('y')
+    ax1.set_title('Position with Social')
     # Calculate the histogram using numpy
     counts, bins = np.histogram(disthist[current_frame], bins=[0,2,4,6,8,10,12])
     #print(disthist[i])
@@ -319,12 +323,18 @@ def update_quiver(frame):
               units='xy', scale=1, headwidth=10)
     ax3.set_xlim(0, box_size)
     ax3.set_ylim(0, box_size)
+    ax3.set_xlabel('x')
+    ax3.set_ylabel('y')
+    ax3.set_title('Position with State')
     plt.draw()
 
 update_quiver(current_frame)
 
 # Function to handle the 'Next' button click event
 def next_frame(event):
+    if current_frame == time:
+        time += 1
+        disthist.append(0)
     frame = (current_frame + 1)
     update_quiver(frame)
 
@@ -336,23 +346,30 @@ def prev_frame(event):
 # Create the quiver plot
 def close_plot(event):
     plt.close()
-def play_plot(time):
-    for i in range(time):
+def play_plot(event):
+    global time
+    global delt
+    if time - current_frame < 100:
+        size = 100-(time-current_frame)
+        for b in range(size):
+
+    for a in range(delt):
         frame = (current_frame+1)
         update_quiver(frame)
+        plt.pause(0.001)
 
 # Define the position and size of the buttons
-button_next = plt.axes([0.81, 0.01, 0.1, 0.075])
-button_prev = plt.axes([0.7, 0.01, 0.1, 0.075])
+button_next = plt.axes([0.81, 0.005, 0.1, 0.05])
+button_prev = plt.axes([0.7, 0.005, 0.1, 0.05])
 # Create the 'Close' button
-button_close = plt.axes([0.59, 0.01, 0.1, 0.075])
-button_play = plt.axes([0.59, 0.01, 0.1, 0.075])
-button_close = Button(button_close, 'Close')
+button_close = plt.axes([0.59, 0.005, 0.1, 0.05])
+button_play = plt.axes([0.48, 0.005, 0.1, 0.05])
 
+button_close = Button(button_close, 'Close')
 # Create the 'Next' and 'Previous' buttons
 button_next = Button(button_next, 'Next')
 button_prev = Button(button_prev, 'Previous')
-button_play = Button(button_close, 'Play')
+button_play = Button(button_play, 'Play')
 # Connect the button click events to their respective functions
 button_next.on_clicked(next_frame)
 button_prev.on_clicked(prev_frame)# Connect the button click event to the 'close_plot' function
