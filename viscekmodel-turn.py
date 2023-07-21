@@ -8,10 +8,10 @@ box_size = 10
 num_agents = 20
 speed = 0.05
 noise = 0.001
-radius = 3
+radius = 1
 time = 200
 const = 10
-angle = math.pi/2
+angle = math.pi/4
 mag = 1
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size
@@ -45,11 +45,19 @@ def update_velocities(positions, velocities, radius, speed, noise):
     noise_vector = np.random.normal(size=(num_agents, 2)) * noise
     mean_direction += noise_vector
     
-    # Normalize the direction and set the velocity of each agent
+     # Normalize the direction and set the velocity of each agent
     norm = np.linalg.norm(mean_direction, axis=1)
     norm[norm == 0] = 1  # Avoid division by zero
     mean_direction /= norm[:, np.newaxis]
-    velocities = mean_direction * speed
+    for i in range(len(mean_direction)):
+        if mean_direction[i][0] == 0 and mean_direction[i][1] == 0:
+            velocities[i]+=noise_vector[i]
+        else:
+            velocities[i] = mean_direction[i] * speed + noise_vector[i]
+    normv = np.linalg.norm(velocities, axis=1)
+    normv[normv == 0] = 1  # Avoid division by zero
+    for i in range(num_agents):
+        velocities[i] = velocities[i]/normv[i] * speed
     
     return velocities
 # Run the simulation and display the results
