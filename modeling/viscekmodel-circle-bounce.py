@@ -4,7 +4,7 @@ import random
 import math
 
 # Set up the simulation parameters
-box_size = 10
+radius = 10
 num_agents = 20
 speed = 0.05
 noise = 0
@@ -12,7 +12,16 @@ radius = 0
 time = 200
 const = 10
 # Set up the initial positions and velocities of the agents
-positions = np.random.uniform(size=(num_agents, 2)) * box_size
+angles = np.random.uniform(0, 2*np.pi, num_agents)
+    
+    # Generate random radii (distance from the center) uniformly distributed between 0 and the circle's radius
+radii = np.random.uniform(0, radius, num_agents)
+    
+    # Convert polar coordinates to Cartesian coordinates (x, y)
+x = center[0] + radii * np.cos(angles)
+y = center[1] + radii * np.sin(angles)
+    
+positions = np.column_stack((x, y))
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
 
 # Define a function to update the velocities of the agents

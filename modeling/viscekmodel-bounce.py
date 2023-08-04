@@ -4,7 +4,7 @@ import random
 import math
 
 # Set up the simulation parameters
-box_size = 10
+box_size = 5
 num_agents = 20
 speed = 0.05
 noise = 0
