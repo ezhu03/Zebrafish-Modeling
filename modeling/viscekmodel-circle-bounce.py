@@ -4,7 +4,7 @@ import random
 import math
 
 # Set up the simulation parameters
-radius = 10
+box_radius = 10
 num_agents = 20
 speed = 0.05
 noise = 0
@@ -15,7 +15,7 @@ const = 10
 angles = np.random.uniform(0, 2*np.pi, num_agents)
     
     # Generate random radii (distance from the center) uniformly distributed between 0 and the circle's radius
-radii = np.random.uniform(0, radius, num_agents)
+radii = np.random.uniform(0, box_radius, num_agents)
     
     # Convert polar coordinates to Cartesian coordinates (x, y)
 x = center[0] + radii * np.cos(angles)
@@ -23,7 +23,12 @@ y = center[1] + radii * np.sin(angles)
     
 positions = np.column_stack((x, y))
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
-
+def boundary_distance(r,x,y,vx, vy):
+    # Calculate the vector from the object to the center of the boundary
+    b = 2*(x*vx+y*vy)
+    a = (vx**2+vy**2)
+    c = (x**2+y**2-r**2)
+    return (-b+math.sqrt(b**2-4*a*c))/(2*a)
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
