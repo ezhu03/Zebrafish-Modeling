@@ -31,7 +31,7 @@ num_agents = 20
 speed = 0.1*np.ones(num_agents)
 noise = 0.01*np.ones(num_agents)
 radius = np.ones(num_agents)
-time = 1000
+time = 100
 const = 10
 mc = []
 colors = []
@@ -62,31 +62,19 @@ def boundary_distance(r,x,y,vx, vy):
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
-    
-    neighbors=[]
+    noise_vector = []
     # Find the indices of the neighbors within the specified radius
-    for i in range(num_agents):
-       tempneigh = np.argwhere(distances<radius[i])
-       for j in tempneigh:
-           if j[0]==i:
-               neighbors.append(j)
-    
-    
-    # Compute the average direction of the neighbors
     mean_direction = np.zeros((num_agents, 2))
     for i in range(num_agents):
+        tempneigh = np.argwhere(distances<radius[i])
         sum_direction = np.zeros(2)
         count = 0
-        for j in neighbors:
-            if j[0] == i:
+        for j in tempneigh:
+            if j[0]==i:
                 sum_direction += velocities[j[1]]*speed[j[1]]
-                count += speed[j[1]]
+                count += speed[j[1]] 
         if count > 0:
             mean_direction[i] = sum_direction / count
-    
-    # Add some random noise to the direction
-    noise_vector = []
-    for i in range(num_agents):
         noise_vector.append(np.random.normal(size=2) * noise[i])
     
     # Normalize the direction and set the velocity of each agent

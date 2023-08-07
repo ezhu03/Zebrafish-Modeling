@@ -28,7 +28,7 @@ class MarkovChain:
 box_size = 10
 num_agents = 20
 speed = 0.1*np.ones([num_agents,1])
-noise = 0.01
+noise = 0.01*np.ones([num_agents,1])
 radius = np.zeros(num_agents)
 time = 1000
 const = 10
