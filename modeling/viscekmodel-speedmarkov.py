@@ -27,7 +27,7 @@ class MarkovChain:
 # Set up the simulation parameters
 box_size = 10
 num_agents = 20
-speed = 0.1*np.ones(num_agents)
+speed = 0.1*np.ones((num_agents,1))
 noise = 0.01*np.ones(num_agents)
 radius = np.ones(num_agents)
 time = 1000
@@ -40,7 +40,7 @@ for i in range(num_agents):
     
 # Set up the initial positions and velocities of the agents
 positions = np.random.uniform(size=(num_agents, 2)) * box_size
-velocities = np.random.uniform(size=(num_agents, 2)) * speed
+velocities = np.random.uniform(size=(num_agents, 2)) * speed[0]
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
@@ -68,7 +68,9 @@ def update_velocities(positions, velocities, radius, speed, noise):
             mean_direction[i] = sum_direction / count
     
     # Add some random noise to the direction
-    noise_vector = np.random.normal(size=(num_agents, 2)) * noise
+    noise_vector = []
+    for i in range(num_agents):
+        noise_vector.append(np.random.normal(size=2) * noise[i])
     
     # Normalize the direction and set the velocity of each agent
     norm = np.linalg.norm(mean_direction, axis=1)
@@ -133,20 +135,20 @@ for i in range(time):
         if current_state == 'A':
             speed[j] = 0.05
             colors[j] = 'black'
-            noise = 0.005
-            radius = 1
+            noise[j] = 0.005
+            radius[j] = 1
             const = 10
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
-            noise = 0.005
-            radius = 0.1
+            noise[j] = 0.005
+            radius[j] = 0.1
             const = 15
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
-            noise = 0.0005
-            radius = 0
+            noise[j] = 0.0005
+            radius[j] = 0
             const = 20
         a=10000; b=10000; c=10000; d=10000;
         if velocities[j][0]>0:
@@ -171,7 +173,7 @@ for i in range(time):
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
+                veladj = np.random.normal(size=2) * noise[j]
                 velocities[j][0]=-1*velocities[j][0]+veladj[0]
                 velocities[j][1]+=veladj[1]
         elif b<c and b<d:
@@ -185,7 +187,7 @@ for i in range(time):
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
+                veladj = np.random.normal(size=2) * noise[j]
                 velocities[j][0]=-1*velocities[j][0]+veladj[0]
                 velocities[j][1]+=veladj[1]
         elif c<d:
@@ -199,7 +201,7 @@ for i in range(time):
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
+                veladj = np.random.normal(size=2) * noise[j]
                 velocities[j][1]=-1*velocities[j][1]+veladj[0]
                 velocities[j][0]+=veladj[1]
         else:
@@ -212,7 +214,7 @@ for i in range(time):
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
-                veladj = np.random.normal(size=2) * noise
+                veladj = np.random.normal(size=2) * noise[j]
                 velocities[j][1]=-1*velocities[j][1]+veladj[0]
                 velocities[j][0]+=veladj[1]
     
