@@ -27,9 +27,9 @@ class MarkovChain:
 # Set up the simulation parameters
 box_size = 10
 num_agents = 20
-speed = 0.1*np.ones([num_agents,1])
-noise = 0.01
-radius = 1
+speed = 0.1*np.ones(num_agents)
+noise = 0.01*np.ones(num_agents)
+radius = np.ones(num_agents)
 time = 1000
 const = 10
 mc = []
@@ -47,8 +47,13 @@ def update_velocities(positions, velocities, radius, speed, noise):
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
     
     # Find the indices of the neighbors within the specified radius
-    neighbors = np.argwhere(distances < radius)
-    
+    neighbors=[]
+    # Find the indices of the neighbors within the specified radius
+    for i in range(num_agents):
+       tempneigh = np.argwhere(distances<radius[i])
+       for j in tempneigh:
+           if j[0]==i:
+               neighbors.append(j)
     
     # Compute the average direction of the neighbors
     mean_direction = np.zeros((num_agents, 2))
