@@ -75,12 +75,13 @@ def update_velocities(positions, velocities, radius, speed, noise):
                 count += speed[j[1]] 
         if count > 0:
             mean_direction[i] = sum_direction / count
+            norm = np.linalg.norm(mean_direction[i], axis=1)
+            if norm == 0:
+                norm = 1
+            mean_direction[i] /= norm
         noise_vector.append(np.random.normal(size=2) * noise[i])
     
     # Normalize the direction and set the velocity of each agent
-    norm = np.linalg.norm(mean_direction, axis=1)
-    norm[norm == 0] = 1  # Avoid division by zero
-    mean_direction /= norm[:, np.newaxis]
     for i in range(len(mean_direction)):
         if mean_direction[i][0] == 0 and mean_direction[i][1] == 0:
             velocities[i]+=noise_vector[i]
