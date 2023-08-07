@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 import random
 import math
 
@@ -49,7 +50,7 @@ x = radii * np.cos(angles)
 y = radii * np.sin(angles)
     
 positions = np.column_stack((x, y))
-velocities = np.random.uniform(size=(num_agents, 2)) * speed
+velocities = np.random.uniform(size=(num_agents, 2)) * speed[0]
 def boundary_distance(r,x,y,vx, vy):
     # Calculate the vector from the object to the center of the boundary
     b = 2*(x*vx+y*vy)
@@ -84,7 +85,9 @@ def update_velocities(positions, velocities, radius, speed, noise):
             mean_direction[i] = sum_direction / count
     
     # Add some random noise to the direction
-    noise_vector = np.random.normal(size=(num_agents, 2)) * noise
+    noise_vector = []
+    for i in range(num_agents):
+        noise_vector.append(np.random.normal(size=2) * noise[i])
     
     # Normalize the direction and set the velocity of each agent
     norm = np.linalg.norm(mean_direction, axis=1)
@@ -149,7 +152,7 @@ for i in range(time):
         if current_state == 'A':
             speed[j] = 0.05
             colors[j] = 'black'
-            nois[j]] = 0.005
+            noise[j] = 0.005
             radius[j] = 1
             const = 10
         elif current_state == 'B':
@@ -166,7 +169,7 @@ for i in range(time):
             const = 20
         
         distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-        weight = math.exp(-const*(distance*speed)/box_radius)
+        weight = math.exp(-const*(distance*speed[j])/box_radius)
         sample = [0, 1]
         randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
         if randomval[0] == 0:
@@ -176,8 +179,8 @@ for i in range(time):
             vec_perp = np.dot(positions[j],vector)*vector
             vec_adj = vector - vec_perp
             vector = vec_adj - vec_perp
-            veladj = np.random.normal(size=2) * noise
-            velocities[j]=speed*vector/np.linalg.norm(vector) + veladj
+            veladj = np.random.normal(size=2) * noise[j]
+            velocities[j]=speed[j]*vector/np.linalg.norm(vector) + veladj
     
     positions += velocities
             
@@ -185,17 +188,19 @@ for i in range(time):
     
     # Plot the agents as arrows
     ax.clear()
+    circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
+    plt.gca().add_patch(circle)
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
               units='xy', scale=0.1, headwidth=2)
-    ax.set_xlim(0, box_size)
-    ax.set_ylim(0, box_size)
+    ax.set_xlim(-box_radius, box_radius)
+    ax.set_ylim(-box_radius, box_radius)
     #if current_state == 'A':
     #    ax.set_title("Schooling")
     #elif current_state == 'B':
     #    ax.set_title("Swimming")
     #else:
     #    ax.set_title("Resting")
-    plt.pause(0.01)
+    plt.pause(0.001)
 plt.show()
 plt.close()
 #plt.hist(disthist, bins=10)
