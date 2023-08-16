@@ -3,7 +3,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-data = load('2023-07-27_16-08-57.mp4_visual_field_fish0.npz')
+data = load('D:\\output\\5fish_single\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish0.npz')
 lst = data.files
 for item in lst:
     if item == 'fish_pos':
