@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
 import random
 import math
 
@@ -26,54 +25,41 @@ class MarkovChain:
 # Usage example
 
 # Set up the simulation parameters
-box_radius = 10
+box_size = 10
 num_agents = 20
-speed = 0.1*np.ones(num_agents)
-noise = 0.01*np.ones(num_agents)
-radius = np.ones(num_agents)
-time = 100
+speed = 0.1*np.ones([num_agents,1])
+noise = 0.01*np.ones([num_agents,1])
+radius = np.zeros(num_agents)
+time = 1000
 const = 10
 mc = []
 colors = []
+social = []
 for i in range(num_agents):
     mc.append(MarkovChain())
     colors.append('red')
+    social.append(np.random.rand())
     
 # Set up the initial positions and velocities of the agents
-angles = np.random.uniform(0, 2*np.pi, num_agents)
-    
-    # Generate random radii (distance from the center) uniformly distributed between 0 and the circle's radius
-radii = np.random.uniform(0, box_radius, num_agents)
-    
-    # Convert polar coordinates to Cartesian coordinates (x, y)
-x = radii * np.cos(angles)
-y = radii * np.sin(angles)
-    
-positions = np.column_stack((x, y))
-velocities = np.random.uniform(size=(num_agents, 2)) * speed[0]
-
-def boundary_distance(r,x,y,vx, vy):
-    # Calculate the vector from the object to the center of the boundary
-    b = 2*(x*vx+y*vy)
-    a = (vx**2+vy**2)
-    c = (x**2+y**2-r**2)
-    return (-b+math.sqrt(b**2-4*a*c))/(2*a)
-
+positions = np.random.uniform(size=(num_agents, 2)) * box_size
+velocities = np.random.uniform(size=(num_agents, 2)) * speed
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
-    # Compute the distances between all pairs of agents
     distances = np.linalg.norm(positions[:, np.newaxis] - positions, axis=2)
     noise_vector = []
     # Find the indices of the neighbors within the specified radius
     mean_direction = np.zeros((num_agents, 2))
     for i in range(num_agents):
-        tempneigh = np.argwhere(distances<radius[i])
+        tempneigh = np.argwhere(distances<radius[i]*social[i])
         sum_direction = np.zeros(2)
         count = 0
         for j in tempneigh:
             if j[0]==i:
-                sum_direction += velocities[j[1]]*speed[j[1]]
-                count += speed[j[1]] 
+                weight = abs(np.dot(positions[j[1]]-positions[j[0]],velocities[j[0]]))
+                #sum_direction += weight * velocities[j[1]]
+                #count += weight
+                sum_direction += velocities[j[1]]*speed[j[1]]*weight
+                count += speed[j[1]]*weight
         if count > 0:
             mean_direction[i] = sum_direction / count
             norm = np.linalg.norm(mean_direction[i])
@@ -89,6 +75,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
         if normv == 0:
             normv = 1
         velocities[i] = velocities[i]/normv * speed[i]
+        
     #for i in range(num_agents):
         #sum_direction = np.zeros(2)
         #count = 0
@@ -131,7 +118,7 @@ for i in range(time):
     velocities = update_velocities(positions, velocities, radius, speed, noise)
     
     # Update the positions of the agents
-
+    #print(colors)
 
     for j in range(num_agents):
         current_state = mc[j].next_state()
@@ -139,35 +126,88 @@ for i in range(time):
         if current_state == 'A':
             speed[j] = 0.05
             colors[j] = 'black'
-            noise[j] = 0.005
-            radius[j] = 1
+            noise = 0.005
+            radius[j] = 2 * social[j]
             const = 10
         elif current_state == 'B':
             speed[j] = 0.05
             colors[j] = 'blue'
-            noise[j] = 0.005
-            radius[j] = 0.1
+            noise = 0.005
+            radius[j] = 0.2 * social[j]
             const = 15
         else:
             speed[j] = 0.005
             colors[j] = 'grey'
-            noise[j] = 0.0005
+            noise = 0.0005
             radius[j] = 0
             const = 20
-        
-        distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-        weight = math.exp(-const*(distance*speed[j])/box_radius)
-        sample = [0, 1]
-        randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
-        if randomval[0] == 0:
-            vector =[positions[j][0]+velocities[j][0]*distance,positions[j][1]+velocities[j][1]*distance]
-            vecnorm = np.linalg.norm(vector)
-            vector /= vecnorm
-            vec_perp = np.dot(positions[j],vector)*vector
-            vec_adj = vector - vec_perp
-            vector = vec_adj - vec_perp
-            veladj = np.random.normal(size=2) * noise[j]
-            velocities[j]=speed[j]*vector/np.linalg.norm(vector) + veladj
+        a=10000; b=10000; c=10000; d=10000;
+        if velocities[j][0]>0:
+            a=(box_size-positions[j][0])/velocities[j][0]
+        else:
+            b=(0-positions[j][0])/velocities[j][0]
+
+        if velocities[j][1]>0:
+            c=(box_size-positions[j][1])/velocities[j][1]
+        else:
+            d=(0-positions[j][1])/velocities[j][1]
+        weight = 0
+        if a<b and a<c and a<d:
+            if a<0:
+                a=0
+            distance = a * speed[j] 
+            #if i==randtime:
+                #disthist[j]=distance
+
+            weight = math.exp(-const*distance/box_size)
+            sample = [0, 1]
+            randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
+            
+            if randomval[0] == 0:
+                veladj = np.random.normal(size=2) * noise
+                velocities[j][0]=-1*velocities[j][0]+veladj[0]
+                velocities[j][1]+=veladj[1]
+        elif b<c and b<d:
+            if b<0:
+                b=0
+            distance = b * speed[j]
+            #if i==randtime:
+                #disthist[j]=distance
+
+            weight = math.exp(-const*distance/box_size)
+            sample = [0, 1]
+            randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
+            if randomval[0] == 0:
+                veladj = np.random.normal(size=2) * noise
+                velocities[j][0]=-1*velocities[j][0]+veladj[0]
+                velocities[j][1]+=veladj[1]
+        elif c<d:
+            if c<0:
+                c=0
+            distance = c * speed[j]
+            
+            #if i==randtime:
+                #disthist[j]=distance
+            weight = math.exp(-const*distance/box_size)
+            sample = [0, 1]
+            randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
+            if randomval[0] == 0:
+                veladj = np.random.normal(size=2) * noise
+                velocities[j][1]=-1*velocities[j][1]+veladj[0]
+                velocities[j][0]+=veladj[1]
+        else:
+            if d<0:
+                d=0
+            distance = d * speed[j]
+            #if i==randtime:
+                #disthist[j]=distance
+            weight = math.exp(-const*distance/box_size)
+            sample = [0, 1]
+            randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
+            if randomval[0] == 0:
+                veladj = np.random.normal(size=2) * noise
+                velocities[j][1]=-1*velocities[j][1]+veladj[0]
+                velocities[j][0]+=veladj[1]
     
     positions += velocities
             
@@ -175,19 +215,19 @@ for i in range(time):
     
     # Plot the agents as arrows
     ax.clear()
-    circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
-    plt.gca().add_patch(circle)
-    ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
-              units='xy', scale=0.1, headwidth=2)
-    ax.set_xlim(-box_radius, box_radius)
-    ax.set_ylim(-box_radius, box_radius)
+    cmap = plt.get_cmap('Blues')
+    cols = cmap(social)
+    ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=cols,
+              units='xy', scale=0.1, scale_units='xy', headwidth=2)
+    ax.set_xlim(0, box_size)
+    ax.set_ylim(0, box_size)
     #if current_state == 'A':
     #    ax.set_title("Schooling")
     #elif current_state == 'B':
     #    ax.set_title("Swimming")
     #else:
     #    ax.set_title("Resting")
-    plt.pause(0.001)
+    plt.pause(0.01)
 plt.show()
 plt.close()
 #plt.hist(disthist, bins=10)
