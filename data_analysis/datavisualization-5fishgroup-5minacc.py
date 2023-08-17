@@ -59,3 +59,7 @@ for position in positions:
     distances.append(distance)
 plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
 plt.show()
+speeds = math.sqrt(directions[:,0]**2 + directions[:,1]**2)
+print(speeds)
+plt.hist(speeds)
+plt.show()
