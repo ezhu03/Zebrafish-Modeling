@@ -7,7 +7,7 @@ file1 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-15514
 file2 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish2.npz'
 file3 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish3.npz'
 file4 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish4.npz'
-length = 9
+global length = 9
 def open_file(file_name):
     data = load(file_name)
     lst = data.files
@@ -69,8 +69,8 @@ def plot_quiver(positions, directions, sc=1.0, ratio=1.0, title=None):
         ax.quiver(ratio*positions[4][i, 0], ratio*positions[4][i, 1], sc*directions[4][i, 0], sc*directions[4][i, 1], scale=2)
 
         ax.set_aspect('equal')
-        ax.set_xlim((0,20))
-        ax.set_ylim((0,20))
+        ax.set_xlim((0,length))
+        ax.set_ylim((0,length))
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         plt.pause(0.0001)
