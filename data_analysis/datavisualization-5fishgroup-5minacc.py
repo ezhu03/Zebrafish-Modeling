@@ -18,24 +18,19 @@ def open_file(file_name):
     vx=[]
     vy = []
     for item in lst:
-        print(item)
         #print(data[item])
         if item == 'X':
             for pos in data[item]:
-                print(pos)
                 xpos.append(pos)
         if item == 'Y':
             for pos in data[item]:
-                print(pos)
                 ypos.append(pos)
             
         if item == 'VX':
             for pos in data[item]:
-                print(pos)
                 vx.append(pos)
         if item == 'VY':
             for pos in data[item]:
-                print(pos)
                 vy.append(pos)
     positions=np.stack((xpos, ypos), axis=-1)
     directions = np.stack((vx, vy), axis = -1)
@@ -45,6 +40,22 @@ positions1, directions1 = open_file(file1)
 positions2, directions2 = open_file(file2)
 positions3, directions3 = open_file(file3)
 positions4, directions4 = open_file(file4)
-positions=[positions0, positions1, positions2, positions3, positions4]
-directions=[directions0, directions1, directions2, directions3, directions4]
-print(np.flatten(positions))
+positions = []
+directions = []
+for i in range(len(positions0)):
+    positions.append(positions0[i])
+    directions.append(directions0[i])
+    positions.append(positions1[i])
+    directions.append(directions1[i])
+    positions.append(positions2[i])
+    directions.append(directions2[i])
+    positions.append(positions3[i])
+    directions.append(directions3[i])
+    positions.append(positions4[i])
+    directions.append(directions4[i])
+distances=[]
+for position in positions:
+    distance = math.sqrt((position[0]-length/2)**2 + (position[1]-length/2)**2)
+    distances.append(distance)
+plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
+plt.show()

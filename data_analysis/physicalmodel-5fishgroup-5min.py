@@ -23,20 +23,20 @@ def open_file(file_name):
         #print(data[item])
         if item == 'X':
             for pos in data[item]:
-                print(pos)
+                #print(pos)
                 xpos.append(pos)
         if item == 'Y':
             for pos in data[item]:
-                print(pos)
+                #print(pos)
                 ypos.append(pos)
             
         if item == 'VX':
             for pos in data[item]:
-                print(pos)
+                #print(pos)
                 vx.append(pos)
         if item == 'VY':
             for pos in data[item]:
-                print(pos)
+                #print(pos)
                 vy.append(pos)
     positions=np.stack((xpos, ypos), axis=-1)
     directions = np.stack((vx, vy), axis = -1)
