@@ -2,20 +2,44 @@ from numpy import load
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-
-data = load('D:\\output\\5fish_single\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish0.npz')
-lst = data.files
-for item in lst:
-    if item == 'fish_pos':
-        positions = data[item]
-
-    if item == 'fish_angle':
-        angles = data[item]
-        directions = np.zeros((len(angles),2))
-        for i in range(len(angles)):
-            directions[i,0]=math.cos(angles[i])
-            directions[i,1]=math.sin(angles[i])
-print(positions[:,1])
+file0 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish0.npz'
+file1 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish1.npz'
+file2 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish2.npz'
+file3 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish3.npz'
+file4 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish4.npz'
+def open_file(file_name):
+    data = load(file_name)
+    lst = data.files
+    #print(lst)
+    xpos=[]
+    ypos=[]
+    vx=[]
+    vy = []
+    for item in lst:
+        print(item)
+        #print(data[item])
+        if item == 'X':
+            for pos in data[item]:
+                print(pos)
+                xpos.append(pos)
+        if item == 'Y':
+            for pos in data[item]:
+                print(pos)
+                ypos.append(pos)
+            
+        if item == 'VX':
+            for pos in data[item]:
+                print(pos)
+                vx.append(pos)
+        if item == 'VY':
+            for pos in data[item]:
+                print(pos)
+                vy.append(pos)
+    positions=np.stack((xpos, ypos), axis=-1)
+    directions = np.stack((vx, vy), axis = -1)
+    return positions, directions
+positions, directions = open_file(file0)
+print(positions)
 print(directions)
 
 
@@ -33,10 +57,10 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
     fig, ax = plt.subplots()
     for i in range(len(positions)):
         ax.clear()
-        ax.quiver(positions[i, 0], positions[i, 1], sc*directions[i, 0], sc*directions[i, 1], scale=1)
+        ax.quiver(positions0[i, 0], positions0[i, 1], sc*directions[i, 0], sc*directions[i, 1], scale=1)
         ax.set_aspect('equal')
-        ax.set_xlim((300,1000))
-        ax.set_ylim((0,700))
+        ax.set_xlim((0,20))
+        ax.set_ylim((0,20))
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         plt.pause(0.0001)
