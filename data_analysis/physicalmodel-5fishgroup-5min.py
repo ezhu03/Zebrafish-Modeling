@@ -43,6 +43,8 @@ positions1, directions1 = open_file(file0)
 positions2, directions2 = open_file(file0)
 positions3, directions3 = open_file(file0)
 positions4, directions4 = open_file(file0)
+positions=[positions0, positions1, positions2, positions3, positions4]
+directions=[directions0, directions1, directions2, directions3, directions4]
 
 
 
@@ -57,7 +59,7 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
         title (str, optional): Title of the plot. Default is None.
     """
     fig, ax = plt.subplots()
-    for i in range(len(positions)):
+    for i in range(len(positions0)):
         ax.clear()
         ax.quiver(positions0[i, 0], positions0[i, 1], sc*directions0[i, 0], sc*directions0[i, 1], scale=1)
         ax.quiver(positions1[i, 0], positions1[i, 1], sc*directions1[i, 0], sc*directions1[i, 1], scale=1)
