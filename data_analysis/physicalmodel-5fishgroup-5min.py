@@ -59,13 +59,13 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
         title (str, optional): Title of the plot. Default is None.
     """
     fig, ax = plt.subplots()
-    for i in range(len(positions0)):
+    for i in range(len(positions[0])):
         ax.clear()
-        ax.quiver(positions0[i, 0], positions0[i, 1], sc*directions0[i, 0], sc*directions0[i, 1], scale=1)
-        ax.quiver(positions1[i, 0], positions1[i, 1], sc*directions1[i, 0], sc*directions1[i, 1], scale=1)
-        ax.quiver(positions2[i, 0], positions2[i, 1], sc*directions2[i, 0], sc*directions2[i, 1], scale=1)
-        ax.quiver(positions3[i, 0], positions3[i, 1], sc*directions3[i, 0], sc*directions3[i, 1], scale=1)
-        ax.quiver(positions4[i, 0], positions4[i, 1], sc*directions4[i, 0], sc*directions4[i, 1], scale=1)
+        ax.quiver(positions[0,i, 0], positions[0,i, 1], sc*directions[0,i, 0], sc*directions[0,i, 1], scale=1)
+        ax.quiver(positions[1,i,0], positions[1,i, 1], sc*directions[1,i, 0], sc*directions[1,i, 1], scale=1)
+        ax.quiver(positions[2,i, 0], positions[2,i, 1], sc*directions[2,i, 0], sc*directions[2,i, 1], scale=1)
+        ax.quiver(positions[3,i, 0], positions[3,i, 1], sc*directions[3,i, 0], sc*directions[3,i, 1], scale=1)
+        ax.quiver(positions[4,i, 0], positions[4,i, 1], sc*directions[4,i, 0], sc*directions[4,i, 1], scale=1)
 
         ax.set_aspect('equal')
         ax.set_xlim((0,20))
