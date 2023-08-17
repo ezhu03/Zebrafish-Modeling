@@ -7,6 +7,7 @@ file1 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-15514
 file2 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish2.npz'
 file3 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish3.npz'
 file4 = 'D:\\output\\5fish_group\\5fish_group_maxbright_5minacc_2023-08-09-155141-0000_fish4.npz'
+length = 9
 def open_file(file_name):
     data = load(file_name)
     lst = data.files
@@ -39,16 +40,16 @@ def open_file(file_name):
     directions = np.stack((vx, vy), axis = -1)
     return positions, directions
 positions0, directions0 = open_file(file0)
-positions1, directions1 = open_file(file0)
-positions2, directions2 = open_file(file0)
-positions3, directions3 = open_file(file0)
-positions4, directions4 = open_file(file0)
+positions1, directions1 = open_file(file1)
+positions2, directions2 = open_file(file2)
+positions3, directions3 = open_file(file3)
+positions4, directions4 = open_file(file4)
 positions=[positions0, positions1, positions2, positions3, positions4]
 directions=[directions0, directions1, directions2, directions3, directions4]
 
 
 
-def plot_quiver(positions, directions, sc=1.0, title=None):
+def plot_quiver(positions, directions, sc=1.0, ratio=1.0, title=None):
     """
     Plot a quiver plot of positions and directions.
 
@@ -61,11 +62,11 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
     fig, ax = plt.subplots()
     for i in range(len(positions[0])):
         ax.clear()
-        ax.quiver(positions[0,i, 0], positions[0,i, 1], sc*directions[0,i, 0], sc*directions[0,i, 1], scale=1)
-        ax.quiver(positions[1,i,0], positions[1,i, 1], sc*directions[1,i, 0], sc*directions[1,i, 1], scale=1)
-        ax.quiver(positions[2,i, 0], positions[2,i, 1], sc*directions[2,i, 0], sc*directions[2,i, 1], scale=1)
-        ax.quiver(positions[3,i, 0], positions[3,i, 1], sc*directions[3,i, 0], sc*directions[3,i, 1], scale=1)
-        ax.quiver(positions[4,i, 0], positions[4,i, 1], sc*directions[4,i, 0], sc*directions[4,i, 1], scale=1)
+        ax.quiver(ratio*positions[0][i, 0], ratio*positions[0][i, 1], sc*directions[0][i, 0], sc*directions[0][i, 1], scale=2)
+        ax.quiver(ratio*positions[1][i,0], ratio*positions[1][i, 1], sc*directions[1][i, 0], sc*directions[1][i, 1], scale=2)
+        ax.quiver(ratio*positions[2][i, 0], ratio*positions[2][i, 1], sc*directions[2][i, 0], sc*directions[2][i, 1], scale=2)
+        ax.quiver(ratio*positions[3][i, 0], ratio*positions[3][i, 1], sc*directions[3][i, 0], sc*directions[3][i, 1], scale=2)
+        ax.quiver(ratio*positions[4][i, 0], ratio*positions[4][i, 1], sc*directions[4][i, 0], sc*directions[4][i, 1], scale=2)
 
         ax.set_aspect('equal')
         ax.set_xlim((0,20))
@@ -78,5 +79,5 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
         ax.set_title(title)
 
     plt.show()
-
-plot_quiver(positions, directions, sc=0.05, title="Quiver Plot Example")
+len_ratio = length/30
+plot_quiver(positions, directions, sc=0.1, len_ratio title="Quiver Plot Example")
