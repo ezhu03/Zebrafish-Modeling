@@ -38,9 +38,11 @@ def open_file(file_name):
     positions=np.stack((xpos, ypos), axis=-1)
     directions = np.stack((vx, vy), axis = -1)
     return positions, directions
-positions, directions = open_file(file0)
-print(positions)
-print(directions)
+positions0, directions0 = open_file(file0)
+positions1, directions1 = open_file(file0)
+positions2, directions2 = open_file(file0)
+positions3, directions3 = open_file(file0)
+positions4, directions4 = open_file(file0)
 
 
 
@@ -57,7 +59,12 @@ def plot_quiver(positions, directions, sc=1.0, title=None):
     fig, ax = plt.subplots()
     for i in range(len(positions)):
         ax.clear()
-        ax.quiver(positions0[i, 0], positions0[i, 1], sc*directions[i, 0], sc*directions[i, 1], scale=1)
+        ax.quiver(positions0[i, 0], positions0[i, 1], sc*directions0[i, 0], sc*directions0[i, 1], scale=1)
+        ax.quiver(positions1[i, 0], positions1[i, 1], sc*directions1[i, 0], sc*directions1[i, 1], scale=1)
+        ax.quiver(positions2[i, 0], positions2[i, 1], sc*directions2[i, 0], sc*directions2[i, 1], scale=1)
+        ax.quiver(positions3[i, 0], positions3[i, 1], sc*directions3[i, 0], sc*directions3[i, 1], scale=1)
+        ax.quiver(positions4[i, 0], positions4[i, 1], sc*directions4[i, 0], sc*directions4[i, 1], scale=1)
+
         ax.set_aspect('equal')
         ax.set_xlim((0,20))
         ax.set_ylim((0,20))
