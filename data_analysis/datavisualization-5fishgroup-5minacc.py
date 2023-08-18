@@ -54,11 +54,15 @@ for i in range(len(positions0)):
     positions.append(positions4[i])
     directions.append(directions4[i])
 distances=[]
+total_distance = 0
 for position in positions:
     distance = math.sqrt((position[0]-length/2)**2 + (position[1]-length/2)**2)
+    total_distance += distance/1000
+    print(distance)
+    print(total_distance)
     distances.append(distance)
 plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
-avgdistance = np.average(distances)
+avgdistance = (total_distance / len(distances))*1000
 plt.title("avg distance = " + str(avgdistance))
 plt.show()
 speeds=[]
