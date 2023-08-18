@@ -62,7 +62,7 @@ for position in positions:
         total_distance += distance
         count +=1
     distances.append(distance)
-plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5,10])
+plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
 avgdistance = total_distance / count
 plt.title("avg distance = " + str(avgdistance))
 plt.show()
