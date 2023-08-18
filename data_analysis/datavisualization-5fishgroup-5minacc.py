@@ -58,6 +58,8 @@ for position in positions:
     distance = math.sqrt((position[0]-length/2)**2 + (position[1]-length/2)**2)
     distances.append(distance)
 plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
+avgdistance = np.average(distances)
+plt.title("avg distance = " + str(avgdistance))
 plt.show()
 speeds=[]
 for direction in directions:
