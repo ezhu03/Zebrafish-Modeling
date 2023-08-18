@@ -59,7 +59,9 @@ for position in positions:
     distances.append(distance)
 plt.hist(distances,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5, 5])
 plt.show()
-speeds = math.sqrt(directions[:,0]**2 + directions[:,1]**2)
-print(speeds)
-plt.hist(speeds)
+speeds=[]
+for direction in directions:
+    speed = math.sqrt((direction[0])**2 + (direction[1])**2)
+    speeds.append(speed)
+plt.hist(speeds,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7])
 plt.show()
