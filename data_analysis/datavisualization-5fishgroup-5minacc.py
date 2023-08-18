@@ -75,7 +75,8 @@ for direction in directions:
     if speed < 10000:
         total_speed+=speed
         count +=1
-    distances.append(distance)
+    speeds.append(speed)
 plt.hist(speeds,bins=[0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7])
-print(np.average(speeds))
+avgspeed = total_speed/count
+plt.title("avg speed = " + str(avgspeed))
 plt.show()
