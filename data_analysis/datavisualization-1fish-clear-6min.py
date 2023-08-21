@@ -2,8 +2,8 @@ from numpy import load
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-file0 = 'D:\\output\\1fish_single\\1fish_single_maxbright_6minacc_2023-08-09-145619-0000_fish0.npz
-file1 = 'D:\\output\\1fish_single\\1fish_single_maxbright_6minacc_clear_2023-08-09-161213-0000_fish0.npz
+file0 = 'D:\\output\\1fish_single\\1fish_single_maxbright_6minacc_2023-08-09-145619-0000_fish0.npz'
+file1 = 'D:\\output\\1fish_single\\1fish_single_maxbright_6minacc_clear_2023-08-09-161213-0000_fish0.npz'
 global length
 length = 9
 def open_file(file_name):
