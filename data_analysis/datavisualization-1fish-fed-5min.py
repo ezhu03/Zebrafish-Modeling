@@ -3,7 +3,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-file0 = 'D\\output\\1fish_fed\\1fish_single_maxbright_5minacc_hungry_2023-08-09-163135-0000_fish0.npz'
+file0 = 'D:\\output\\1fish_fed\\1fish_single_maxbright_5minacc_hungry_2023-08-09-163135-0000_fish0.npz'
 file1 = 'D:\output\\1fish_fed\\1fish_single_maxbright_5minacc_fed_2023-08-09-164302-0000_fish0.npz'
 
 global length
