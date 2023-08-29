@@ -40,6 +40,11 @@ def open_file(file_name):
                 vy.append(pos)
     positions=np.stack((xpos, ypos), axis=-1)
     directions = np.stack((vx, vy), axis = -1)
+    print(directions)
+    norms = np.linalg.norm(directions,axis=1)
+    norms[norms == 0] = 1
+    for i in range(len(directions)):
+        directions[i]=directions[i]/norms[i]
     return positions, directions
 positions0, directions0 = open_file(file0)
 positions1, directions1 = open_file(file1)
@@ -84,4 +89,5 @@ def plot_quiver(positions, directions, sc=1.0, ratio=1.0, title=None):
 
     plt.show()
 len_ratio = length/30
+
 plot_quiver(positions, directions, sc=0.1, ratio = len_ratio, title="Quiver Plot Example")
