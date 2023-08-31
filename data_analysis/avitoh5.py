@@ -1,31 +1,35 @@
 import cv2
 import h5py
-import os
+import numpy as np
 
-# Replace 'input.avi' with the path to your AVI file
-input_video_path = 'singlefishtest_2023-07-31-152515-0000.avi'
+# Open the AVI video file
+avi_filename = 'data_analysis\\individual_1.avi'
+cap = cv2.VideoCapture(avi_filename)
 
-# Replace 'output_folder' with the path to the folder where you want to save the HDF5 files
-output_folder = 'data_output/singlefishtest_2023-07-31-152515-0000'
+# Get video properties
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-# Replace 'output_file_name.h5' with the desired name for the output HDF5 file
-output_file_name = 'singlefishtest_2023-07-31-152515-0000.h5'
+# Create an HDF5 file
+h5_filename = 'data_analysis\\output_1fishgroup16minacc_0823.h5'
+h5_file = h5py.File(h5_filename, 'w')
 
-# Initialize VideoCapture object to read frames from the AVI file
-video_capture = cv2.VideoCapture(input_video_path)
+# Create a dataset to store frames
+frame_dataset = h5_file.create_dataset('frames', shape=(frame_count, frame_height, frame_width, 3), dtype=np.uint8)
 
-# Create the HDF5 file
-with h5py.File(output_file_name, 'w') as h5file:
-    frame_count = 0
-    while True:
-        ret, frame = video_capture.read()
-        if not ret:
-            break
+# Process frames and save to HDF5
+frame_index = 0
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    # Save the frame to HDF5 dataset
+    frame_dataset[frame_index] = frame
+    
+    frame_index += 1
 
-        # Create a dataset within the HDF5 file to store the frame
-        h5file.create_dataset(f'/frame_{frame_count:04d}', data=frame)
-
-        frame_count += 1
-
-# Release the VideoCapture object
-video_capture.release()
+# Close the HDF5 file and video capture
+h5_file.close()
+cap.release()
