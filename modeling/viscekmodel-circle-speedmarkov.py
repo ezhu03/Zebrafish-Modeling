@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
+import matplotlib.patches as mpatches
 import random
 import math
 
@@ -177,10 +178,21 @@ for i in range(time):
     ax.clear()
     circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
     plt.gca().add_patch(circle)
-    ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=colors,
-              units='xy', scale=0.1, headwidth=2)
+    norm = np.linalg.norm(velocities, axis=1)
+    norm[norm == 0] = 1  # Avoid division by zero
+    velnorm = 0.75*velocities / norm[:, np.newaxis]
+    ax.quiver(positions[:, 0], positions[:, 1], velnorm[:, 0], velnorm[:, 1], color=colors,
+              units='xy', scale=1, headwidth=2)
     ax.set_xlim(-box_radius, box_radius)
     ax.set_ylim(-box_radius, box_radius)
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_title('Model of Zebrafish Swimming Patterns')
+    grey_patch = mpatches.Patch(color='grey', label='Resting')
+    blue_patch = mpatches.Patch(color='blue', label='Swimming')
+    black_patch = mpatches.Patch(color='black', label='Schooling')
+    ax.legend(handles=[grey_patch, blue_patch, black_patch], loc=1)
+
     #if current_state == 'A':
     #    ax.set_title("Schooling")
     #elif current_state == 'B':

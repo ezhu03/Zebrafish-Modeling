@@ -231,7 +231,7 @@ for i in range(time):
     cmap = plt.get_cmap('Blues')
     cols = cmap(social)
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color=cols,
-              units='xy', scale=0.1, scale_units='xy', headwidth=2)
+              units='xy', scale=1, scale_units='xy', headwidth=2)
     ax.set_xlim(0, box_size)
     ax.set_ylim(0, box_size)
     #if current_state == 'A':
