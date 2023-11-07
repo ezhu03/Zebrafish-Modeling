@@ -27,11 +27,15 @@ for position in positions3:
 
 
 # Create a 2D histogram
-plt.hist2d(xpositions, ypositions, bins=(20, 20), cmap=plt.cm.jet)
+xsc = [x / 100 for x in xpositions]
+ysc = [y / 100 for y in ypositions]
+# Create a 2D histogram
+plt.hist2d(xsc, ysc, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.05)
 
 # Add labels and a colorbar
-plt.xlabel('X-axis')
-plt.ylabel('Y-axis')
+plt.xlabel('X-bins')
+plt.ylabel('Y-bins')
+plt.title('Heatmap for Sanded Tank')
 plt.colorbar(label='Frequency')
 
 # Show the plot

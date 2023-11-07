@@ -8,9 +8,9 @@ import math
 class MarkovChain:
     def __init__(self):
         self.transition_matrix = {
-            'A': {'A': 0.99, 'B': 0.005, 'C': 0.005},
-            'B': {'A': 0.005, 'B': 0.99, 'C': 0.005},
-            'C': {'A': 0.001, 'B': 0.004, 'C': 0.995}
+            'A': {'A': 0.98, 'B': 0.01, 'C': 0.01},
+            'B': {'A': 0.01, 'B': 0.98, 'C': 0.01},
+            'C': {'A': 0.004, 'B': 0.016, 'C': 0.98}
         }
         sampleList = ['A','B','C']
         self.current_state = random.choices(sampleList, weights=(10, 10, 10), k=1)[0]
@@ -28,7 +28,7 @@ class MarkovChain:
 
 # Set up the simulation parameters
 box_radius = 10
-num_agents = 20
+num_agents = 25
 speed = 0.1*np.ones(num_agents)
 noise = 0.01*np.ones(num_agents)
 radius = np.ones(num_agents)
@@ -176,7 +176,7 @@ for i in range(time):
     
     # Plot the agents as arrows
     ax.clear()
-    circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
+    circle = Circle([0,0], box_radius, edgecolor='black', facecolor='none')
     plt.gca().add_patch(circle)
     norm = np.linalg.norm(velocities, axis=1)
     norm[norm == 0] = 1  # Avoid division by zero
@@ -187,7 +187,7 @@ for i in range(time):
     ax.set_ylim(-box_radius, box_radius)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
-    ax.set_title('Model of Zebrafish Swimming Patterns')
+    ax.set_title('Viscek-Markov Model of Zebrafish Swimming Patterns')
     grey_patch = mpatches.Patch(color='grey', label='Resting')
     blue_patch = mpatches.Patch(color='blue', label='Swimming')
     black_patch = mpatches.Patch(color='black', label='Schooling')
