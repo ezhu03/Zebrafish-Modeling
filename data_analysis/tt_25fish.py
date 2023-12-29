@@ -37,8 +37,8 @@ def processtr(tr):
     pprint(tr.params)
     print(radius)
     return tr, radius
-circle = "/Users/eric/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
-annulus = "/Users/eric/Documents/session_25fish_annulus_10fps/trajectories/validated.npy"
+circle = "/Users/ezhu/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
+annulus = "/Users/ezhu/Documents/session_25fish_annulus_10fps/trajectories/validated.npy"
 trc= openfile(circle)
 tra= openfile(annulus)
 trc, rc = processtr(trc)
@@ -50,7 +50,6 @@ ac = np.delete(trc.a, [3,6,21], axis = 1)
 sa = np.delete(tra.s, [2], axis = 1)
 va = np.delete(tra.v, [2], axis =1)
 aa = np.delete(tra.a, [2], axis = 1)
-
 
 pcircle = np.reshape(sc, (sc.shape[0]*sc.shape[1] , 2))
 vcircle = np.reshape(vc, (vc.shape[0]*vc.shape[1] , 2))
