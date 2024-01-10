@@ -74,11 +74,11 @@ sns.scatterplot(x='distances', y='angles', data=df)
 
 # Show the plot
 plt.show()
-sns.lmplot(x='distances', y='angles', data=df, ci=95, order=4, scatter_kws={'s': 1,'alpha':0.1})
+sns.lmplot(x='distances', y='angles', data=df, ci=95, order=1, scatter_kws={'s': 1,'alpha':0.1})
 
 # Show the plot
 plt.show()
-sns.lmplot(x='distances', y='abs', data=df, ci=95, order=4, scatter_kws={'s': 1,'alpha': 0.1})
+sns.lmplot(x='distances', y='abs', data=df, ci=95, order=1, scatter_kws={'s': 1,'alpha': 0.1})
 
 # Show the plot
 plt.show()
