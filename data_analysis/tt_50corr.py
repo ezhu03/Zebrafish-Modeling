@@ -38,18 +38,18 @@ def processtr(tr):
     print(radius)
     return tr, radius
 circle = "/Users/ezhu/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
-annulus = "/Users/ezhu/Documents/session_25fish_annulus_10fps/trajectories/validated.npy"
+annulus = "/Users/ezhu/Documents/session_50fish_15minacc_10fps_annulus/trajectories/validated.npy"
 trc= openfile(circle)
 tra= openfile(annulus)
 trc, rc = processtr(trc)
 tra, ra  = processtr(tra)
-sc = np.delete(trc.s, [3,6,21], axis = 1)
+sc = np.delete(trc.s, [3,6,21], axis = 1) #circle
 vc = np.delete(trc.v, [3,6,21], axis =1)
 ac = np.delete(trc.a, [3,6,21], axis = 1)
 
-sa = np.delete(tra.s, [2], axis = 1)
-va = np.delete(tra.v, [2], axis =1)
-aa = np.delete(tra.a, [2], axis = 1)
+sc = np.delete(tra.s, [32], axis = 1) #annulus
+vc = np.delete(tra.v, [32], axis =1)
+ac = np.delete(tra.a, [32], axis = 1)
 
 dists = []
 angles = []
@@ -74,31 +74,12 @@ sns.scatterplot(x='distances', y='angles', data=df)
 
 # Show the plot
 plt.show()
-sns.lmplot(x='distances', y='angles', data=df, ci=95, order=4, scatter_kws={'s': 1,'alpha':0.1})
+sns.lmplot(x='distances', y='angles', data=df, ci=95, order=1, scatter_kws={'s': 1,'alpha':0.01})
 
 # Show the plot
 plt.show()
-sns.lmplot(x='distances', y='abs', data=df, ci=95, order=4, scatter_kws={'s': 1,'alpha': 0.1})
+sns.lmplot(x='distances', y='abs', data=df, ci=95, order=1, scatter_kws={'s': 1,'alpha': 0.01})
 
 # Show the plot
 plt.show()
 
-sa = (rc/ra)*sa
-msda = []
-meana = []
-for i in range(sa.shape[0]):
-    msd = (sa[i,:,0]-sa[0,:,0])**2+(sa[i,:,1]-sa[0,:,1])**2
-    msda.append(msd)
-    meana.append(np.mean(msd))
-
-df = pd.DataFrame(msda)
-
-# Calculate mean and confidence interval for each row
-row_means = df.mean(axis=1)
-confidence_intervals = df.sem(axis=1)  # Assuming normal distribution
-
-# Create a line plot with 95% confidence interval
-plt.figure(figsize=(10, 6))
-sns.lineplot(x=df.index, y=row_means, label='Row Mean')
-plt.fill_between(df.index, row_means - confidence_intervals, row_means + confidence_intervals, alpha=0.2)
-plt.show()
