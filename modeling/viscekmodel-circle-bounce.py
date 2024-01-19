@@ -8,7 +8,7 @@ import math
 box_radius = 10
 num_agents = 20
 speed = 0.05
-noise = 0.01
+noise = 0.005
 radius = 1
 time = 200
 const = 10
@@ -24,6 +24,20 @@ y = radii * np.sin(angles)
     
 positions = np.column_stack((x, y))
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
+
+def reflection(r,x,y,vx,vy):
+    magv = np.sqrt(vx **2 + vy**2)
+    angles = np.arange(0,6.28,0.01)
+    xbound = r*np.cos(angles) 
+    ybound = r*np.sin(angles) 
+    labels=np.zeros(len(angles))
+    for i in range(len(angles)):
+        magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
+        theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
+        phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
+        if theta > 0.85 and theta < 2.29 and phi < 2.958:
+            labels[i]=1
+    return labels
 def boundary_distance(r,x,y,vx, vy):
     # Calculate the vector from the object to the center of the boundary
     b = 2*(x*vx+y*vy)
@@ -123,6 +137,13 @@ for i in range(time):
         sample = [0, 1]
         randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
         if randomval[0] == 0:
+            anglabels = (box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
+            # Find indices where the value is 1
+            indices_with_1 = [i for i, value in enumerate(my_array) if value == 1]
+
+            # Pick a random index where the value is 1
+            random_index = random.choice(indices_with_1)
+
             vector =[positions[j][0]+velocities[j][0]*distance,positions[j][1]+velocities[j][1]*distance]
             vecnorm = np.linalg.norm(vector)
             vector /= vecnorm

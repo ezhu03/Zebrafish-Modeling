@@ -36,8 +36,8 @@ def processtr(tr):
     print('Y range:', np.nanmin(tr.a[...,1]), np.nanmax(tr.a[...,1]), 'BL/s^2')
     pprint(tr.params)
     print(radius)
-    return tr, radius
-circle = "/Users/ezhu/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
+    return tr, tr.params['radius']
+circle = "/Users/ezhu/Documents/session_25fish_annulus_10fps/trajectories/validated.npy"
 annulus = "/Users/ezhu/Documents/session_50fish_15minacc_10fps_annulus/trajectories/validated.npy"
 trc= openfile(circle)
 tra= openfile(annulus)
@@ -47,10 +47,11 @@ sc = np.delete(trc.s, [3,6,21], axis = 1)
 vc = np.delete(trc.v, [3,6,21], axis =1)
 ac = np.delete(trc.a, [3,6,21], axis = 1)
 
-sa = np.delete(tra.s, [2], axis = 1)
-va = np.delete(tra.v, [2], axis =1)
-aa = np.delete(tra.a, [2], axis = 1)
+sa = np.delete(tra.s, [32], axis = 1)
+va = np.delete(tra.v, [32], axis =1)
+aa = np.delete(tra.a, [32], axis = 1)
 
+sc = (4.5/rc)*sc
 msdc = []
 meanc = []
 varc = []
@@ -75,7 +76,7 @@ plt.fill_between(df.index, row_means - confidence_intervals, row_means + confide
 
 plt.show()
 
-sa = (rc/ra)*sa
+sa = (4.5/ra)*sa
 msda = []
 meana = []
 for i in range(sa.shape[0]):
