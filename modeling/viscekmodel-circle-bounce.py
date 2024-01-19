@@ -11,7 +11,7 @@ speed = 0.05
 noise = 0.005
 radius = 1
 time = 200
-const = 10
+const = 20
 # Set up the initial positions and velocities of the agents
 angles = np.random.uniform(0, 2*np.pi, num_agents)
     
@@ -139,19 +139,21 @@ for i in range(time):
         if randomval[0] == 0:
             anglabels = (box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
             # Find indices where the value is 1
-            indices_with_1 = [i for i, value in enumerate(my_array) if value == 1]
-
+            indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
+            if not indices_with_1:
+                pass
+            else:
             # Pick a random index where the value is 1
-            random_index = random.choice(indices_with_1)
+                random_index = random.choice(indices_with_1)
 
-            vector =[positions[j][0]+velocities[j][0]*distance,positions[j][1]+velocities[j][1]*distance]
-            vecnorm = np.linalg.norm(vector)
-            vector /= vecnorm
-            vec_perp = np.dot(positions[j],vector)*vector
-            vec_adj = vector - vec_perp
-            vector = vec_adj - vec_perp
-            veladj = np.random.normal(size=2) * noise
-            velocities[j]=speed*vector/np.linalg.norm(vector) + veladj
+                angle = random_index/100
+
+                vxn = np.cos(angle)*distance*0.01
+                vyn = np.sin(angle)*distance*0.01
+
+                vector =[vxn,vyn]
+                veladj = np.random.normal(size=2) * noise * distance
+                velocities[j]=vector+ veladj
     
     positions += velocities
             
