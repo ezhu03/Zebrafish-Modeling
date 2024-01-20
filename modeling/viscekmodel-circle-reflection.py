@@ -9,9 +9,9 @@ box_radius = 10
 num_agents = 20
 speed = 0.05
 noise = 0.005
-radius = 1
-time = 200
-const = 20
+radius = 2
+time = 1000
+const = 0.1
 # Set up the initial positions and velocities of the agents
 angles = np.random.uniform(0, 2*np.pi, num_agents)
     
@@ -43,7 +43,7 @@ def boundary_distance(r,x,y,vx, vy):
     b = 2*(x*vx+y*vy)
     a = (vx**2+vy**2)
     c = (x**2+y**2-r**2)
-    return (-b+math.sqrt(b**2-4*a*c))/(2*a)
+    return (-b+math.sqrt(np.abs(b**2-4*a*c)))/(2*a)
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
     # Compute the distances between all pairs of agents
@@ -80,7 +80,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     normv = np.linalg.norm(velocities, axis=1)
     normv[normv == 0] = 1  # Avoid division by zero
     for i in range(num_agents):
-        velocities[i] = velocities[i]/normv[i] * speed
+        velocities[i] = velocities[i]/normv[i] * speed * np.random.uniform()
     # Normalize the direction and set the velocity of each agent
     #norm = np.linalg.norm(mean_direction, axis=1)
     #norm[norm == 0] = 1  # Avoid division by zero
@@ -152,10 +152,15 @@ for i in range(time):
                 vyn = np.sin(angle)*distance*0.01
 
                 vector =[vxn,vyn]
-                veladj = np.random.normal(size=2) * noise * distance
+                veladj = np.random.normal(size=2) * noise * distance * 0.01
                 velocities[j]=vector+ veladj
     
-    positions += velocities
+    newpositions = positions + velocities
+
+    for j in range(num_agents):
+        if newpositions[j][0]**2+newpositions[j][1]**2>box_radius**2-np.random.uniform()*noise*box_radius**2:
+            newpositions[j]=positions[j]
+    positions = newpositions
             
     #positions %= box_size
     
@@ -164,7 +169,7 @@ for i in range(time):
     circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
     plt.gca().add_patch(circle)
     ax.quiver(positions[:, 0], positions[:, 1], velocities[:, 0], velocities[:, 1], color='red',
-              units='xy', scale=0.1, headwidth=2)
+              units='xy', scale=speed, headwidth=2)
     ax.set_xlim(-box_radius, box_radius)
     ax.set_ylim(-box_radius, box_radius)
     plt.pause(0.01)
