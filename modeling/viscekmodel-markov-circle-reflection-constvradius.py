@@ -134,7 +134,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
 # Set up the simulation parameters
 
 consts = [1,3,5,7,9]
-radiuslist = [0,0.5,1,1.5,2]
+radiuslist = [0,0.5,1,1.5,2,5,10]
 rc = len(consts)
 rl = len(radiuslist)
 fig, axs = plt.subplots(rc, rl, figsize=(8, 6))
@@ -180,7 +180,8 @@ for k in range(rc):
 
             for j in range(num_agents):
                 distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-                weight = math.exp(-const*(distance*speed[j])/box_radius)
+                #weight = math.exp(-const*(distance*speed[j])/box_radius)
+                weight = math.exp(-const*(distance)/box_radius)
                 sample = [0, 1]
                 randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
                 if randomval[0] == 0:

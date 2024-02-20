@@ -133,9 +133,10 @@ def update_velocities(positions, velocities, radius, speed, noise):
 
 # Set up the simulation parameters
 
-consts = [1,3,5,7,9]
+#consts = [1,3,5,7,9]
+speeds = [0.5, 0.75, 1, 1.25, 1.5]
 radiuslist = [0,0.5,1,1.5,2]
-rc = len(consts)
+rc = len(speeds)
 rl = len(radiuslist)
 fig, axs = plt.subplots(rc, rl, figsize=(8, 6))
 for k in range(rc):
@@ -144,12 +145,12 @@ for k in range(rc):
         num_agents = 25
         speed = 0.1*np.ones((num_agents,1))
         noise = 0.01*np.ones(num_agents)
-        speed0 = 1
+        speed0 = speeds[k]
         noiseratio = 10
         time = 2000
         begin = 1400
         radius = radiuslist[l]
-        const = consts[k]
+        const = 1
         sc = []
         mc = []
         for i in range(num_agents):
@@ -249,29 +250,28 @@ for k in range(rc):
 # Calculate mean and confidence interval for each row
         row_means = df.mean(axis=1)
         confidence_intervals = df.sem(axis=1)  # Assuming normal distribution
+        print(len(speeds)-1-k, l)
 
 # Create a line plot with 95% confidence interval
         #axs[9-k][j].figure(figsize=(10, 6))
-        print(len(consts)-1-k)
-        print(l)
-        sns.lineplot(x=df.index, y=row_means,ax=axs[len(consts)-1-k][l])
-        axs[len(consts)-1-k][l].fill_between(df.index, row_means - confidence_intervals, row_means + confidence_intervals, alpha=0.2)
-        axs[len(consts)-1-k][l].set_ylim(0,30)
+        sns.lineplot(x=df.index, y=row_means,ax=axs[len(speeds)-1-k][l])
+        axs[len(speeds)-1-k][l].fill_between(df.index, row_means - confidence_intervals, row_means + confidence_intervals, alpha=0.2)
+        axs[len(speeds)-1-k][l].set_ylim(0,40)
         if l==0:
-            axs[len(consts)-1-k][l].set_ylabel(consts[k])
+            axs[len(speeds)-1-k][l].set_ylabel(speeds[k])
         else: 
-            axs[len(consts)-1-k][l].set_ylabel('')
-            axs[len(consts)-1-k][l].set_yticks([])
-            axs[len(consts)-1-k][l].tick_params(axis='y', which='both', left=False, right=False)
+            axs[len(speeds)-1-k][l].set_ylabel('')
+            axs[len(speeds)-1-k][l].set_yticks([])
+            axs[len(speeds)-1-k][l].tick_params(axis='y', which='both', left=False, right=False)
         
         if k == 0:
-            axs[len(consts)-1-k][l].set_xlabel(radiuslist[l])
+            axs[len(speeds)-1-k][l].set_xlabel(radiuslist[l])
         else: 
-            axs[len(consts)-1-k][l].set_xlabel('')
-            axs[len(consts)-1-k][l].set_xticks([])
-            axs[len(consts)-1-k][l].tick_params(axis='x', which='both', top=False, bottom=False)
+            axs[len(speeds)-1-k][l].set_xlabel('')
+            axs[len(speeds)-1-k][l].set_xticks([])
+            axs[len(speeds)-1-k][l].tick_params(axis='x', which='both', top=False, bottom=False)
         
 fig.supxlabel('radius')
-fig.supylabel('const')
+fig.supylabel('speed')
 plt.show()
 #plt.show()

@@ -14,7 +14,7 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 
-trajectories_path = "/Users/eric/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
+trajectories_path = "/Users/ezhu/Documents/session_25fish_15min_10fps/trajectories/validated.npy"
 #trajectories_path = "/Users/eric/Documents/session_25fish_annulus_10fps/trajectories/validated.npy"
 
 tr = tt.Trajectories.from_idtrackerai(trajectories_path, 
