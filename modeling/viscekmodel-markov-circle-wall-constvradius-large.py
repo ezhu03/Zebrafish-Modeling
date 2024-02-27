@@ -132,24 +132,27 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 
 # Set up the simulation parameters
-
-consts = [1,3,5,7,9]
-radiuslist = [0,0.5,1,1.5,2,5,10]
-iterations = 10
+consts=[1]
+radiuslist=[0.5]
+#consts = [0,1,2,4,8,16,32,64,128]
+#radiuslist = [0,0.25,0.5,1,1.5,2,5,10]
+iterations = 1
 rc = len(consts)
 rl = len(radiuslist)
 fig, axs = plt.subplots(rc, rl, figsize=(8, 6))
 for k in range(rc):
     for l in range(rl):
         for it in range(iterations):
+            if k == 0 and l == 0 and it ==0:
+                t1_start = perf_counter()
             box_radius = 4.5
             num_agents = 25
             speed = 0.1*np.ones((num_agents,1))
             noise = 0.01*np.ones(num_agents)
             speed0 = 1
             noiseratio = 10
-            time = 2000
-            begin = 1400
+            time = 200
+            begin = 0
             radius = radiuslist[l]
             const = consts[k]
             sc = []
@@ -171,7 +174,7 @@ for k in range(rc):
             #print(velocities.shape)
 
 # Run the simulation and display the results
-#fig, ax = plt.subplots()
+            fig, ax = plt.subplots()
             for i in range(time):
     #t1 = perf_counter()
     # Update the velocities of the agents
@@ -182,8 +185,8 @@ for k in range(rc):
 
                 for j in range(num_agents):
                     distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-                #weight = math.exp(-const*(distance*speed[j])/box_radius)
-                    weight = math.exp(-const*(distance)/box_radius)
+                    weight = math.exp(-const*(distance*speed[j])/box_radius)
+                    #weight = math.exp(-const*(distance)/box_radius)
                     sample = [0, 1]
                     randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
                     if randomval[0] == 0:
@@ -196,14 +199,34 @@ for k in range(rc):
             # Pick a random index where the value is 1
                             random_index = random.choice(indices_with_1)
 
-                            angle = random_index/100
+                        #    angle = random_index/100
 
-                            vxn = np.cos(angle)*distance*0.01
-                            vyn = np.sin(angle)*distance*0.01
+                        #   vxn = np.cos(angle)*distance*0.01
+                        #    vyn = np.sin(angle)*distance*0.01
 
-                            vector =[vxn,vyn]
-                            veladj = np.random.normal(size=2) * noise[j] * distance * 0.01
-                            velocities[j]=vector+ veladj
+                            #vector =[vxn,vyn]
+                        veladj = np.random.normal(size=2) * noise[j] * distance * 0.01
+                        xbord = distance*velocities[j][0]+positions[j][0]
+                        ybord = distance*velocities[j][1]+positions[j][1]
+
+                        dirr = np.cross([xbord,ybord],velocities[j])
+
+                        if dirr>0 and velocities[j][0]>0:
+                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+                        elif dirr>0:
+                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+
+                        elif velocities[j][0]>0:
+                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                        else:
+                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                        
+                        velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
     
                 newpositions = positions + velocities
 
@@ -211,30 +234,24 @@ for k in range(rc):
                     if newpositions[j][0]**2+newpositions[j][1]**2>box_radius**2-np.random.uniform()*noise[j]*box_radius**2:
                         newpositions[j]=positions[j]
                 positions = newpositions
-            
-    #positions %= box_size
-    
-    # Plot the agents as arrows
-    #ax.clear()
-    #circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
-    #plt.gca().add_patch(circle)
-    #vstandard = np.random.uniform(size=(num_agents, 2))
-    #for j in range(num_agents):
-    #    vs = np.sqrt(velocities[j,0]**2 + velocities[j,1]**2)
-    #    vstandard[j][0]=velocities[j,0]/vs
-    #    vstandard[j][1]=velocities[j,1]/vs
                 if i > begin:
                     sc.append(positions)
-    #ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
-    #          units='xy', scale=1, headwidth=2)
-    #ax.set_xlim(-box_radius, box_radius)
-    #ax.set_ylim(-box_radius, box_radius)
-    #plt.pause(0.095)
-    #t2 = perf_counter()
-    #print(t2-t1)
-
-#plt.show()
-#plt.close()
+                ax.clear()
+                circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
+                plt.gca().add_patch(circle)
+                vstandard = np.random.uniform(size=(num_agents, 2))
+                for j in range(num_agents):
+                    vs = np.sqrt(velocities[j,0]**2 + velocities[j,1]**2)
+                    vstandard[j][0]=velocities[j,0]/vs
+                    vstandard[j][1]=velocities[j,1]/vs
+                
+                ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',units='xy', scale=1, headwidth=2)
+                ax.set_xlim(-box_radius, box_radius)
+                ax.set_ylim(-box_radius, box_radius)
+                plt.pause(0.095)
+            
+            plt.show()
+            plt.close()
             if it == 0:
                 sc = np.array(sc)
                 msdc = []
@@ -263,14 +280,27 @@ for k in range(rc):
                 temp = pd.DataFrame(msdc)
                 df = pd.concat([df, temp], axis=1)
                 #print(df.head())
+            if it % 5 == 0:
+                print('running...')
+    #positions %= box_size
+    
+    # Plot the agents as arrows
+        
+        #t2 = perf_counter()
+        #print(t2-t1)
 
+                    
+
+#plt.show()
+#plt.close()
+            
 
 # Calculate mean and confidence interval for each row
                 
 
 # Create a line plot with 95% confidence interval
         #axs[9-k][j].figure(figsize=(10, 6))
-        row_means = df.mean(axis=1)
+        """ row_means = df.mean(axis=1)
         confidence_intervals = df.sem(axis=1)  # Assuming normal distribution
         print(len(consts)-1-k)
         print(l)
@@ -290,8 +320,13 @@ for k in range(rc):
             axs[len(consts)-1-k][l].set_xlabel('')
             axs[len(consts)-1-k][l].set_xticks([])
             axs[len(consts)-1-k][l].tick_params(axis='x', which='both', top=False, bottom=False)
+        if k == 0 and l == 0:
+                t1_stop = perf_counter()
+                delta = rc*rl*(t1_stop - t1_start)
+                print('Estimated Time: ', delta/1, 'seconds')
         
 fig.supxlabel('radius')
 fig.supylabel('const')
 plt.show()
 #plt.show()
+ """
