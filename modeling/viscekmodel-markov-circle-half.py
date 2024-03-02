@@ -28,9 +28,12 @@ box_radius = 10
 num_agents = 25
 speed = 0.1*np.ones((num_agents,1))
 noise = 0.01*np.ones(num_agents)
-time = 200
+time = 1000
 const = 4
 radius = 1
+allxpos = []
+allypos = []
+starttime=500
 
 mc = []
 for i in range(num_agents):
@@ -49,25 +52,55 @@ positions = np.column_stack((x, y))
 velocities = np.random.uniform(size=(num_agents, 2)) * speed
 print(velocities.shape)
 
-def reflection(r,x,y,vx,vy):
-    magv = np.sqrt(vx **2 + vy**2)
-    angles = np.arange(0,6.28,0.01)
-    xbound = r*np.cos(angles) 
-    ybound = r*np.sin(angles) 
-    labels=np.zeros(len(angles))
-    for i in range(len(angles)):
-        magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
-        theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
-        phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
-        if theta > 0.85 and theta < 2.29 and phi < 2.958:
-            labels[i]=1
-    return labels
+
 def boundary_distance(r,x,y,vx, vy):
     # Calculate the vector from the object to the center of the boundary
     b = 2*(x*vx+y*vy)
     a = (vx**2+vy**2)
     c = (x**2+y**2-r**2)
     return (-b+math.sqrt(np.abs(b**2-4*a*c)))/(2*a)
+
+def reflection(r,x,y,vx,vy):
+    distance = boundary_distance(r,x,y,vx,vy)
+    magv = np.sqrt(vx **2 + vy**2)
+    angles = np.arange(0,6.28,0.01)
+    xbound = r*np.cos(angles) 
+    ybound = r*np.sin(angles) 
+    labels=np.zeros(len(angles))
+    xbord = distance*vx+x
+    ybord = distance*vy+y
+    dirr = np.cross([xbord,ybord],[vx,vy])
+    for i in range(len(angles)):
+        magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
+        theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
+        phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
+        if theta > 0.85 and theta < 2.29 and phi < 2.958:
+
+            labels[i]=1
+        if vx>0:
+            curr_angle = np.arctan(vy/vx)
+            if curr_angle <0:
+                curr_angle = 2*np.pi+curr_angle
+                
+        else:
+            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+            
+        if dirr > 0:
+            val = int(curr_angle*100)
+            for i in range(314):
+                val%=628
+                labels[val]=0
+                val-=1
+                
+        else:
+            val = int(curr_angle*100)
+            for i in range(314):
+                val%=628
+                labels[val]=0
+                val+=1
+                
+    return labels
+
 # Define a function to update the velocities of the agents
 def update_velocities(positions, velocities, radius, speed, noise):
 
@@ -168,7 +201,8 @@ for i in range(time):
 
     for j in range(num_agents):
         distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-        weight = math.exp(-const*(distance*speed[j])/box_radius)
+        weight = math.exp(-const*(distance)/box_radius)
+        #weight = math.exp(-const*(distance*speed[j])/box_radius)
         sample = [0, 1]
         randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
         if randomval[0] == 0:
@@ -179,17 +213,44 @@ for i in range(time):
                 pass
             else:
             # Pick a random index where the value is 1
-                random_index = random.choice(indices_with_1)
+                
 
-                angle = random_index/100
 
-                vxn = np.cos(angle)*distance*0.01
-                vyn = np.sin(angle)*distance*0.01
 
-                vector =[vxn,vyn]
                 veladj = np.random.normal(size=2) * noise[j] * distance * 0.01
-                velocities[j]=vector+ veladj
-    
+                xbord = distance*velocities[j][0]+positions[j][0]
+                ybord = distance*velocities[j][1]+positions[j][1]
+
+                dirr = np.cross([xbord,ybord],velocities[j])
+                if xbord > 0:
+
+                    if dirr>0 and velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+                    elif dirr>0:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+
+                    elif velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                    else:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                            
+                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                else:
+
+                    random_index = random.choice(indices_with_1)
+                    angle = random_index/100
+
+                    vxn = np.cos(angle)*distance*0.01
+                    vyn = np.sin(angle)*distance*0.01
+
+                    vector =[vxn,vyn]
+                    velocities[j]=vector+ veladj
+            
     newpositions = positions + velocities
 
     for j in range(num_agents):
@@ -198,7 +259,10 @@ for i in range(time):
     positions = newpositions
             
     #positions %= box_size
-    
+    if(i>starttime):
+        for p in positions:
+            allxpos.append(p[0])
+            allypos.append(p[1])
     # Plot the agents as arrows
     ax.clear()
     circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
@@ -209,15 +273,34 @@ for i in range(time):
         vstandard[j][0]=velocities[j,0]/vs
         vstandard[j][1]=velocities[j,1]/vs
 
+    
     ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
               units='xy', scale=1, headwidth=2)
     ax.set_xlim(-box_radius, box_radius)
     ax.set_ylim(-box_radius, box_radius)
-    plt.pause(0.095)
-    t2 = perf_counter()
+    plt.pause(0.005)
+    #t2 = perf_counter()
     #print(t2-t1)
 
 plt.show()
+
+#for position in positions3:
+#    xpositions.append(position[0,0])
+#    ypositions.append(position[0,1])
+
+
+plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.0075)
+
+
+# Add labels and a colorbar
+plt.xlabel('X-bins')
+plt.ylabel('Y-bins')
+plt.title('Heatmap for Clear Tank')
+plt.colorbar(label='Frequency')
+
+# Show the plot
+plt.show()
+print(np.mean(allxpos))
 #plt.close()
 #plt.hist(disthist, bins=10)
 #plt.show()

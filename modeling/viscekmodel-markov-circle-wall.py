@@ -30,7 +30,11 @@ speed = 0.1*np.ones((num_agents,1))
 noise = 0.01*np.ones(num_agents)
 time = 200
 const = 1
+<<<<<<< Updated upstream
 radius = 2.5
+=======
+radius = 1
+>>>>>>> Stashed changes
 
 mc = []
 for i in range(num_agents):
@@ -168,6 +172,10 @@ for i in range(time):
 
     for j in range(num_agents):
         distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
+<<<<<<< Updated upstream
+=======
+        #weight = math.exp(-const*(distance*speed[j])/box_radius)
+>>>>>>> Stashed changes
         weight = math.exp(-const*(distance*speed[j])/box_radius)
         sample = [0, 1]
         randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
@@ -236,7 +244,11 @@ for i in range(time):
               units='xy', scale=1, headwidth=2)
     ax.set_xlim(-box_radius, box_radius)
     ax.set_ylim(-box_radius, box_radius)
+<<<<<<< Updated upstream
     plt.pause(1)
+=======
+    plt.pause(0.01)
+>>>>>>> Stashed changes
     #t2 = perf_counter()
     #print(t2-t1)
 
