@@ -161,7 +161,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-for a in range(1000):
+for a in range(10000):
     # Set up the simulation parameters
     box_radius = 10
     num_agents = 25
@@ -189,7 +189,7 @@ for a in range(1000):
         
     positions = np.column_stack((x, y))
     velocities = np.random.uniform(size=(num_agents, 2)) * speed
-    print(velocities.shape)
+    print(a, "...running...")
     for i in range(time):
         t1 = perf_counter()
         # Update the velocities of the agents
@@ -294,7 +294,7 @@ plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin 
 # Add labels and a colorbar
 plt.xlabel('X-bins')
 plt.ylabel('Y-bins')
-plt.title('Heatmap for Clear Tank')
+plt.title('Heatmap for Half Tank')
 plt.colorbar(label='Frequency')
 
 # Show the plot
