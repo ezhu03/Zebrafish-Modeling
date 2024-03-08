@@ -161,7 +161,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-for a in range(10000):
+for a in range(1000):
     # Set up the simulation parameters
     box_radius = 10
     num_agents = 25
@@ -169,7 +169,7 @@ for a in range(10000):
     noise = 0.01*np.ones(num_agents)
     time = 1000
     const = 4
-    radius = 1
+    radius = 4
     allxpos = []
     allypos = []
     starttime=500
@@ -288,7 +288,7 @@ for a in range(10000):
     #    ypositions.append(position[0,1])
 
 
-plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.0075)
+plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.01)
 
 
 # Add labels and a colorbar
