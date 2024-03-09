@@ -161,15 +161,16 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-for a in range(1000):
+iterations=10
+for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 10
     num_agents = 25
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
     time = 1000
-    const = 4
-    radius = 4
+    const = 0
+    radius = 1
     allxpos = []
     allypos = []
     starttime=500
@@ -297,6 +298,9 @@ plt.ylabel('Y-bins')
 plt.title('Heatmap for Half Tank')
 plt.colorbar(label='Frequency')
 
+data = np.array([allxpos,allypos])
+file_name = 'data/const%sradius%sboxradius%siter%s.npy'%(const,radius,box_radius,iterations)
+np.save(file_name, data)
 # Show the plot
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))
