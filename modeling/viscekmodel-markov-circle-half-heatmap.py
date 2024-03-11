@@ -170,7 +170,7 @@ for a in range(iterations):
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
     time = 1000
-    const = 4
+    const = 0
     radius = 1
     allxpos = []
     allypos = []
@@ -202,7 +202,7 @@ for a in range(iterations):
 
         for j in range(num_agents):
             distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-            weight = math.exp(-const*(distance)/box_radius)
+            weight = (1/((1/const)-math.exp(-const)/const))*math.exp(-const*(distance)/box_radius)
             #weight = math.exp(-const*(distance*speed[j])/box_radius)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
