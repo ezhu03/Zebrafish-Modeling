@@ -4,6 +4,7 @@ from matplotlib.patches import Circle
 import random
 import math
 from time import perf_counter
+import os
 
 class MarkovChain:
     def __init__(self):
@@ -161,7 +162,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-iterations=10
+iterations=1000
 for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 10
@@ -169,7 +170,7 @@ for a in range(iterations):
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
     time = 1000
-    const = 0
+    const = 4
     radius = 1
     allxpos = []
     allypos = []
@@ -299,8 +300,11 @@ plt.title('Heatmap for Half Tank')
 plt.colorbar(label='Frequency')
 
 data = np.array([allxpos,allypos])
-file_name = 'data/const%sradius%sboxradius%siter%s.npy'%(const,radius,box_radius,iterations)
-np.save(file_name, data)
+#os.chdir('modeling/data')
+file_name = 'const%sradius%sboxradius%siter%s.npz'%(const,radius,box_radius,iterations)
+with open(file_name, 'w') as file:
+    pass
+np.savez(file_name, x=allxpos, y=allypos)
 # Show the plot
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))
