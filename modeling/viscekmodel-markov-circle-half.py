@@ -25,7 +25,7 @@ class MarkovChain:
 
 # Set up the simulation parameters
 box_radius = 10
-num_agents = 25
+num_agents = 1
 speed = 0.1*np.ones((num_agents,1))
 noise = 0.01*np.ones(num_agents)
 time = 1000
@@ -289,7 +289,7 @@ plt.show()
 #    ypositions.append(position[0,1])
 
 
-plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.0075)
+plt.hist2d(allxpos, allypos, bins=(20, 20),range = [[-10,10],[-10,10]], cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.15)
 
 
 # Add labels and a colorbar

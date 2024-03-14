@@ -85,7 +85,6 @@ def update_velocities(positions, velocities, radius, speed, noise):
     # Find the indices of the neighbors within the specified radius
     neighbors = np.argwhere(distances < radius)
     
-    
     # Compute the average direction of the neighbors
     mean_direction = np.zeros((num_agents, 2))
     for i in range(num_agents):
@@ -105,6 +104,8 @@ def update_velocities(positions, velocities, radius, speed, noise):
                 count += 1
         if count > 0:
             mean_direction[i] = sum_direction / count
+        else:
+            mean_direction[i] = velocities[i]
     
     #Add some random noise to the direction
     noise_vector = np.random.normal(size=(num_agents, 2)) * np.vstack((noise,noise)).transpose()
@@ -163,18 +164,19 @@ def update_velocities(positions, velocities, radius, speed, noise):
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
 iterations=1000
+allxpos = []
+allypos = []
 for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 10
     num_agents = 25
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
-    time = 1000
-    const = 0
-    radius = 1
-    allxpos = []
-    allypos = []
-    starttime=500
+    time = 500
+    const = 4
+    radius = 0
+
+    starttime=0
 
     mc = []
     for i in range(num_agents):
@@ -201,8 +203,8 @@ for a in range(iterations):
 
 
         for j in range(num_agents):
-            distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-            weight = (1/((1/const)-math.exp(-const)/const))*math.exp(-const*(distance)/box_radius)
+            distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])       
+            weight = math.exp(-const*(distance)/box_radius)
             #weight = math.exp(-const*(distance*speed[j])/box_radius)
             sample = [0, 1]
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
@@ -258,7 +260,7 @@ for a in range(iterations):
             if newpositions[j][0]**2+newpositions[j][1]**2>box_radius**2-np.random.uniform()*noise[j]*box_radius**2:
                 newpositions[j]=positions[j]
         positions = newpositions
-                
+        
         #positions %= box_size
         if(i>starttime):
             for p in positions:
@@ -290,24 +292,28 @@ for a in range(iterations):
     #    ypositions.append(position[0,1])
 
 
-plt.hist2d(allxpos, allypos, bins=(20, 20), cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.01)
+plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-10,10],[-10,10]], cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.01)
 
 
 # Add labels and a colorbar
 plt.xlabel('X-bins')
 plt.ylabel('Y-bins')
+plt.xlim(-10, 10)
+plt.ylim(-10, 10)
 plt.title('Heatmap for Half Tank')
 plt.colorbar(label='Frequency')
 
 data = np.array([allxpos,allypos])
-#os.chdir('modeling/data')
-file_name = 'const%sradius%sboxradius%siter%s.npz'%(const,radius,box_radius,iterations)
+os.chdir('modeling/data')
+file_name = 'const%sradius%sboxradius%siter%sfish%s.npz'%(const,radius,box_radius,iterations,num_agents)
 with open(file_name, 'w') as file:
     pass
 np.savez(file_name, x=allxpos, y=allypos)
 # Show the plot
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))
+
+#print(allxpos)
 #plt.close()
 #plt.hist(disthist, bins=10)
 #plt.show()
