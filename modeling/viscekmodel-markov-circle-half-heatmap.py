@@ -163,7 +163,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-iterations=1000
+iterations=100
 allxpos = []
 allypos = []
 for a in range(iterations):
@@ -172,11 +172,10 @@ for a in range(iterations):
     num_agents = 25
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
-    time = 500
-    const = 4
-    radius = 0
-
-    starttime=0
+    time = 750
+    const = 2
+    radius = 1
+    starttime=250
 
     mc = []
     for i in range(num_agents):
