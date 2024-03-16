@@ -173,7 +173,7 @@ for a in range(iterations):
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
     time = 750
-    const = 2
+    const = 0
     radius = 1
     starttime=250
 
