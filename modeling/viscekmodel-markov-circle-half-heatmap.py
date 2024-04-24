@@ -162,8 +162,8 @@ def update_velocities(positions, velocities, radius, speed, noise):
     
     return velocities
 # Run the simulation and display the results
-#fig, ax = plt.subplots()
-iterations=100
+fig, ax = plt.subplots()
+iterations=1
 allxpos = []
 allypos = []
 for a in range(iterations):
@@ -265,7 +265,7 @@ for a in range(iterations):
             for p in positions:
                 allxpos.append(p[0])
                 allypos.append(p[1])
-        """# Plot the agents as arrows
+        # Plot the agents as arrows
         ax.clear()
         circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
         plt.gca().add_patch(circle)
@@ -284,7 +284,7 @@ for a in range(iterations):
         #t2 = perf_counter()
         #print(t2-t1)
 
-    plt.show()"""
+    plt.show()
 
     #for position in positions3:
     #    xpositions.append(position[0,0])
