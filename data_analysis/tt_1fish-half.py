@@ -31,13 +31,7 @@ tr3 = openfile(file3)
 tr4 = openfile(file4)
 tr5 = openfile(file5)
 
-def openfile_raw(file_name):
-    data = load(file_name, allow_pickle=True)
-    lst = data.item()
-    positions = lst['trajectories']
-    return lst, positions
-list, positions1 = openfile_raw(file1)
-print(list)
+
 
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -56,11 +50,33 @@ def processtr(tr):
     pprint(tr.params)
     return tr
 
-'''tr1 = processtr(tr1)
+tr1 = processtr(tr1)
 tr2 = processtr(tr2)
 tr3 = processtr(tr3)
 tr4 = processtr(tr4)
 tr5 = processtr(tr5)
 
+print(tr1.params['radius'])
 phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
-phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])'''
+print(phalf.shape)
+phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
+
+
+'''vhalf = np.array([tr1.v, tr2.v, tr3.v, tr4.v, tr5.v])
+print(vhalf.shape)
+vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1]*vhalf.shape[2], 2])'''
+
+
+
+
+plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.01)
+plt.xlabel('X-bins')
+plt.ylabel('Y-bins')
+plt.title('Heatmap for 1 Fish Half Tank')
+plt.colorbar(label='Frequency')
+plt.show()
+
+
+phalf= pd.DataFrame(phalf)
+phalf.rename(columns={0: 'x', 1: 'y'})
+phalf['center'] = np.sqrt(phalf[0]**2 + phalf[1]**2)
