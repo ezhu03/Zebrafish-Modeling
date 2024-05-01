@@ -14,8 +14,9 @@ import trajectorytools.socialcontext as ttsocial
 import matplotlib.animation as animation
 from IPython import display
 from matplotlib.animation import FFMpegWriter
+from matplotlib.animation import PillowWriter
 
-plt.rcParams['animation.ffmpeg_path'] = '/opt/homebrew/bin/ffmpeg'
+plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
 
 file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
 video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
@@ -127,7 +128,8 @@ def update(frame):
     # Clear the current axis
     ax1.clear()
     # Read the frame
-    cap.set(cv2.CAP_PROP_POS_FRAMES, frame)  # Set the frame position
+    cap.set(cv2.CAP_PROP_POS_FRAMES, frame)
+    cv2.imshow('Video', frame)  # Set the frame position
     ret, frame_img = cap.read()
     if ret:
         # Convert from BGR to RGB (OpenCV uses BGR)
@@ -175,9 +177,22 @@ print(plt)
 plt.show()
 
 # Release the video capture object
-cap.release()
 
-writer = FFMpegWriter(fps=30, metadata=dict(artist='Me'), bitrate=1800)
+
+writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+
+#ani.save('animation.mp4', writer=writer)
+
+# Specify the output file name with the .tiff extension
+output_file = "output_animation.tiff"
+
+# Define the Writer with the output format as TIFF
+#writer = PillowWriter(fps=15)
+
+# Assuming `ani` is your animation object
+ani.save('im.mp4', writer=writer)
+
+cap.release()
 
 
 
