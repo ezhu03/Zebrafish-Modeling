@@ -21,8 +21,8 @@ plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-
 file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
 video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
 
-file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
-video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/1fish15min1fps-half-3-21dpf_tracked.avi"
+file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/1fish15min1fps-half-2-21dpf_tracked.avi"
 
 # Save the merged array to a new .npy file
 #np.save("merged_file.npy", merged_array)
@@ -190,7 +190,7 @@ output_file = "output_animation.tiff"
 #writer = PillowWriter(fps=15)
 
 # Assuming `ani` is your animation object
-ani.save('im.mp4', writer=writer)
+ani.save('reflection-visualization-half-21dpf-2.mp4', writer=writer)
 
 cap.release()
 
