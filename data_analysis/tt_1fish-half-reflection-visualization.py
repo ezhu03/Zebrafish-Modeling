@@ -21,8 +21,8 @@ plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-
 file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
 video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
 
-file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
-video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/1fish15min1fps-half-2-21dpf_tracked.avi"
+#file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+#video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/1fish15min1fps-half-1-21dpf_tracked.avi"
 
 # Save the merged array to a new .npy file
 #np.save("merged_file.npy", merged_array)
@@ -146,7 +146,7 @@ def update(frame):
     vx = velocities[frame-1][0][0]
     vy = -1*velocities[frame-1][0][1]
     plotReflection(x, y, vx, vy, ax2)
-    ax2.set_title('Additional Plot')
+    ax2.set_title('Reflection Visualization')
 
 
 
@@ -168,7 +168,7 @@ ax1 = fig.add_subplot(gs[0, 0])
 ax2 = fig.add_subplot(gs[0, 1])
 
 # Create the animation for the video
-ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=100)
+ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 
 # Create the animation for the additional plot
 #ani_plot = animation.FuncAnimation(fig, update_plot, frames=total_frames, interval=100)
@@ -179,28 +179,9 @@ plt.show()
 # Release the video capture object
 
 
-writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-
-#ani.save('animation.mp4', writer=writer)
-
-# Specify the output file name with the .tiff extension
-output_file = "output_animation.tiff"
-
-# Define the Writer with the output format as TIFF
-#writer = PillowWriter(fps=15)
+#writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
 # Assuming `ani` is your animation object
-ani.save('reflection-visualization-half-21dpf-2.mp4', writer=writer)
+#ani.save('reflection-visualization-half-7dpf-1.mp4', writer=writer)
 
 cap.release()
-
-
-
-#output_file = "output_animation.gif"
-
-# Define the Writer with the output format as gif
-#writer = PillowWriter(fps=30)
-
-# Save the animation as a gif file
-#ani_plot.save(output_file, writer=writer)
-
