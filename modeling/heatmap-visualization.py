@@ -6,7 +6,7 @@ import math
 from time import perf_counter
 import os
 
-file_name = 'modeling/data/const0radius0boxradius10iter100fish25.npz'
+file_name = 'modeling/data/const0radius0boxradius10iter10000fish1.npz'
 data = np.load(file_name)
 lst = data.files
 allxpos = data['x']

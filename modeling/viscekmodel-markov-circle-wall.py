@@ -4,6 +4,12 @@ from matplotlib.patches import Circle
 import random
 import math
 from time import perf_counter
+import matplotlib.animation as animation
+from IPython import display
+from matplotlib.animation import FFMpegWriter
+from matplotlib.animation import PillowWriter
+
+plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
 
 class MarkovChain:
     def __init__(self):
@@ -28,13 +34,9 @@ box_radius = 10
 num_agents = 25
 speed = 0.1*np.ones((num_agents,1))
 noise = 0.01*np.ones(num_agents)
-time = 200
-const = 1
-<<<<<<< Updated upstream
-radius = 2.5
-=======
-radius = 1
->>>>>>> Stashed changes
+time = 1000
+const = 0
+radius = 2
 
 mc = []
 for i in range(num_agents):
@@ -158,11 +160,14 @@ def update_velocities(positions, velocities, radius, speed, noise):
     
     return velocities
 # Run the simulation and display the results
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(10,10))
 
 randtime = random.randint(time/2,time)
 disthist = np.zeros(num_agents)
-for i in range(time):
+#for i in range(time):
+def animate(frame):
+    global positions, velocities
+    i = frame
     t1 = perf_counter()
     # Update the velocities of the agents
     velocities = update_velocities(positions, velocities, radius, speed, noise)
@@ -172,10 +177,7 @@ for i in range(time):
 
     for j in range(num_agents):
         distance = boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-<<<<<<< Updated upstream
-=======
         #weight = math.exp(-const*(distance*speed[j])/box_radius)
->>>>>>> Stashed changes
         weight = math.exp(-const*(distance*speed[j])/box_radius)
         sample = [0, 1]
         randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
@@ -244,14 +246,10 @@ for i in range(time):
               units='xy', scale=1, headwidth=2)
     ax.set_xlim(-box_radius, box_radius)
     ax.set_ylim(-box_radius, box_radius)
-<<<<<<< Updated upstream
-    plt.pause(1)
-=======
-    plt.pause(0.01)
->>>>>>> Stashed changes
     #t2 = perf_counter()
     #print(t2-t1)
-
+ani = animation.FuncAnimation(fig, animate, frames=time, interval=50)
+ani.save('simulation_wall.mp4', writer='ffmpeg', fps=20)
 plt.show()
 #plt.close()
 #plt.hist(disthist, bins=10)

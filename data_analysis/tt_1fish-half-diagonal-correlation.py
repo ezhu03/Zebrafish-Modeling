@@ -11,15 +11,18 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
+x = int(input('dpf: '))
+
 file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
 file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
 file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
 file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
 file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
 
-'''file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
-file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
-file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"'''
+if x==21:
+    file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+    file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+    file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
 
 # Save the merged array to a new .npy file
 #np.save("merged_file.npy", merged_array)
@@ -32,8 +35,9 @@ def openfile(file, sigma = 1):
 tr1 = openfile(file1)
 tr2 = openfile(file2)
 tr3 = openfile(file3)
-tr4 = openfile(file4)
-tr5 = openfile(file5)
+if x==7:
+    tr4 = openfile(file4)
+    tr5 = openfile(file5)
 
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -55,13 +59,17 @@ def processtr(tr):
 tr1 = processtr(tr1)
 tr2 = processtr(tr2)
 tr3 = processtr(tr3)
-tr4 = processtr(tr4)
-tr5 = processtr(tr5)
+if x==7:
+    tr4 = processtr(tr4)
+    tr5 = processtr(tr5)
 
 leftarr = []
 rightarr = []
 ltrarr = []
 rtlarr = []
+
+left = []
+right = []
 
 def diagonal_correlation(tr):
 #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
@@ -88,9 +96,11 @@ def diagonal_correlation(tr):
         dp = np.dot(v1[i],v1[i+1])
         if pos1[i][0]< 0 and pos1[i+1][0]<0:
             leftarr.append(dp)
+            left.append(np.sqrt(pos1[i][0]**2+pos1[i][1]**2))
             #print('a')
         elif pos1[i][0]> 0 and pos1[i+1][0]>0:
             rightarr.append(dp)
+            right.append(np.sqrt(pos1[i][0]**2+pos1[i][1]**2))
             #print('b')
         elif pos1[i][0]<0 and pos1[i+1][0]>0:
             ltrarr.append(dp)
@@ -102,13 +112,31 @@ def diagonal_correlation(tr):
 diagonal_correlation(tr1)
 diagonal_correlation(tr2)
 diagonal_correlation(tr3)
-diagonal_correlation(tr4)
-diagonal_correlation(tr5)
+if x==7:
+    diagonal_correlation(tr4)
+    diagonal_correlation(tr5)
 
-print(len(rightarr), np.mean(rightarr))
-print(len(leftarr), np.mean(leftarr))
-print(len(ltrarr), np.mean(ltrarr))
-print(len(rtlarr), np.mean(rtlarr))
+print(len(rightarr), np.mean(rightarr), np.std(rightarr))
+print(len(leftarr), np.mean(leftarr),np.std(leftarr))
+print(len(ltrarr), np.mean(ltrarr),np.std(ltrarr))
+print(len(rtlarr), np.mean(rtlarr),np.std(rtlarr))
+
+def radial_binning(pos, arr):
+
+    df = pd.DataFrame(np.vstack((pos, arr)).T, columns=['radius','correlation'])
+
+    # Define bin edges
+    bin_edges = [0, 2, 4, 6, 8, 10]
+
+    # Bin data by 'Category' using pd.cut() and calculate mean
+    df['bins'] = pd.cut(df['radius'], bins=bin_edges)
+    mean_values = df.groupby('bins')['correlation'].agg(['mean', 'std'])
+
+    print(mean_values)
+
+radial_binning(left,leftarr)
+radial_binning(right,rightarr)
+
 
 
 

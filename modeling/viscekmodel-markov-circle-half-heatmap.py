@@ -132,6 +132,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
             velocities[i]=velocities[i]
         else:
             velocities[i] = mean_direction[i] * speed[i]
+            
 
     #for i in range(num_agents):
         #sum_direction = np.zeros(2)
@@ -163,18 +164,18 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 fig, ax = plt.subplots()
-iterations=1
+iterations=10000
 allxpos = []
 allypos = []
 for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 10
-    num_agents = 25
+    num_agents = 1
     speed = 0.1*np.ones((num_agents,1))
     noise = 0.01*np.ones(num_agents)
     time = 750
-    const = 0
-    radius = 1
+    const = 100
+    radius = 0
     starttime=250
 
     mc = []
@@ -266,9 +267,9 @@ for a in range(iterations):
                 allxpos.append(p[0])
                 allypos.append(p[1])
         # Plot the agents as arrows
-        ax.clear()
+        '''ax.clear()
         circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
-        plt.gca().add_patch(circle)
+        plt.gca().add_patch(circle)'''
         vstandard = np.random.uniform(size=(num_agents, 2))
         for j in range(num_agents):
             vs = np.sqrt(velocities[j,0]**2 + velocities[j,1]**2)
@@ -276,15 +277,15 @@ for a in range(iterations):
             vstandard[j][1]=velocities[j,1]/vs
 
         
-        ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
+        '''ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
                 units='xy', scale=1, headwidth=2)
         ax.set_xlim(-box_radius, box_radius)
         ax.set_ylim(-box_radius, box_radius)
-        plt.pause(0.005)
+        plt.pause(0.005)'''
         #t2 = perf_counter()
         #print(t2-t1)
 
-    plt.show()
+    #plt.show()
 
     #for position in positions3:
     #    xpositions.append(position[0,0])
