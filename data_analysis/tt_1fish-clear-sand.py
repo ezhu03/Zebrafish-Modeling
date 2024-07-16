@@ -11,7 +11,6 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
-from scipy.optimize import curve_fit
 while(True):
     x = int(input('dpf: '))
     if x==0:
@@ -62,6 +61,8 @@ while(True):
         file3 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
         files = [file1,file2,file3]
 
+
+
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
 
@@ -74,6 +75,8 @@ while(True):
     for file in files:
         tr_temp = openfile(file)
         trs.append(tr_temp)
+
+
 
     def processtr(tr):
         center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -92,169 +95,65 @@ while(True):
         pprint(tr.params)
         return tr
 
-    processedtrs = []
+    processedpos = []
+    processedvel = []
     for temp in trs:
         processed_temp = processtr(temp)
-        processedtrs.append(processed_temp)
-
-
-    def count_ones(array):
-        count = 0
-        for num in array:
-            if num == 1:
-                count += 1
-        return count
-    radius = 10
-    times = 20
-    def plotReflection(xposition, yposition, xvelocity, yvelocity):
-        mag = np.sqrt(xposition **2 + yposition**2)
-        magv = np.sqrt(xvelocity **2 + yvelocity**2)
-        distance = 2*(10 - mag)
-
-        reflection = 0.85
-
-        angles = np.arange(0,6.28,0.01)
-        xbound = 10*np.cos(angles) 
-        ybound = 10*np.sin(angles) 
-        labels=np.zeros(len(angles))
-        for i in range(len(angles)):
-            magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
-            theta = np.arccos((xbound[i]*(xbound[i]-xposition)+ybound[i]*(ybound[i]-yposition))/(radius*magd))
-            phi = np.arccos((xvelocity*(xbound[i]-xposition)+yvelocity*(ybound[i]-yposition))/(magv*magd))
-            if theta > 0.85 and theta < 2.29 and phi < 2.958:
-                labels[i]=1
-        return count_ones(labels)/len(labels)
-
-
-    refl_prop = []
-    correlations = []
-    pos_arr = []
-    def border_turning(tr):
-    #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
-    #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-        pos1= tr.s*tr.params['length_unit']*(20/2048)
-
-        pos1 = np.array(pos1.reshape(pos1.shape[0],2))
-
-        for pos in pos1:
-            pos[1]*=(-1)
-
-        v1 = np.array(tr.v).reshape(tr.v.shape[0],2)
-
-        for vel in v1:
-            vel[1]*=(-1)
-
-        norms = np.linalg.norm(v1, axis=1)
-
-        v1 = v1 / norms[:, np.newaxis]
-
-        i=0
-        #times = 20
-        while i<len(pos1)-times:
-            pos_mag = np.sqrt(pos1[i][0]**2+pos1[i][1]**2)
-            prop = plotReflection(pos1[i][0],pos1[i][1],v1[i][0],v1[i][1])
-            dps = []
-            for j in range(times):
-                dp = np.dot(v1[i],v1[i+j])
-                dps.append(dp)
-            if prop>0 and pos_mag>0:
-                refl_prop.append(prop)
-                correlations.append(dps)
-                pos_arr.append(pos_mag)
-            i+=1
-            
-
-    for temp in processedtrs:
-        border_turning(temp)
-
-    data = {'x': refl_prop, 'y':correlations}
-
-    df = pd.DataFrame(correlations)
-    df['area']=refl_prop
-    df['area']*=2
-    #plt.scatter(x=refl_prop, y=correlations, s=1)
-    # Scatter plot
-    bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7,1]
-    #if x ==14:
-    #    bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]
-
-        # Bin data by 'Category' using pd.cut() and calculate mean
-    df['bins'] = pd.cut(df['area'], bins=bin_edges)
-    bin_values = sorted(df['bins'].drop_duplicates().tolist())
-    print(bin_values)
-        # Define the exponential function
-    def exponential_func(x, a, b):
-        return a * np.exp(b * x)
-    tstars = []
-    errors = []
-    for bin_value in bin_values:
-        if bin_value == bin_values[-1]:
-            break
-        bin1 = df[df['bins'] == bin_value]
-
-        bin1 = bin1.drop(['area', 'bins'], axis=1)
-
-        # Prepare the data for plotting
-        # Melt the DataFrame to long format
-        df_long = bin1.melt(var_name='time', value_name='position')
-        # Define the exponential function
-        df_long['time'] = df_long['time'].astype(float)
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(20/2048)
+        tempvel = processed_temp.v*processed_temp.params['length_unit']*(20/2048)
+        processedpos.append(temppos)
+        processedvel.append(tempvel)
+        
 
 
 
-        # Ensure time and position are numpy arrays for curve fitting
-        time_values = df_long['time'].to_numpy()
-        position_values = df_long['position'].to_numpy()
 
-        # Fit the curve with an initial guess for a and b
-        popt, pcov = curve_fit(exponential_func, time_values, position_values, p0=(1, 0.1))
-
-        # Create the scatter plot
-        fitted_time_values = np.linspace(time_values.min(), time_values.max(), 500)
-        fitted_position_values = exponential_func(fitted_time_values, *popt)
-        #plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = {popt[0]:.2f} e^{{ {popt[1]:.2f} x }}$')
-        print(bin_value, *popt)
-        a,b = popt
-        t_star=(1/b)*np.log(1/(2*a))
-        tstars.append(t_star)
-        # Calculate standard deviations for parameters
-        perr = np.sqrt(np.diag(pcov))
-        ci = perr
-        a_up, b_up = popt + ci
-        a_low, b_low = popt - ci
-        t_up =(1/b_up)*np.log(1/(2*a_up))
-        t_low =(1/b_low)*np.log(1/(2*a_low))
-        print(t_up, t_star, t_low)
-
-        errors.append([t_star-t_low, t_up-t_star])
+    
+    phalf = np.concatenate(processedpos,axis=0)
+    print(phalf.shape)
+    phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
 
 
-        print('t* = ', t_star)
-        #plt.scatter(df_long['time'], df_long['position'], alpha=0.6,s=1)
+    '''vhalf = np.array([tr1.v, tr2.v, tr3.v, tr4.v, tr5.v])
+    print(vhalf.shape)
+    vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1]*vhalf.shape[2], 2])'''
+    dist = []
+    
 
-        # Adding title and labels
-        #plt.title('Position vs Time Scatterplot')
-        #plt.xlabel('Time')
-        #plt.ylabel('Position')
 
-        # Display the plot
-        #plt.show()
-    mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
-    mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
-    std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
-    #mean_values['bin'] = [0.05,0.15,0.25,0.35,0.45]
 
-    #colors = ['red','orange','green','blue','purple']
-    #for a in range(4):
-    plt.figure(figsize=(8, 6))
-    print(len(mean_areas['mean'][:-1]),len(tstars),len(bin_edges))
-    plt.errorbar(x=mean_areas['mean'][:-1],y=tstars,yerr = np.array(errors).T,xerr=mean_areas['std'][:-1],fmt='o')
-    plt.title('Critical Turning Time vs. Area Parameter')
-    plt.ylabel('t* (s)')
-    plt.xlabel('area parameter')
-    plt.ylim(0,5)
+    '''plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
+            )
+    plt.xlabel('X-bins')
+    plt.ylabel('Y-bins')
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
+    plt.colorbar(label='Frequency')
+    plt.show()'''
 
+
+
+
+    phalf= pd.DataFrame(phalf,columns=['x','y'])
+    phalf.rename(columns={'A': 'x', 'B': 'y'})
+    phalf['center'] = np.sqrt(phalf['x']**2 + phalf['y']**2)
+    phalf['y'] = -1 * phalf['y']
+    print(phalf)
+
+
+    plt.figure(figsize=(9, 6))
+    ax = sns.histplot(phalf, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
+    ax.set_aspect('equal')
+    plt.xlabel('X-bins')
+    plt.ylabel('Y-bins')
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
+    plt.colorbar(label='Frequency')
     plt.show()
-    #print(mean_areas)
-
 

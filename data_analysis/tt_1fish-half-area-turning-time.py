@@ -14,17 +14,29 @@ import trajectorytools.socialcontext as ttsocial
 from scipy.optimize import curve_fit
 
 x = int(input('dpf: '))
-
-file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
-file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
-file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
-file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
-file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
-
-if x==21:
+if x==7:
+    file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+    file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+    file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+    file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+    file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+    file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+    file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+    file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+    files = [file1,file2,file3,file4,file5,file6,file7,file8]
+elif x==14: 
+    file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+    file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+    file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
+    file4= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
+    file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
+    files = [file1,file2,file3,file4,file5]
+elif x==21:
     file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
     file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
     file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
+    file4 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
+    files = [file1,file2,file3,file4]
 
 # Save the merged array to a new .npy file
 #np.save("merged_file.npy", merged_array)
@@ -34,12 +46,10 @@ def openfile(file, sigma = 1):
                                       interpolate_nans=True,
                                       smooth_params={'sigma': sigma})
     return tr
-tr1 = openfile(file1)
-tr2 = openfile(file2)
-tr3 = openfile(file3)
-if x==7:
-    tr4 = openfile(file4)
-    tr5 = openfile(file5)
+trs = []
+for file in files:
+    tr_temp = openfile(file)
+    trs.append(tr_temp)
 
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -58,12 +68,10 @@ def processtr(tr):
     pprint(tr.params)
     return tr
 
-tr1 = processtr(tr1)
-tr2 = processtr(tr2)
-tr3 = processtr(tr3)
-if x==7:
-    tr4 = processtr(tr4)
-    tr5 = processtr(tr5)
+processedtrs = []
+for temp in trs:
+    processed_temp = processtr(temp)
+    processedtrs.append(processed_temp)
 
 
 def count_ones(array):
@@ -100,7 +108,7 @@ pos_arr = []
 def border_turning(tr):
 #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
 #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-    pos1= tr.s*(10/tr.params['radius'])
+    pos1= tr.s*tr.params['length_unit']*(20/2048)
 
     pos1 = np.array(pos1.reshape(pos1.shape[0],2))
 
@@ -132,12 +140,8 @@ def border_turning(tr):
         i+=1
         
 
-border_turning(tr1)
-border_turning(tr2)
-border_turning(tr3)
-if x==7:
-    border_turning(tr4)
-    border_turning(tr5)
+for temp in processedtrs:
+    border_turning(temp)
 
 data = {'x': refl_prop, 'y':correlations}
 
@@ -146,7 +150,9 @@ df['area']=refl_prop
 df['area']*=2
 #plt.scatter(x=refl_prop, y=correlations, s=1)
 # Scatter plot
-bin_edges = [0,0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.75,0.8,1]
+bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.7,1]
+if x ==14:
+    bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]
 
     # Bin data by 'Category' using pd.cut() and calculate mean
 df['bins'] = pd.cut(df['area'], bins=bin_edges)
@@ -216,6 +222,7 @@ std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
 #colors = ['red','orange','green','blue','purple']
 #for a in range(4):
 plt.figure(figsize=(8, 6))
+print(len(mean_areas['mean']),len(tstars))
 plt.errorbar(x=mean_areas['mean'][:-1],y=tstars,yerr = np.array(errors).T,xerr=mean_areas['std'][:-1],fmt='o')
 plt.title('Critical Turning Time vs. Area Parameter')
 plt.ylabel('t* (s)')
@@ -224,5 +231,5 @@ plt.ylim(0,5)
 
 plt.show()
 #print(mean_areas)
-
+print(df.groupby('bins')['area'].count())
 

@@ -12,14 +12,19 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 x = int(input('dpf: '))
-
-file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
-file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
-file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
-file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
-file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
-
-if x==21:
+if x==7:
+    file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+    file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+    file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+    file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+    file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+    file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+    file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+    file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+elif x==14: 
+    file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+    file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+elif x==21:
     file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
     file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
     file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
@@ -32,12 +37,24 @@ def openfile(file, sigma = 1):
                                       interpolate_nans=True,
                                       smooth_params={'sigma': sigma})
     return tr
-tr1 = openfile(file1)
-tr2 = openfile(file2)
-tr3 = openfile(file3)
-if x==7:
+
+if x == 7:
+    tr1 = openfile(file1)
+    tr2 = openfile(file2)
+    tr3 = openfile(file3)
     tr4 = openfile(file4)
     tr5 = openfile(file5)
+    tr6 = openfile(file6)
+    tr7 = openfile(file7)
+    tr8 = openfile(file8)
+elif x == 14:
+    tr1 = openfile(file1)
+    tr2 = openfile(file2)
+elif x == 21:
+    tr1 = openfile(file1)
+    tr2 = openfile(file2)
+    tr3 = openfile(file3)
+
 
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -56,12 +73,23 @@ def processtr(tr):
     pprint(tr.params)
     return tr
 
-tr1 = processtr(tr1)
-tr2 = processtr(tr2)
-tr3 = processtr(tr3)
+
 if x==7:
+    tr1 = processtr(tr1)
+    tr2 = processtr(tr2)
+    tr3 = processtr(tr3)
     tr4 = processtr(tr4)
     tr5 = processtr(tr5)
+    tr6 = processtr(tr6)
+    tr7 = processtr(tr7)
+    tr8 = processtr(tr8)
+elif x==14:
+    tr1 = processtr(tr1)
+    tr2 = processtr(tr2)
+elif x==21:
+    tr1 = processtr(tr1)
+    tr2 = processtr(tr2)
+    tr3 = processtr(tr3)
 
 count_left = []
 count_right = []
@@ -105,12 +133,23 @@ def border_turning(tr):
             #print('d')
         i+=1
 
-border_turning(tr1)
-border_turning(tr2)
-border_turning(tr3)
+
 if x==7:
+    border_turning(tr1)
+    border_turning(tr2)
+    border_turning(tr3)
     border_turning(tr4)
     border_turning(tr5)
+    border_turning(tr6)
+    border_turning(tr7)
+    border_turning(tr8)
+elif x==14:
+    border_turning(tr1)
+    border_turning(tr2)
+elif x==21:
+    border_turning(tr1)
+    border_turning(tr2)
+    border_turning(tr3)
 
 print(len(count_left), np.mean(count_left), np.std(count_left))
 print(len(count_right), np.mean(count_right), np.std(count_right))
