@@ -71,6 +71,37 @@ while(True):
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
+    
+    if x == 700:
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+        file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+        file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+        file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
+    
+    if x==1400: 
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+        file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+        file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
+        file4= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
+        file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5]
+
+    if x==2100:
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+        file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half2/trajectories/validated.npy"
+        file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half3/trajectories/validated.npy"
+        file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
+        file9 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5,file6,file7,file8,file9]
 
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
@@ -115,7 +146,7 @@ while(True):
                 count += 1
         return count
     radius = 10
-    times = 20
+    times = 10
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
@@ -193,8 +224,8 @@ while(True):
     bin_values = sorted(df['bins'].drop_duplicates().tolist())
     print(bin_values)
         # Define the exponential function
-    def exponential_func(x, a, b):
-        return a * np.exp(b * x)
+    def exponential_func(x, a):
+        return np.exp(a * x)
     tstars = []
     errors = []
     for bin_value in bin_values:
@@ -203,52 +234,48 @@ while(True):
         bin1 = df[df['bins'] == bin_value]
 
         bin1 = bin1.drop(['area', 'bins'], axis=1)
+        print("bin1: ", bin1)
 
         # Prepare the data for plotting
         # Melt the DataFrame to long format
         df_long = bin1.melt(var_name='time', value_name='position')
         # Define the exponential function
         df_long['time'] = df_long['time'].astype(float)
+        temp_tstars = []
+        for index, row in bin1.iterrows():
+            popt, pcov = curve_fit(exponential_func, range(times), row, p0=(-0.2))
+            a = popt
+            t_star=(1/a)*np.log(1/(2))
+            temp_tstars.append(t_star)
+        ts = pd.DataFrame(temp_tstars,columns=['ts'])
+        print(ts)
+        plt.figure(figsize=(9, 6))
+    #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
+    #ax.set_aspect('equal')
+        sns.histplot(data=ts, x='ts',stat='percent',bins=20,binrange=[0,20],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75)
+        plt.xlabel('X-bins')
+        plt.ylabel('Y-bins')
+        if x%100==0:
+            plt.title('Heatmap for 1 Fish Sanded Tank ' + str(int(x/100))+'dpf for Area Parameter' + str(bin_value))
+        elif x % 10 ==0:
+            plt.title('Heatmap for 1 Fish Sanded Tank ' + str(int(x/10))+'dpf for Area Parameter' + str(bin_value))
+        else:
+            plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf for Area Parameter' + str(bin_value))
+        
+        tstars.append(np.median(temp_tstars))
+        errors.append([np.percentile(temp_tstars,25),np.percentile(temp_tstars,75)])
+    #plt.colorbar(label='Frequency')
+        plt.show()
+   
 
 
 
-        # Ensure time and position are numpy arrays for curve fitting
-        time_values = df_long['time'].to_numpy()
-        position_values = df_long['position'].to_numpy()
-
-        # Fit the curve with an initial guess for a and b
-        popt, pcov = curve_fit(exponential_func, time_values, position_values, p0=(1, 0.1))
-
-        # Create the scatter plot
-        fitted_time_values = np.linspace(time_values.min(), time_values.max(), 500)
-        fitted_position_values = exponential_func(fitted_time_values, *popt)
-        #plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = {popt[0]:.2f} e^{{ {popt[1]:.2f} x }}$')
-        print(bin_value, *popt)
-        a,b = popt
-        t_star=(1/b)*np.log(1/(2*a))
-        tstars.append(t_star)
-        # Calculate standard deviations for parameters
-        perr = np.sqrt(np.diag(pcov))
-        ci = perr
-        a_up, b_up = popt + ci
-        a_low, b_low = popt - ci
-        t_up =(1/b_up)*np.log(1/(2*a_up))
-        t_low =(1/b_low)*np.log(1/(2*a_low))
-        print(t_up, t_star, t_low)
-
-        errors.append([t_star-t_low, t_up-t_star])
-
-
-        print('t* = ', t_star)
-        #plt.scatter(df_long['time'], df_long['position'], alpha=0.6,s=1)
-
-        # Adding title and labels
-        #plt.title('Position vs Time Scatterplot')
-        #plt.xlabel('Time')
-        #plt.ylabel('Position')
+        print('t* = ', np.median(temp_tstars))
+        
+        
 
         # Display the plot
-        #plt.show()
+        plt.show()
     mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
     mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
     std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
@@ -259,14 +286,15 @@ while(True):
     plt.figure(figsize=(8, 6))
     print(len(mean_areas['mean'][:-1]),len(tstars),len(bin_edges))
     plt.errorbar(x=mean_areas['mean'][:-1],y=tstars,yerr = np.array(errors).T,xerr=mean_areas['std'][:-1],fmt='o',color='cornflowerblue')
-    if x%10==0:
+    if x%100==0:
+        plt.title('Critical Turning Time vs. Artificial Area Parameter for Half Sanded Tank at ' + str(int(x/100)) +'dpf')
+    elif x%10==0:
         plt.title('Critical Turning Time vs. Artificial Area Parameter for Sanded Tank at ' + str(int(x/10)) +'dpf')
-
     else:
         plt.title('Critical Turning Time vs. Area Parameter for Clear Tank at ' + str(x) +'dpf')
     plt.ylabel('t* (s)')
     plt.xlabel('area parameter')
-    plt.ylim(0,6)
+    plt.ylim(0,20)
 
     plt.show()
     #print(mean_areas)

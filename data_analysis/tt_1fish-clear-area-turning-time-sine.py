@@ -194,7 +194,7 @@ while(True):
     print(bin_values)
         # Define the exponential function
     def exponential_func(x, a, b):
-        return a * np.exp(b * x)
+        return np.exp(a * x)*np.cos(b*x)
     tstars = []
     errors = []
     for bin_value in bin_values:
@@ -215,28 +215,49 @@ while(True):
         # Ensure time and position are numpy arrays for curve fitting
         time_values = df_long['time'].to_numpy()
         position_values = df_long['position'].to_numpy()
+        df_msd = df_long.groupby('time')['position'].agg(['mean', 'std']).reset_index()
+        print("df_msd: ", df_msd)
+        plt.errorbar(df_msd['time'], df_msd['mean'], yerr = df_msd['std'], alpha=0.6)
 
+        # Adding title and labels
+        plt.title('Position vs Time Scatterplot for '+ str(bin_value))
+        plt.xlabel('Time')
+        plt.ylabel('Position')
         # Fit the curve with an initial guess for a and b
-        popt, pcov = curve_fit(exponential_func, time_values, position_values, p0=(1, 0.1))
-
+        #popt, pcov = curve_fit(exponential_func, time_values, position_values, bounds=(0, [1.0]), p0=(1, 0.1))
+        popt, pcov = curve_fit(exponential_func, df_msd['time'], df_msd['mean'], p0=(-0.2,0.2))
         # Create the scatter plot
         fitted_time_values = np.linspace(time_values.min(), time_values.max(), 500)
         fitted_position_values = exponential_func(fitted_time_values, *popt)
-        #plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = {popt[0]:.2f} e^{{ {popt[1]:.2f} x }}$')
+        plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = e^{{ {popt[0]:.2f} x }}$')
         print(bin_value, *popt)
         a,b = popt
-        t_star=(1/b)*np.log(1/(2*a))
+        for i in range(len(fitted_time_values)):
+            if fitted_position_values[i]<0.5:
+                t_star = fitted_time_values[i]
+                break
+        #t_star=(1/a)*np.log(1/(2))
         tstars.append(t_star)
         # Calculate standard deviations for parameters
         perr = np.sqrt(np.diag(pcov))
         ci = perr
-        a_up, b_up = popt + ci
-        a_low, b_low = popt - ci
-        t_up =(1/b_up)*np.log(1/(2*a_up))
-        t_low =(1/b_low)*np.log(1/(2*a_low))
+        a_up,b_up = popt + ci
+        a_low,b_low = popt - ci
+        fitted_position_values_up = exponential_func(fitted_time_values, a_up,b_up)
+        fitted_position_values_low = exponential_func(fitted_time_values, a_low,b_low)
+        for i in range(len(fitted_time_values)):
+            if fitted_position_values_up[i]<0.5:
+                t_up = fitted_time_values[i]
+                break
+        for i in range(len(fitted_time_values)):
+            if fitted_position_values_low[i]<0.5:
+                t_low = fitted_time_values[i]
+                break
+        t_max = max(t_up,t_low)
+        t_min = min(t_up,t_low)
         print(t_up, t_star, t_low)
 
-        errors.append([t_star-t_low, t_up-t_star])
+        errors.append([t_star-t_min, t_max-t_star])
 
 
         print('t* = ', t_star)
@@ -248,17 +269,19 @@ while(True):
         #plt.ylabel('Position')
 
         # Display the plot
-        #plt.show()
+        plt.show()
     mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
     mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
     std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
     #mean_values['bin'] = [0.05,0.15,0.25,0.35,0.45]
 
-    #colors = ['red','orange','green','blue','purple']
-    #for a in range(4):
     plt.figure(figsize=(8, 6))
-    print(len(mean_areas['mean'][:-1]),len(tstars),len(bin_edges))
-    plt.errorbar(x=mean_areas['mean'][:-1],y=tstars,yerr = np.array(errors).T,xerr=mean_areas['std'][:-1],fmt='o',color='cornflowerblue')
+    print(len(mean_areas['mean']),len(tstars),len(errors))
+    print(errors)
+    errors = np.array(errors)
+    errors = errors.T.reshape(2,-1)
+    print(errors)
+    plt.errorbar(x=np.array(mean_areas['mean'][:-1]),y=np.array(tstars).flatten(),yerr = errors, xerr=np.array(mean_areas['std'][:-1]),fmt='o',color='cornflowerblue')
     if x%10==0:
         plt.title('Critical Turning Time vs. Artificial Area Parameter for Sanded Tank at ' + str(int(x/10)) +'dpf')
 

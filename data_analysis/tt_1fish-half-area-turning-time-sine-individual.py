@@ -164,8 +164,8 @@ while(True):
     df['bins'] = pd.cut(df['area'], bins=bin_edges)
     bin_values = sorted(df['bins'].drop_duplicates().tolist())
         # Define the exponential function
-    def exponential_func(x, a):
-        return np.exp(a * x)
+    def exponential_func(x, a, b):
+        return np.exp(a * x)*np.cos(b*x)
     tstars = []
     errors = []
     for bin_value in bin_values:
@@ -181,49 +181,45 @@ while(True):
         df_long = bin1.melt(var_name='time', value_name='position')
         # Define the exponential function
         df_long['time'] = df_long['time'].astype(float)
+        temp_tstars = []
+        for index, row in bin1.iterrows():
+            popt, pcov = curve_fit(exponential_func, range(times), row, p0=(-0.2,0.2))
+            a,b = popt
+            fitted_time_values = np.linspace(0, 2*times, 500)
+            fitted_position_values = exponential_func(fitted_time_values, *popt)
+            for i in range(len(fitted_time_values)):
+                if fitted_position_values[i]<0.5:
+                    t_star = fitted_time_values[i]
+                    break
+            temp_tstars.append(t_star)
 
-
-
-        # Ensure time and position are numpy arrays for curve fitting
-        time_values = df_long['time'].to_numpy()
-        position_values = df_long['position'].to_numpy()
-        df_msd = df_long.groupby('time')['position'].agg(['mean', 'std']).reset_index()
-        print("df_msd: ", df_msd)
-        plt.errorbar(df_msd['time'], df_msd['mean'], yerr = df_msd['std'], alpha=0.6)
-
-        # Adding title and labels
-        plt.title('Position vs Time Scatterplot for '+ str(bin_value))
-        plt.xlabel('Time')
-        plt.ylabel('Position')
-        # Fit the curve with an initial guess for a and b
-        #popt, pcov = curve_fit(exponential_func, time_values, position_values, bounds=(0, [1.0]), p0=(1, 0.1))
-        popt, pcov = curve_fit(exponential_func, df_msd['time'], df_msd['mean'], p0=(-0.2))
-        # Create the scatter plot
-        fitted_time_values = np.linspace(time_values.min(), time_values.max(), 500)
-        fitted_position_values = exponential_func(fitted_time_values, *popt)
-        plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = e^{{ {popt[0]:.2f} x }}$')
-        print(bin_value, *popt)
-        a = popt
-        t_star=(1/a)*np.log(1/(2))
-        tstars.append(t_star)
-        # Calculate standard deviations for parameters
-        perr = np.sqrt(np.diag(pcov))
-        ci = perr
-        a_up = popt + ci
-        a_low = popt - ci
-        t_up =(1/a_up)*np.log(1/(2))
-        t_low =(1/a_low)*np.log(1/(2))
-        print(t_up, t_star, t_low)
-
-        errors.append([t_star-t_low, t_up-t_star])
-
-
-        print('t* = ', t_star)
-        
-        
-
-        # Display the plot
+            if index%100==0:
+                
+                plt.scatter(x=range(times), y=row)
+                plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = e^{{ {popt[0]:.2f} x }}$')
+                plt.xlim(0,times)
+                plt.ylim(-1,1)
+                plt.show()
+        ts = pd.DataFrame(temp_tstars,columns=['ts'])
+        print(ts)
+        plt.figure(figsize=(9, 6))
+    #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
+    #ax.set_aspect('equal')
+        sns.histplot(data=ts, x='ts',stat='percent',bins=20,binrange=[0,20],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75)
+        plt.xlabel('X-bins')
+        plt.ylabel('Y-bins')
+    
+        plt.title('Heatmap for 1 Fish Half Sanded Tank ' + str(x)+'dpf for Area Parameter' + str(bin_value))
+        tstars.append(np.median(temp_tstars))
+        errors.append([np.percentile(temp_tstars,25),np.percentile(temp_tstars,75)])
+    #plt.colorbar(label='Frequency')
         plt.show()
+   
+
+
+
+        print('t* = ', np.median(temp_tstars))    
+
     mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
     mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
     std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
@@ -237,11 +233,11 @@ while(True):
     errors = np.array(errors)
     errors = errors.T.reshape(2,-1)
     print(errors)
-    plt.errorbar(x=np.array(mean_areas['mean'][:-1]),y=np.array(tstars).flatten(),yerr = errors,xerr=np.array(mean_areas['std'][:-1]),fmt='o',color='cornflowerblue')
+    plt.errorbar(x=np.array(mean_areas['mean'][:-1]),y=np.array(tstars).flatten(),yerr = errors, xerr=np.array(mean_areas['std'][:-1]),fmt='o',color='cornflowerblue')
     plt.title('Critical Turning Time vs. Area Parameter for Half Sanded Tank at ' + str(x) +'dpf')
     plt.ylabel('t* (s)')
     plt.xlabel('area parameter')
-    plt.ylim(0,6)
+    plt.ylim(0,20)
 
     plt.show()
     #print(mean_areas)

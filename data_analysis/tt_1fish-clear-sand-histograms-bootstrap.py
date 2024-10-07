@@ -11,9 +11,11 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
-from scipy.optimize import curve_fit
-while(True):
-    x = int(input('dpf: '))
+arr = [7,14,21]
+#arr = [70,140,210]
+outputs = []
+voutputs = []
+for x in arr:
     if x==0:
         break
     if x == 7:
@@ -72,6 +74,15 @@ while(True):
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
 
+
+
+
+    def count_ones(array):
+        count = 0
+        for num in array:
+            if num == 1:
+                count += 1
+        return count
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
 
@@ -84,6 +95,8 @@ while(True):
     for file in files:
         tr_temp = openfile(file)
         trs.append(tr_temp)
+
+
 
     def processtr(tr):
         center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
@@ -101,21 +114,7 @@ while(True):
         print('Y range:', np.nanmin(tr.a[...,1]), np.nanmax(tr.a[...,1]), 'BL/s^2')
         pprint(tr.params)
         return tr
-
-    processedtrs = []
-    for temp in trs:
-        processed_temp = processtr(temp)
-        processedtrs.append(processed_temp)
-
-
-    def count_ones(array):
-        count = 0
-        for num in array:
-            if num == 1:
-                count += 1
-        return count
-    radius = 10
-    times = 20
+    
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
@@ -134,11 +133,12 @@ while(True):
             if theta > 0.85 and theta < 2.29 and phi < 2.958:
                 labels[i]=1
         return count_ones(labels)/len(labels)
-
-
+    
     refl_prop = []
     correlations = []
     pos_arr = []
+    times=10
+    radius=10
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -160,115 +160,223 @@ while(True):
 
         i=0
         #times = 20
-        while i<len(pos1)-times:
-            pos_mag = np.sqrt(pos1[i][0]**2+pos1[i][1]**2)
+        while i<len(pos1):
             prop = plotReflection(pos1[i][0],pos1[i][1],v1[i][0],v1[i][1])
-            dps = []
-            for j in range(times):
-                dp = np.dot(v1[i],v1[i+j])
-                dps.append(dp)
-            if prop>0 and pos_mag>0:
-                refl_prop.append(prop)
-                correlations.append(dps)
-                pos_arr.append(pos_mag)
+
+            #if prop>0 and pos_mag>0:
+            refl_prop.append(prop)
             i+=1
-            
 
-    for temp in processedtrs:
-        border_turning(temp)
-
-    data = {'x': refl_prop, 'y':correlations}
-
-    df = pd.DataFrame(correlations)
-    df['area']=refl_prop
-    df['area']*=2
-    #plt.scatter(x=refl_prop, y=correlations, s=1)
-    # Scatter plot
-    bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]
-    #if x ==14:
-    #    bin_edges = [0,0.1,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6,1]
-
-        # Bin data by 'Category' using pd.cut() and calculate mean
-    df['bins'] = pd.cut(df['area'], bins=bin_edges)
-    bin_values = sorted(df['bins'].drop_duplicates().tolist())
-    print(bin_values)
-        # Define the exponential function
-    def exponential_func(x, a, b):
-        return a * np.exp(b * x)
-    tstars = []
-    errors = []
-    for bin_value in bin_values:
-        if bin_value == bin_values[-1]:
-            break
-        bin1 = df[df['bins'] == bin_value]
-
-        bin1 = bin1.drop(['area', 'bins'], axis=1)
-
-        # Prepare the data for plotting
-        # Melt the DataFrame to long format
-        df_long = bin1.melt(var_name='time', value_name='position')
-        # Define the exponential function
-        df_long['time'] = df_long['time'].astype(float)
+    processedpos = []
+    processedvel = []
+    for temp in trs:
+        processed_temp = processtr(temp)
+        border_turning(processed_temp)
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(20/2048)
+        tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(20/2048)
+        processedpos.append(temppos)
+        processedvel.append(tempvel)
+        
 
 
 
-        # Ensure time and position are numpy arrays for curve fitting
-        time_values = df_long['time'].to_numpy()
-        position_values = df_long['position'].to_numpy()
 
-        # Fit the curve with an initial guess for a and b
-        popt, pcov = curve_fit(exponential_func, time_values, position_values, p0=(1, 0.1))
-
-        # Create the scatter plot
-        fitted_time_values = np.linspace(time_values.min(), time_values.max(), 500)
-        fitted_position_values = exponential_func(fitted_time_values, *popt)
-        #plt.plot(fitted_time_values, fitted_position_values, color='red', label=f'Fit: $y = {popt[0]:.2f} e^{{ {popt[1]:.2f} x }}$')
-        print(bin_value, *popt)
-        a,b = popt
-        t_star=(1/b)*np.log(1/(2*a))
-        tstars.append(t_star)
-        # Calculate standard deviations for parameters
-        perr = np.sqrt(np.diag(pcov))
-        ci = perr
-        a_up, b_up = popt + ci
-        a_low, b_low = popt - ci
-        t_up =(1/b_up)*np.log(1/(2*a_up))
-        t_low =(1/b_low)*np.log(1/(2*a_low))
-        print(t_up, t_star, t_low)
-
-        errors.append([t_star-t_low, t_up-t_star])
+    
+    phalf = np.concatenate(processedpos,axis=0)
+    print(phalf.shape)
+    phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
 
 
-        print('t* = ', t_star)
-        #plt.scatter(df_long['time'], df_long['position'], alpha=0.6,s=1)
+    vhalf = np.concatenate(processedvel,axis=0)
+    print(vhalf.shape)
+    vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1], 2])
+    dist = []
+    
 
-        # Adding title and labels
-        #plt.title('Position vs Time Scatterplot')
-        #plt.xlabel('Time')
-        #plt.ylabel('Position')
 
-        # Display the plot
-        #plt.show()
-    mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
-    mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
-    std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
-    #mean_values['bin'] = [0.05,0.15,0.25,0.35,0.45]
 
-    #colors = ['red','orange','green','blue','purple']
-    #for a in range(4):
-    plt.figure(figsize=(8, 6))
-    print(len(mean_areas['mean'][:-1]),len(tstars),len(bin_edges))
-    plt.errorbar(x=mean_areas['mean'][:-1],y=tstars,yerr = np.array(errors).T,xerr=mean_areas['std'][:-1],fmt='o',color='cornflowerblue')
-    if x%10==0:
-        plt.title('Critical Turning Time vs. Artificial Area Parameter for Sanded Tank at ' + str(int(x/10)) +'dpf')
-
+    '''plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
+            )
+    plt.xlabel('X-bins')
+    plt.ylabel('Y-bins')
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
     else:
-        plt.title('Critical Turning Time vs. Area Parameter for Clear Tank at ' + str(x) +'dpf')
-    plt.ylabel('t* (s)')
-    plt.xlabel('area parameter')
-    plt.ylim(0,6)
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
+    plt.colorbar(label='Frequency')
+    plt.show()'''
 
+
+
+
+    phalf= pd.DataFrame(phalf,columns=['x','y'])
+    phalf.rename(columns={'A': 'x', 'B': 'y'})
+    phalf['r'] = np.sqrt(phalf['x']**2 + phalf['y']**2)
+    phalf['y'] = -1 * phalf['y']
+    phalf['theta'] = np.arctan2(-1*phalf['x'],phalf['y'])
+    print(phalf)
+    #outputs.append(phalf)
+
+    vhalf= pd.DataFrame(vhalf,columns=['vx','vy'])
+    vhalf.rename(columns={'A': 'vx', 'B': 'vy'})
+    vhalf['spd'] = np.sqrt(vhalf['vx']**2 + vhalf['vy']**2)
+    vhalf['vy'] = -1 * vhalf['vy']
+    vhalf['vtheta'] = np.arctan2(-1*vhalf['vx'],vhalf['vy'])
+    
+    print(vhalf)
+    #voutputs.append(vhalf)
+
+    half_df =  pd.concat([phalf, vhalf], axis=1)
+    print(half_df)
+    half_df['vrx'] = half_df['vx']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['vry'] = half_df['vy']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['vr'] = half_df['spd']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['spd_r'] = np.abs(half_df['vr'])
+    half_df['vtx'] = half_df['vx']-half_df['vrx']
+    half_df['vty'] = half_df['vy']-half_df['vry']
+    half_df['spd_t'] = np.sqrt(half_df['vtx']**2+half_df['vty']**2)
+    phi_temp = np.arccos((-np.cos(half_df['theta'])*half_df['vx']-np.sin(half_df['theta']*half_df['vy']))/half_df['spd'])
+    print(phi_temp)
+    for i in range(len(phi_temp)):
+        if phi_temp[i] > np.pi/2:
+            phi_temp[i] = np.pi-phi_temp[i]
+    half_df['phi'] = phi_temp
+    half_df['refl_prop'] = refl_prop
+    print(half_df['refl_prop'])
+    half_df = pd.DataFrame(half_df.sample(n=10000, replace=True, random_state=0))
+    half_df.reset_index(drop=False, inplace=True)
+    print(half_df)
+
+    if x%10 ==0:
+        color = 'red'
+    else:
+        color = 'blue'
+    plt.figure(figsize=(9, 6))
+    #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
+    #ax.set_aspect('equal')
+    sns.histplot(data=half_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2],color=color,alpha=0.5)
+    plt.xlabel('Phi')
+    plt.ylabel('Percent')
+    plt.ylim(0,30)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Phi Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Phi Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+    #plt.colorbar(label='Frequency')
     plt.show()
-    #print(mean_areas)
+    sns.histplot(data=half_df, x='theta',stat='percent',bins=20,binrange=[-np.pi,np.pi],color=color,alpha=0.5)
+    plt.xlabel('Theta')
+    plt.ylabel('Percent')
+    plt.ylim(0,12.5)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Theta Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Theta Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+    #plt.colorbar(label='Frequency')
+    plt.show()
+    sns.histplot(data=half_df, x='spd_r',stat='percent',bins=10,binrange=[0,2.5],color=color,alpha=0.5)
+    
+    plt.xlabel('Radial Speed')
+    plt.ylabel('Percent')
+    plt.ylim(0,100)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Radial Speed Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Radial Speed Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+    #plt.colorbar(label='Frequency')
+    plt.show()
 
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=half_df, x='r', y='spd_r', s=5, color=color,alpha=0.3)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Relationship between Radial Speed and Radial Position for Sanded '+str(n) +'dpf')
+    else:
+        plt.title('Relationship between Radial Speed and Radial Position for Clear' + str(x)+'dpf')
+    plt.xlabel('Radial Position')
+    plt.ylabel('Radial Speed')
+    plt.xlim(0,10)
+    plt.ylim(0,3)
+    plt.grid(True)
+    plt.show()
 
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=half_df, x='r', y='vr', s=5, color=color,alpha=0.3)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Relationship between Radial Velocity and Radial Position for Sanded '+str(n) +'dpf')
+    else:
+        plt.title('Relationship between Radial Velocity and Radial Position for Clear' + str(x)+'dpf')
+    plt.xlabel('Radial Position')
+    plt.ylabel('Radial Velocity')
+    plt.xlim(0,10)
+    plt.ylim(-3,3)
+    plt.grid(True)
+    plt.show()
+
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=half_df, x='r', y='phi', s=5,color=color,alpha=0.3)
+    if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Relationship between Wall Angle and Radial Position for Sanded '+str(n) +'dpf')
+    else:
+        plt.title('Relationship between Wall Angle and Radial Position for Clear' + str(x)+'dpf')
+    plt.xlabel('Radial Position')
+    plt.ylabel('Angle to Wall')
+    plt.xlim(0,10)
+    plt.grid(True)
+    plt.show()
+
+    outputs.append(half_df)
+
+for i in range(len(outputs)):
+    if arr[i] % 10 == 0:
+        outputs[i]['Age'] = str(arr[i]/10)+'dpf'
+    else:
+        outputs[i]['Age'] = str(arr[i])+'dpf'
+combined_df = pd.concat(outputs)
+'''colors=sns.color_palette(palette='YlGnBu_r')
+for i in range(len(outputs)):
+    #plt.hist(data=outputs[i],x='center',density=True,bins=10,range=[0,10],color=(colors[i], 0.3))
+    if arr[0]%10==0:
+        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]/10) + 'dpf')
+    else:
+        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]) + 'dpf')'''
+sns.histplot(data=combined_df, x='r',stat='percent',hue='Age',bins=10,binrange=[0,10],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
+x = arr[0]
+if x % 10 == 0:
+    
+    plt.title('Distance From Center for 1 Fish Sanded Tank Over Time')
+else:
+    plt.title('Distance From Center for 1 Fish Clear Tank Over Time')
+plt.show()
+
+sns.histplot(data=combined_df, x='spd',stat='percent',hue='Age',bins=10,binrange=[0,5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
+x = arr[0]
+if x % 10 == 0:
+    
+    plt.title('Speed for 1 Fish Sanded Tank Over Time')
+else:
+    plt.title('Speed for 1 Fish Clear Tank Over Time')
+plt.show()
+
+sns.histplot(data=combined_df, x='spd_r',stat='percent',hue='Age',bins=10,binrange=[0,2.5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
+x = arr[0]
+if x % 10 == 0:
+    
+    plt.title('Radial Speed for 1 Fish Sanded Tank Over Time')
+else:
+    plt.title('Radial Speed for 1 Fish Clear Tank Over Time')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=combined_df, x='r', y='spd_r', s=5, hue='Age',palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.25)
+plt.title('Relationship between Radial Speed and Radial Position')
+plt.xlabel('Radial Position')
+plt.ylabel('Radial Speed')
+plt.grid(True)
+plt.show()
