@@ -5,28 +5,38 @@ import numpy as np
 from numpy import load
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
-from scipy import stats
+#from scipy import stats
+from scipy.stats import ks_2samp
 import seaborn as sns
 import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
-val = input('Sanded or Clear? : ')
-if val == 'Sanded':
-    arr = [70,140,210]
-elif val == 'Clear':
-    arr = [7,14,21]
-indiv = input('Individual plots? (Y/N) : ')
-blind = input('Blind fish? (Y/N) : ')
-
+borders = ['Sanded','Sanded']
+days = [1,2]
+vision = ['Y','Y']
 outputs = []
 voutputs = []
+arrdays = [7,14,21]
+l1 = 'CDF of Blind ' + str(borders[0]) + ' at ' + str(arrdays[days[0]]) + 'dpf'
+l2 = 'CDF of Blind ' + str(borders[1]) + ' at ' + str(arrdays[days[1]]) + 'dpf'
+for i in range(len(borders)):
+    print(i)
+    val = borders[i]
+    if val == 'Sanded':
+        arr = [70,140,210]
+    elif val == 'Clear':
+        arr = [7,14,21]
+    else:
+        arr = [700,1400,2100]
+    #indiv = input('Individual plots? (Y/N) : ')
+    blind = vision[i]
 
-days = ['7dpf', '14dpf', '21dpf']
 
-tt_avg = []
-tt_std = []
-for x in arr:
+    phalf = []
+    tt_avg = []
+    tt_std = []
+    x = arr[days[i]]
     if x==0:
         break
     if x == 7:
@@ -101,7 +111,6 @@ for x in arr:
             file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
             file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
-
             files = [file1,file2,file3,file5,file6,file7]
 
     if x==140:
@@ -135,6 +144,59 @@ for x in arr:
             file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
             file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3]
+    if x==700:
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+        file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+        file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+        file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
+
+    elif x==1400:
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+        file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+        file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
+        file4= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
+        file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7]
+    elif x==2100:
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+        file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half2/trajectories/validated.npy"
+        file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half3/trajectories/validated.npy"
+        file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
+        file9 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
+        files = [file1,file2,file3,file4,file5,file6,file7,file8,file9]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
             files = [file1,file2,file3]
 
 
@@ -264,17 +326,20 @@ for x in arr:
 
 
 
-    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
-            )
-    plt.xlabel('X-bins')
-    plt.ylabel('Y-bins')
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
-    else:
-        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
-    plt.colorbar(label='Frequency')
-    plt.show()
+    ###plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
+            #)
+    ###plt.xlabel('X-bins')
+    #plt.ylabel('Y-bins')
+    #if x % 100 == 0:
+    #    n = int(x/100)
+    #    plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    #elif x % 10 == 0:
+    #    n = int(x/10)
+    #    plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    #else:
+    #    plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
+    #plt.colorbar(label='Frequency')
+    #plt.show()
 
 
 
@@ -345,7 +410,7 @@ for x in arr:
     else:
         color = 'blue'
 
-    if(indiv == 'Y'):
+    '''if(indiv == 'Y'):
 
         f, ax = plt.subplots(figsize=(10, 8))
         corr = half_df.corr()
@@ -432,7 +497,7 @@ for x in arr:
         plt.xlim(0,10)
         plt.grid(True)
         plt.show()
-    turns = np.array(turns)
+    turns = np.array(turns)'''
     '''plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
     plt.xlabel('X-bins')
     plt.ylabel('Y-bins')
@@ -445,60 +510,90 @@ for x in arr:
     plt.show()'''
 
     outputs.append(half_df)
-dpf = [7,14,21]
-plt.errorbar(x=dpf,y=tt_avg,yerr = tt_std,fmt='o',color=color)
-plt.xlabel('Days Post Fertilization')
-plt.ylabel('Turning Time Along Wall')
-if x % 10 == 0:
-    n = int(x/10)
-    plt.title('Mean Turning Time over dpf for Sanded')
-else:
-    plt.title('Mean Turning Time over dpf for Clear')
-plt.show()
-for i in range(len(outputs)):
-    if arr[i] % 10 == 0:
-        outputs[i]['Age'] = str(arr[i]/10)+'dpf'
-    else:
-        outputs[i]['Age'] = str(arr[i])+'dpf'
-combined_df = pd.concat(outputs)
-'''colors=sns.color_palette(palette='YlGnBu_r')
-for i in range(len(outputs)):
-    #plt.hist(data=outputs[i],x='center',density=True,bins=10,range=[0,10],color=(colors[i], 0.3))
-    if arr[0]%10==0:
-        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]/10) + 'dpf')
-    else:
-        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]) + 'dpf')'''
-sns.histplot(data=combined_df, x='r',stat='percent',hue='Age',bins=10,binrange=[0,10],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Distance From Center for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Distance From Center for 1 Fish Clear Tank Over Time')
-plt.show()
+rvals = []
+tvals = []
+for output in outputs:
+    rvals.append(output['r'])
+    tvals.append(output['theta'])
+print(rvals)
+subsample_size = 100
+count = 0
+for i in range(1000):
+    # Perform the Kolmogorov-Smirnov test
+    x = np.random.choice(rvals[0], subsample_size, replace=False)
+    y = np.random.choice(rvals[1], subsample_size, replace=False)
+    ks_statistic, p_value = ks_2samp(x, y)
 
-sns.histplot(data=combined_df, x='spd',stat='percent',hue='Age',bins=10,binrange=[0,5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Speed for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Speed for 1 Fish Clear Tank Over Time')
-plt.show()
+    # Output the results
+    #print(f"KS Statistic: {ks_statistic}")
+    #print(f"P-Value: {p_value}")
 
-sns.histplot(data=combined_df, x='spd_r',stat='percent',hue='Age',bins=10,binrange=[0,2.5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Radial Speed for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Radial Speed for 1 Fish Clear Tank Over Time')
-plt.show()
+    # Interpret the results
+    if p_value < 0.01:
+        #print("The two distributions are significantly different.")
+        count+=1
+    #else:
+        #print("The two distributions are not significantly different.")
+# Sort the samples
+print(f"Confidence: {count}")
+x_sorted = np.sort(rvals[0])
+y_sorted = np.sort(rvals[1])
 
-plt.figure(figsize=(10, 6))
-sns.scatterplot(data=combined_df, x='r', y='spd_r', s=5, hue='Age',palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.25)
-plt.title('Relationship between Radial Speed and Radial Position')
-plt.xlabel('Radial Position')
-plt.ylabel('Radial Speed')
+# Compute the empirical cumulative distribution function (CDF)
+cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
+cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
+
+# Plot the CDFs of both samples
+plt.figure(figsize=(8, 6))
+plt.step(x_sorted, cdf_x, label=l1, where='post')
+plt.step(y_sorted, cdf_y, label=l2, where='post')
+plt.title('Empirical Cumulative Distribution Functions (CDF)')
+plt.xlabel('Value')
+plt.ylabel('CDF')
+plt.xlim(0,10)
+plt.legend()
 plt.grid(True)
+
+# Show the plot
+plt.show()
+
+count = 0
+for i in range(1000):
+    # Perform the Kolmogorov-Smirnov test
+    x = np.random.choice(tvals[0], subsample_size, replace=False)
+    y = np.random.choice(tvals[1], subsample_size, replace=False)
+    ks_statistic, p_value = ks_2samp(x, y)
+
+    # Output the results
+    #print(f"KS Statistic: {ks_statistic}")
+    #print(f"P-Value: {p_value}")
+
+    # Interpret the results
+    if p_value < 0.01:
+        #print("The two distributions are significantly different.")
+        count+=1
+    #else:
+        #print("The two distributions are not significantly different.")
+# Sort the samples
+print(f"Confidence: {count}")
+# Sort the samples
+x_sorted = np.sort(tvals[0])
+y_sorted = np.sort(tvals[1])
+
+# Compute the empirical cumulative distribution function (CDF)
+cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
+cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
+
+
+# Plot the CDFs of both samples
+plt.figure(figsize=(8, 6))
+plt.step(x_sorted, cdf_x, label=l1, where='post')
+plt.step(y_sorted, cdf_y, label=l2, where='post')
+plt.title('Empirical Cumulative Distribution Functions (CDF)')
+plt.xlabel('Value')
+plt.ylabel('CDF')
+plt.legend()
+plt.grid(True)
+
+# Show the plot
 plt.show()

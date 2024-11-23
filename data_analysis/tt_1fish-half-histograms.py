@@ -44,8 +44,10 @@ for x in arr:
             file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
             file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
             file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file4,file5]
-            files = [file5]
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
 
     elif x==14:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
@@ -60,8 +62,9 @@ for x in arr:
             file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
             file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
             file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file4,file5]
-            files = [file5]
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7]
     elif x==21:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
@@ -73,6 +76,11 @@ for x in arr:
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
         file9 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8,file9]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3]
 
 
     def count_ones(array):

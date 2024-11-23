@@ -108,12 +108,7 @@ while(True):
         processedtrs.append(processed_temp)
 
 
-    def count_ones(array):
-        count = 0
-        for num in array:
-            if num == 1:
-                count += 1
-        return count
+
     radius = 10
     times = 20
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
