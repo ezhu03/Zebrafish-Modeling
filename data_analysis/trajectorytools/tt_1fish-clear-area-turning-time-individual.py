@@ -13,19 +13,24 @@ import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 from scipy.optimize import curve_fit
 while(True):
+    '''
+    Take in the input of the dpf, here we go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
+    This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
+    '''
     x = int(input('dpf: '))
     if x==0:
         break
     if x == 7:
-        file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
-        file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
-        file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
-        file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
-        file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-3/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-5/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
+
     if x == 14:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
@@ -33,6 +38,7 @@ while(True):
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
+
 
     if x==21:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
@@ -53,6 +59,7 @@ while(True):
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6]
+
     if x==140:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
@@ -60,6 +67,7 @@ while(True):
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
+
 
     if x == 210:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
@@ -71,8 +79,8 @@ while(True):
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
-    
-    if x == 700:
+
+    if x==700:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
         file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
@@ -82,8 +90,8 @@ while(True):
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
-    
-    if x==1400: 
+
+    elif x==1400:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
         file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
         file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
@@ -91,7 +99,7 @@ while(True):
         file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
 
-    if x==2100:
+    elif x==2100:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
         file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
@@ -105,17 +113,27 @@ while(True):
 
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
-
+    '''
+    opens the provided numpy file to be processed by trajectorytools
+    '''
     def openfile(file, sigma = 1):
         tr = tt.Trajectories.from_idtrackerai(file, 
                                         interpolate_nans=True,
                                         smooth_params={'sigma': sigma})
         return tr
+    
+    '''
+    opens each provided file and processes the data to be used for the analysis
+    '''
     trs = []
     for file in files:
         tr_temp = openfile(file)
         trs.append(tr_temp)
-
+    
+    '''
+    uses the trajectorytools package to process the data and print out the positions, velocities, and accelerations of the data
+    returns a useable trajectory object tr
+    '''
     def processtr(tr):
         center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
         tr.origin_to(center)
@@ -147,6 +165,10 @@ while(True):
         return count
     radius = 10
     times = 10
+
+    '''
+    function that calculates where a fish can see its reflection given a position and velocity
+    '''
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
@@ -170,6 +192,11 @@ while(True):
     refl_prop = []
     correlations = []
     pos_arr = []
+
+    '''
+    converts the position and velocity data into a useable format for analysis
+    takes each time point to find the border correlation given the initial border reflection area
+    '''
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -208,6 +235,10 @@ while(True):
     for temp in processedtrs:
         border_turning(temp)
 
+    '''
+    process the data from border_turning function by binning based on area to find the critical turning time
+    '''
+    # create a dataframe to store the data from border_turning function
     data = {'x': refl_prop, 'y':correlations}
 
     df = pd.DataFrame(correlations)
@@ -228,7 +259,11 @@ while(True):
         return np.exp(a * x)
     tstars = []
     errors = []
+    '''
+    for each bin, calculate the individual critical turning coefficient for each time point, then plot it as a histogram
+    '''
     for bin_value in bin_values:
+
         if bin_value == bin_values[-1]:
             break
         bin1 = df[df['bins'] == bin_value]
@@ -256,11 +291,11 @@ while(True):
         plt.xlabel('X-bins')
         plt.ylabel('Y-bins')
         if x%100==0:
-            plt.title('Heatmap for 1 Fish Sanded Tank ' + str(int(x/100))+'dpf for Area Parameter' + str(bin_value))
+            plt.title('Histogram for 1 Fish Half Sanded Tank ' + str(int(x/100))+'dpf for Area Parameter' + str(bin_value))
         elif x % 10 ==0:
-            plt.title('Heatmap for 1 Fish Sanded Tank ' + str(int(x/10))+'dpf for Area Parameter' + str(bin_value))
+            plt.title('Histogram for 1 Fish Sanded Tank ' + str(int(x/10))+'dpf for Area Parameter' + str(bin_value))
         else:
-            plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf for Area Parameter' + str(bin_value))
+            plt.title('Histogram for 1 Fish Clear Tank ' + str(x)+'dpf for Area Parameter' + str(bin_value))
         
         tstars.append(np.median(temp_tstars))
         errors.append([np.percentile(temp_tstars,25),np.percentile(temp_tstars,75)])
@@ -276,6 +311,10 @@ while(True):
 
         # Display the plot
         plt.show()
+    '''
+    given each bin, produce an overall turning time variation given the area parameter
+    plotting the critical turning time vs. the area parameter with errorbars
+    '''
     mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
     mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
     std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()
