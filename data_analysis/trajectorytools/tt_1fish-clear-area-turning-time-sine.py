@@ -22,6 +22,14 @@ import trajectorytools.socialcontext as ttsocial
 from scipy.optimize import curve_fit
 while(True):
     '''
+    SET THESE VALUES BEFORE RUNNING THE CODE
+    radius: radius of the tank (for reflection calculation)
+    times: number of time points to calculate the turning time
+    '''
+    radius = 10
+    times = 20
+
+    '''
     Take in the input of the dpf, here we go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
     This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
     '''
@@ -162,11 +170,6 @@ while(True):
         processed_temp = processtr(temp)
         processedtrs.append(processed_temp)
 
-
-
-    radius = 10
-    times = 20
-
     '''
     function that calculates where a fish can see its reflection given a position and velocity
     '''
@@ -193,6 +196,10 @@ while(True):
     refl_prop = []
     correlations = []
     pos_arr = []
+    '''
+    converts the position and velocity data into a useable format for analysis
+    takes each time point to find the border correlation given the initial border reflection area
+    '''
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -230,7 +237,10 @@ while(True):
 
     for temp in processedtrs:
         border_turning(temp)
-
+    '''
+    process the data from border_turning function by binning based on area to find the critical turning time
+    '''
+    # create a dataframe to store the data from border_turning function
     data = {'x': refl_prop, 'y':correlations}
 
     df = pd.DataFrame(correlations)
@@ -251,6 +261,9 @@ while(True):
         return np.exp(a * x)*np.cos(b*x)
     tstars = []
     errors = []
+    '''
+    for each bin, calculate the critical turning coefficient given sinusoidal fit, then plot it as a histogram
+    '''
     for bin_value in bin_values:
         if bin_value == bin_values[-1]:
             break
@@ -324,6 +337,10 @@ while(True):
 
         # Display the plot
         plt.show()
+    '''
+    given each bin, produce an overall turning time variation given the area parameter
+    plotting the critical turning time vs. the area parameter with errorbars
+    '''
     mean_areas = df.groupby('bins')['area'].agg(['mean', 'std']).reset_index()
     mean_values = df.groupby('bins')[df.columns[0:times]].agg(['mean']).reset_index()
     std_values = df.groupby('bins')[df.columns[0:times]].agg(['std']).reset_index()

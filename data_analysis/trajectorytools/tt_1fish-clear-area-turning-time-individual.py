@@ -1,3 +1,11 @@
+'''
+This code processes trajectory data of zebrafish from multiple files based on the days post-fertilization (dpf) input 
+provided by the user. Depending on the input, it selects a corresponding set of trajectory files. The code includes 
+functions to open and process these files using the trajectorytools package, converting the data into a usable format 
+for analysis. It further processes the trajectory data to estimate positions, velocities, and accelerations, and 
+analyzes the turning behavior of the fish near the border of its environment via calculating individual turning times
+for given area bins, plotting the turning time values with respect to reflection area.
+'''
 import os
 from pprint import pprint
 import pathlib
