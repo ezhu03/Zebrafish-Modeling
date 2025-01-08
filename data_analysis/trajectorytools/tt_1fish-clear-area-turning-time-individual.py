@@ -22,6 +22,13 @@ import trajectorytools.socialcontext as ttsocial
 from scipy.optimize import curve_fit
 while(True):
     '''
+    SET THESE VALUES BEFORE RUNNING THE CODE
+    radius: radius of the tank (for reflection calculation)
+    times: number of time points to calculate the turning time
+    '''
+    radius = 10
+    times = 10
+    '''
     Take in the input of the dpf, here we go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
     This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
     '''
@@ -171,8 +178,7 @@ while(True):
             if num == 1:
                 count += 1
         return count
-    radius = 10
-    times = 10
+    
 
     '''
     function that calculates where a fish can see its reflection given a position and velocity

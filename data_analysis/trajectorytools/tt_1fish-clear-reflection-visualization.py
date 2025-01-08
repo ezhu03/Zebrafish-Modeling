@@ -1,3 +1,6 @@
+'''
+This code takes in a given file and video and displays the video with a reflection visualization of the fish side by side with the original video.
+'''
 import os
 from pprint import pprint
 import pathlib
@@ -17,6 +20,14 @@ from matplotlib.animation import FFMpegWriter
 from matplotlib.animation import PillowWriter
 
 plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
+'''
+SET THESE VALUES BEFORE RUNNING THE CODE
+radius: radius of the tank (for reflection calculation)
+file: path to the numpy file containing the position and velocity data
+video: path to the tracked video file to be displayed
+'''
+
+radius = 10
 
 file = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
 video = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/1fish-1fps-15min-21dpf-clear1_2024-05-21-134623-0000_tracked.avi"
@@ -36,7 +47,9 @@ video = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-
 
 # Step 3: Create a Function to Update the Frame
 import cv2
-
+'''
+    opens the provided numpy file to be processed by trajectorytools
+'''
 def openfile(file, sigma = 1):
     tr = tt.Trajectories.from_idtrackerai(file, 
                                       interpolate_nans=True,
@@ -45,7 +58,10 @@ def openfile(file, sigma = 1):
 tr = openfile(file)
 
 
-
+'''
+uses the trajectorytools package to process the data and print out the positions, velocities, and accelerations of the data
+returns a useable trajectory object tr
+'''
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
     tr.origin_to(center)
@@ -69,8 +85,11 @@ positions = tr.s*(10/tr.params['radius'])
 
 velocities = tr.v
 
-radius = 10
 
+
+'''
+function that calculates where a fish can see its reflection given a position and velocity
+'''
 def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     mag = np.sqrt(xposition **2 + yposition**2)
     magv = np.sqrt(xvelocity **2 + yvelocity**2)
@@ -123,7 +142,9 @@ cap.release()"""
 
 from matplotlib.gridspec import GridSpec
 
-# Function to update the frame
+'''
+plot the given frame with the reflection visualization and video frame
+'''
 def update(frame):
     # Clear the current axis
     ax1.clear()
@@ -149,7 +170,9 @@ def update(frame):
     ax2.set_title('Reflection Visualization')
 
 
-
+'''
+setup the plot to display the video and reflection visualization
+'''
 # Open the video file
 video_path = video
 cap = cv2.VideoCapture(video_path)
