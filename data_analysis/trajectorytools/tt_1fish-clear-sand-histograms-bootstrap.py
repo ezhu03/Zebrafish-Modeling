@@ -23,6 +23,13 @@ outputs = []
 voutputs = []
 for x in arr:
     '''
+    SET THESE VALUES BEFORE RUNNING THE CODE
+    radius: radius of the tank (for reflection calculation)
+    times: number of time points to calculate the turning time
+    '''
+    radius=10
+    times=10
+    '''
     We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
     This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
     '''
@@ -157,8 +164,8 @@ for x in arr:
     refl_prop = []
     correlations = []
     pos_arr = []
-    times=10
-    radius=10
+    #times=10
+
     '''
     converts the position and velocity data into a useable format for analysis
     takes each time point to find the border correlation given the initial border reflection area

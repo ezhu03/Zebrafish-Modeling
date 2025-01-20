@@ -1,3 +1,7 @@
+'''
+Given clear or sanded tank data, this will iterate through the data and produce histograms for the radial speed, 
+radial position, angle to the wall, and the angle to the wall given the initial reflection area.
+'''
 import os
 from pprint import pprint
 import pathlib
@@ -11,6 +15,7 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
+# iterate through the dpf values
 val = input('Sanded or Clear? : ')
 if val == 'Sanded':
     arr = [70,140,210]
@@ -27,6 +32,17 @@ days = ['7dpf', '14dpf', '21dpf']
 tt_avg = []
 tt_std = []
 for x in arr:
+    '''
+    SET THESE VALUES BEFORE RUNNING THE CODE
+    radius: radius of the tank (for reflection calculation)
+    times: number of time points to calculate the turning time
+    '''
+    radius=10
+    times=10
+    '''
+    We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
+    This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
+    '''
     if x==0:
         break
     if x == 7:
@@ -148,19 +164,27 @@ for x in arr:
         return count
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
-
+    '''
+    opens the provided numpy file to be processed by trajectorytools
+    '''
     def openfile(file, sigma = 1):
         tr = tt.Trajectories.from_idtrackerai(file, 
                                         interpolate_nans=True,
                                         smooth_params={'sigma': sigma})
         return tr
+    '''
+    opens each provided file and processes the data to be used for the analysis
+    '''
     trs = []
     for file in files:
         tr_temp = openfile(file)
         trs.append(tr_temp)
 
 
-
+    '''
+    uses the trajectorytools package to process the data and print out the positions, velocities, and accelerations of the data
+    returns a useable trajectory object tr
+    '''
     def processtr(tr):
         center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
         tr.origin_to(center)
@@ -178,6 +202,9 @@ for x in arr:
         pprint(tr.params)
         return tr
     
+    '''
+    function that calculates where a fish can see its reflection given a position and velocity
+    '''
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
@@ -200,8 +227,11 @@ for x in arr:
     refl_prop = []
     correlations = []
     pos_arr = []
-    times=10
-    radius=10
+
+    '''
+    converts the position and velocity data into a useable format for analysis
+    takes each time point to find the border correlation given the initial border reflection area
+    '''
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -229,7 +259,9 @@ for x in arr:
             #if prop>0 and pos_mag>0:
             refl_prop.append(prop)
             i+=1
-
+    '''
+    produce arrays with the positions and velocities of the fish
+    '''
     processedpos = []
     processedvel = []
     for temp in trs:
@@ -244,7 +276,9 @@ for x in arr:
 
 
 
-    
+    '''
+    convert arrays into dataframes and then merge the dataframes together into one large dataframe
+    '''
     phalf = np.concatenate(processedpos,axis=0)
     print(phalf.shape)
     phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -263,7 +297,7 @@ for x in arr:
     
 
 
-
+    
     plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
             )
     plt.xlabel('X-bins')
@@ -339,6 +373,9 @@ for x in arr:
 
     
              
+    '''
+    with the dataframe, we can now plot the data, referencing the title of the plot
+    '''
 
     if x%10 ==0:
         color = 'red'

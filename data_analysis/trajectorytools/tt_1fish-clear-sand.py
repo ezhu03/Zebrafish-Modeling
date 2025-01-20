@@ -1,3 +1,6 @@
+'''
+Produces heatmaps for the data of 1 fish in a clear tank or a sanded tank
+'''
 import os
 from pprint import pprint
 import pathlib
@@ -14,7 +17,10 @@ import trajectorytools.socialcontext as ttsocial
 while(True):
     x = int(input('dpf: '))
     blind = input('Blind fish? (Y/N) : ')
-    
+    '''
+    We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
+    This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
+    '''
     if x==0:
         break
     if x == 7:
@@ -91,19 +97,27 @@ while(True):
 
     # Save the merged array to a new .npy file
     #np.save("merged_file.npy", merged_array)
-
+    '''
+    opens the provided numpy file to be processed by trajectorytools
+    '''
     def openfile(file, sigma = 1):
         tr = tt.Trajectories.from_idtrackerai(file, 
                                         interpolate_nans=True,
                                         smooth_params={'sigma': sigma})
         return tr
+    '''
+    opens each provided file and processes the data to be used for the analysis
+    '''
     trs = []
     for file in files:
         tr_temp = openfile(file)
         trs.append(tr_temp)
 
 
-
+    '''
+    uses the trajectorytools package to process the data and print out the positions, velocities, and accelerations of the data
+    returns a useable trajectory object tr
+    '''
     def processtr(tr):
         center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
         tr.origin_to(center)
@@ -134,7 +148,9 @@ while(True):
 
 
 
-    
+    '''
+    produce heatmaps for the data
+    '''
     phalf = np.concatenate(processedpos,axis=0)
     print(phalf.shape)
     phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
