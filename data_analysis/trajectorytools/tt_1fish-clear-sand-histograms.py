@@ -37,7 +37,7 @@ for x in arr:
     radius: radius of the tank (for reflection calculation)
     times: number of time points to calculate the turning time
     '''
-    radius=10
+    radius=5
     times=10
     '''
     We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
@@ -208,13 +208,13 @@ for x in arr:
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
-        distance = 2*(10 - mag)
+        distance = 2*(radius - mag)
 
         reflection = 0.85
 
         angles = np.arange(0,6.28,0.01)
-        xbound = 10*np.cos(angles) 
-        ybound = 10*np.sin(angles) 
+        xbound = radius*np.cos(angles) 
+        ybound = radius*np.sin(angles) 
         labels=np.zeros(len(angles))
         for i in range(len(angles)):
             magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
@@ -267,8 +267,8 @@ for x in arr:
     for temp in trs:
         processed_temp = processtr(temp)
         border_turning(processed_temp)
-        temppos = processed_temp.s*processed_temp.params['length_unit']*(20/2048)
-        tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(20/2048)
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
+        tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)
         
@@ -297,17 +297,24 @@ for x in arr:
     
 
 
-    
-    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
+    center = (0, 0)
+
+    # Create circle
+    theta = np.linspace(0, 2 * np.pi, 300)
+    xc = center[0] + radius * np.cos(theta)
+    yc = center[1] + radius * np.sin(theta)
+    plt.figure(figsize=(3, 3))
+    plt.plot(xc, yc, label=f'Circle with radius {radius}')
+    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
             )
-    plt.xlabel('X-bins')
-    plt.ylabel('Y-bins')
-    if x % 10 == 0:
+    #plt.xlabel('X-bins')
+    #plt.ylabel('Y-bins')
+    '''if x % 10 == 0:
         n = int(x/10)
         plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
     else:
-        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
-    plt.colorbar(label='Frequency')
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
+    #plt.colorbar(label='Frequency')
     plt.show()
 
 

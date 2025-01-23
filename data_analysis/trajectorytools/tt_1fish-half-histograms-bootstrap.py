@@ -14,7 +14,9 @@ import trajectorytools.socialcontext as ttsocial
 arr = [7,14,21]
 outputs = []
 voutputs = []
+blind = input('Blind fish? (Y/N) : ')
 for x in arr:
+    radius = 5
     if x==0:
         break
     if x==7:
@@ -27,13 +29,33 @@ for x in arr:
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
-    elif x==14: 
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
+
+    elif x==14:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
         file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
         file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
         file4= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
         file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7]
     elif x==21:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
@@ -45,6 +67,11 @@ for x in arr:
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
         file9 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8,file9]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3]
 
 
     def count_ones(array):
@@ -88,13 +115,13 @@ for x in arr:
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
-        distance = 2*(10 - mag)
+        distance = 2*(radius - mag)
 
         reflection = 0.85
 
         angles = np.arange(0,6.28,0.01)
-        xbound = 10*np.cos(angles) 
-        ybound = 10*np.sin(angles) 
+        xbound = radius*np.cos(angles) 
+        ybound = radius*np.sin(angles) 
         labels=np.zeros(len(angles))
         for i in range(len(angles)):
             magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
@@ -108,11 +135,10 @@ for x in arr:
     correlations = []
     pos_arr = []
     times=10
-    radius=10
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-        pos1= tr.s*tr.params['length_unit']*(20/2048)
+        pos1= tr.s*tr.params['length_unit']*(2*radius/2048)
 
         pos1 = np.array(pos1.reshape(pos1.shape[0],2))
 
@@ -142,14 +168,10 @@ for x in arr:
     for temp in trs:
         processed_temp = processtr(temp)
         border_turning(processed_temp)
-        temppos = processed_temp.s*processed_temp.params['length_unit']*(20/2048)
-        tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(20/2048)
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
+        tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)
-        
-
-
-
 
     
     phalf = np.concatenate(processedpos,axis=0)
@@ -165,17 +187,25 @@ for x in arr:
 
 
 
-    '''plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
+    center = (0, 0)
+
+    # Create circle
+    theta = np.linspace(0, 2 * np.pi, 300)
+    xc = center[0] + radius * np.cos(theta)
+    yc = center[1] + radius * np.sin(theta)
+    plt.figure(figsize=(3, 3))
+    plt.plot(xc, yc, label=f'Circle with radius {radius}')
+    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
             )
-    plt.xlabel('X-bins')
-    plt.ylabel('Y-bins')
-    if x % 10 == 0:
+    #plt.xlabel('X-bins')
+    #plt.ylabel('Y-bins')
+    '''if x % 10 == 0:
         n = int(x/10)
         plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
     else:
-        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
-    plt.colorbar(label='Frequency')
-    plt.show()'''
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
+    #plt.colorbar(label='Frequency')
+    plt.show()
 
 
 
@@ -224,7 +254,7 @@ for x in arr:
     #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
     #ax.set_aspect('equal')
 
-    nearwall_df = half_df[half_df['r'] > 8]
+    nearwall_df = half_df[half_df['r'] > 0.8 * radius]
 
 
     sns.histplot(data=nearwall_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2], hue='side', palette={'clear': 'blue', 'sanded': 'red'},alpha=0.5,multiple='dodge',common_norm=False)
