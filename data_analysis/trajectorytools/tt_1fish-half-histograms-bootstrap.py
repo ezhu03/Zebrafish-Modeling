@@ -14,18 +14,10 @@ import trajectorytools.socialcontext as ttsocial
 arr = [7,14,21]
 outputs = []
 voutputs = []
-
-days = ['7dpf', '14dpf', '21dpf']
-
-tt_avg_s = []
-tt_std_s = []
-tt_avg_c = []
-tt_std_c = []
-turns_sep = []
+indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
 for x in arr:
     radius = 5
-    times=10
     if x==0:
         break
     if x==7:
@@ -143,6 +135,7 @@ for x in arr:
     refl_prop = []
     correlations = []
     pos_arr = []
+    times=10
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
@@ -203,7 +196,7 @@ for x in arr:
     yc = center[1] + radius * np.sin(theta)
     plt.figure(figsize=(3, 3))
     plt.plot(xc, yc, label=f'Circle with radius {radius}')
-    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
+    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
             )
     #plt.xlabel('X-bins')
     #plt.ylabel('Y-bins')
@@ -214,27 +207,6 @@ for x in arr:
         plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
     #plt.colorbar(label='Frequency')
     plt.show()
-
-
-    vhalf = np.concatenate(processedvel,axis=0)
-    print(vhalf.shape)
-    vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1], 2])
-    dist = []
-    
-
-
-
-    '''plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015
-            )
-    plt.xlabel('X-bins')
-    plt.ylabel('Y-bins')
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
-    else:
-        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')
-    plt.colorbar(label='Frequency')
-    plt.show()'''
 
 
 
@@ -253,7 +225,7 @@ for x in arr:
     vhalf['vy'] = -1 * vhalf['vy']
     vhalf['vtheta'] = np.arctan2(-1*vhalf['vx'],vhalf['vy'])
     
-    print('avg spd: ' + str(np.mean(vhalf['spd'])))
+    print(vhalf)
     #voutputs.append(vhalf)
 
     half_df =  pd.concat([phalf, vhalf], axis=1)
@@ -274,6 +246,30 @@ for x in arr:
     half_df['refl_prop'] = refl_prop
     half_df['side'] = half_df['theta'].apply(lambda x: 'clear' if x > 0 else 'sanded')
     print(half_df['side'])
+    half_df = pd.DataFrame(half_df.sample(n=10000, replace=True, random_state=0))
+    half_df.reset_index(drop=False, inplace=True)
+    print(half_df)
+
+    center = (0, 0)
+
+    # Create circle
+    theta = np.linspace(0, 2 * np.pi, 300)
+    xc = center[0] + radius * np.cos(theta)
+    yc = center[1] + radius * np.sin(theta)
+    plt.figure(figsize=(3, 3))
+    plt.plot(xc, yc, label=f'Circle with radius {radius}')
+    plt.hist2d(half_df['x'], half_df['y'], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
+            )
+    #plt.xlabel('X-bins')
+    #plt.ylabel('Y-bins')
+    '''if x % 10 == 0:
+        n = int(x/10)
+        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
+    else:
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
+    #plt.colorbar(label='Frequency')
+    plt.show()
+
 
     turn_times_s = []
     turn_times_c = []
@@ -282,11 +278,11 @@ for x in arr:
     min = 0
     max = np.pi
     for index, row in half_df.iterrows():
-        if temp_counter == 0 and row['r'] > 8 and row['phi'] < 0.4:
+        if temp_counter == 0 and row['r'] > 0.8*radius and row['phi'] < 0.4:
             current = row['side']
             max = row['phi'] + np.pi/2
             temp_counter+=1
-        elif temp_counter == 0 and row['r'] > 8 and row['phi'] > np.pi - 0.4:
+        elif temp_counter == 0 and row['r'] > 0.8*radius and row['phi'] > np.pi - 0.4:
             current = row['side']
             min = row['phi'] - np.pi/2
             temp_counter+=1
@@ -313,7 +309,7 @@ for x in arr:
         #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
         #ax.set_aspect('equal')
 
-        nearwall_df = half_df[half_df['r'] > 8]
+        nearwall_df = half_df[half_df['r'] > 0.8*radius]
 
 
         sns.histplot(data=nearwall_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2], hue='side', palette={'clear': 'blue', 'sanded': 'red'},alpha=0.5,multiple='dodge',common_norm=False)
@@ -332,7 +328,7 @@ for x in arr:
         #plt.colorbar(label='Frequency')
         plt.show()
 
-        sns.histplot(data=half_df, x='spd_r',stat='percent',bins=10,binrange=[0,2.5], hue='side', palette={'clear': 'blue', 'sanded': 'red'}, alpha=0.5,multiple='dodge',common_norm=False)
+        sns.histplot(data=half_df, x='spd_r',stat='percent',bins=20,binrange=[0,2.5], hue='side', palette={'clear': 'blue', 'sanded': 'red'}, alpha=0.5,multiple='dodge',common_norm=False)
         
         plt.xlabel('Radial Speed')
         plt.ylabel('Percent')
@@ -348,7 +344,7 @@ for x in arr:
         plt.title('Relationship between Wall Angle and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Angle to Wall')
-        plt.xlim(0,10)
+        plt.xlim(0,radius)
         plt.grid(True)
         plt.show()
 
@@ -357,7 +353,7 @@ for x in arr:
         plt.title('Relationship between Radial Speed and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Speed')
-        plt.xlim(0,10)
+        plt.xlim(0,radius)
         plt.ylim(0,3)
         plt.grid(True)
         plt.show()
@@ -372,7 +368,7 @@ for x in arr:
         plt.grid(True)
         plt.show()
         turns = np.array(turns)
-        plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
+        plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
         plt.xlabel('X-bins')
         plt.ylabel('Y-bins')
         plt.title('Heatmap for Turning Location 1 Fish Half Sanded Tank ' + str(x)+'dpf')
