@@ -17,17 +17,28 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 # iterate through the dpf values
-arr = [7,14,21]
-#arr = [70,140,210]
+val = input('Sanded or Clear? : ')
+if val == 'Sanded':
+    arr = [70,140,210]
+elif val == 'Clear':
+    arr = [7,14,21]
+indiv = input('Individual plots? (Y/N) : ')
+blind = input('Blind fish? (Y/N) : ')
+
 outputs = []
 voutputs = []
+
+days = ['7dpf', '14dpf', '21dpf']
+
+tt_avg = []
+tt_std = []
 for x in arr:
     '''
     SET THESE VALUES BEFORE RUNNING THE CODE
     radius: radius of the tank (for reflection calculation)
     times: number of time points to calculate the turning time
     '''
-    radius=10
+    radius=5
     times=10
     '''
     We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
@@ -45,6 +56,17 @@ for x in arr:
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
+
     if x == 14:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
@@ -52,6 +74,16 @@ for x in arr:
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file5,file6, file7]
+
 
     if x==21:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
@@ -63,6 +95,11 @@ for x in arr:
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3]
 
     if x==70:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
@@ -72,6 +109,18 @@ for x in arr:
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
+
+            files = [file1,file2,file3,file5,file6,file7]
+
     if x==140:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
         file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
@@ -79,6 +128,15 @@ for x in arr:
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded3-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded4-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3,file4,file5, file6, file7]
 
     if x == 210:
         file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
@@ -90,6 +148,11 @@ for x in arr:
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
         files = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
+            files = [file1,file2,file3]
 
 
 
@@ -286,87 +349,209 @@ for x in arr:
         color = 'red'
     else:
         color = 'blue'
-    plt.figure(figsize=(9, 6))
-    #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
-    #ax.set_aspect('equal')
-    sns.histplot(data=half_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2],color=color,alpha=0.5)
-    plt.xlabel('Phi')
-    plt.ylabel('Percent')
-    plt.ylim(0,30)
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Phi Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
-    else:
-        plt.title('Phi Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
-    #plt.colorbar(label='Frequency')
-    plt.show()
-    sns.histplot(data=half_df, x='theta',stat='percent',bins=20,binrange=[-np.pi,np.pi],color=color,alpha=0.5)
-    plt.xlabel('Theta')
-    plt.ylabel('Percent')
-    plt.ylim(0,12.5)
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Theta Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
-    else:
-        plt.title('Theta Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
-    #plt.colorbar(label='Frequency')
-    plt.show()
-    sns.histplot(data=half_df, x='spd_r',stat='percent',bins=10,binrange=[0,2.5],color=color,alpha=0.5)
     
-    plt.xlabel('Radial Speed')
-    plt.ylabel('Percent')
-    plt.ylim(0,100)
-    if x % 10 == 0:
+    center = (0, 0)
+
+    # Create circle
+    theta = np.linspace(0, 2 * np.pi, 300)
+    xc = center[0] + radius * np.cos(theta)
+    yc = center[1] + radius * np.sin(theta)
+    plt.figure(figsize=(3, 3))
+    plt.plot(xc, yc, label=f'Circle with radius {radius}')
+    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
+            )
+    #plt.xlabel('X-bins')
+    #plt.ylabel('Y-bins')
+    '''if x % 10 == 0:
         n = int(x/10)
-        plt.title('Radial Speed Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
     else:
-        plt.title('Radial Speed Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
     #plt.colorbar(label='Frequency')
     plt.show()
 
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=half_df, x='r', y='spd_r', s=5, color=color,alpha=0.3)
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Relationship between Radial Speed and Radial Position for Sanded '+str(n) +'dpf')
-    else:
-        plt.title('Relationship between Radial Speed and Radial Position for Clear' + str(x)+'dpf')
-    plt.xlabel('Radial Position')
-    plt.ylabel('Radial Speed')
-    plt.xlim(0,10)
-    plt.ylim(0,3)
-    plt.grid(True)
-    plt.show()
 
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=half_df, x='r', y='vr', s=5, color=color,alpha=0.3)
-    if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Relationship between Radial Velocity and Radial Position for Sanded '+str(n) +'dpf')
-    else:
-        plt.title('Relationship between Radial Velocity and Radial Position for Clear' + str(x)+'dpf')
-    plt.xlabel('Radial Position')
-    plt.ylabel('Radial Velocity')
-    plt.xlim(0,10)
-    plt.ylim(-3,3)
-    plt.grid(True)
-    plt.show()
 
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=half_df, x='r', y='phi', s=5,color=color,alpha=0.3)
+
+    phalf= pd.DataFrame(phalf,columns=['x','y'])
+    phalf.rename(columns={'A': 'x', 'B': 'y'})
+    phalf['r'] = np.sqrt(phalf['x']**2 + phalf['y']**2)
+    phalf['y'] = -1*phalf['y']
+    phalf['theta'] = np.arctan2(-1*phalf['x'],phalf['y'])
+    print(phalf)
+    #outputs.append(phalf)
+
+    vhalf= pd.DataFrame(vhalf,columns=['vx','vy'])
+    vhalf.rename(columns={'A': 'vx', 'B': 'vy'})
+    vhalf['spd'] = np.sqrt(vhalf['vx']**2 + vhalf['vy']**2)
+    vhalf['vy'] = -1*vhalf['vy']
+    vhalf['vtheta'] = np.arctan2(-1*vhalf['vx'],vhalf['vy'])
+    
+    print('avg spd: ' + str(np.mean(vhalf['spd'])))
+    #voutputs.append(vhalf)
+
+    half_df =  pd.concat([phalf, vhalf], axis=1)
+    print(half_df)
+    half_df['vrx'] = half_df['vx']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['vry'] = half_df['vy']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['vr'] = half_df['spd']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
+    half_df['spd_r'] = np.abs(half_df['vr'])
+    half_df['vtx'] = half_df['vx']-half_df['vrx']
+    half_df['vty'] = half_df['vy']-half_df['vry']
+    half_df['spd_t'] = np.sqrt(half_df['vtx']**2+half_df['vty']**2)
+    phi_temp = np.arccos((-np.cos(half_df['theta'])*half_df['vx']-np.sin(half_df['theta']*half_df['vy']))/half_df['spd'])
+    print(phi_temp)
+    '''for i in range(len(phi_temp)):
+        if phi_temp[i] > np.pi/2:
+            phi_temp[i] = np.pi-phi_temp[i]'''
+    half_df['phi'] = phi_temp
+    half_df['refl_prop'] = refl_prop
+    print(half_df['refl_prop'])
+
+    turn_times = []
+    turns = []
+    temp_counter = 0
+    min = 0
+    max = np.pi
+    for index, row in half_df.iterrows():
+        if temp_counter == 0 and row['r'] > 8 and row['phi'] < 0.4:
+            max = row['phi'] + np.pi/2
+            temp_counter+=1
+        elif temp_counter == 0 and row['r'] > 8 and row['phi'] > np.pi - 0.4:
+            min = row['phi'] - np.pi/2
+            temp_counter+=1
+        elif temp_counter > 0 and row['phi'] >= min and row['phi'] <= max:
+            temp_counter+=1
+        elif temp_counter > 0:
+            turns.append([row['x'],row['y']])
+            turn_times.append(temp_counter)
+            temp_counter = 0
+            min = 0
+            max = np.pi
+    tt_avg.append(np.mean(turn_times))
+    tt_std.append(np.std(turn_times))
+
+    
+             
+    '''
+    with the dataframe, we can now plot the data, referencing the title of the plot
+    '''
+
+    if x%10 ==0:
+        color = 'red'
+    else:
+        color = 'blue'
+
+    if(indiv == 'Y'):
+
+        f, ax = plt.subplots(figsize=(10, 8))
+        corr = half_df.corr()
+        sns.heatmap(corr,cmap=sns.diverging_palette(220, 10, as_cmap=True),vmin=-1.0, vmax=1.0,square=True, ax=ax)
+        plt.show()
+
+        plt.figure(figsize=(9, 6))
+        #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
+        #ax.set_aspect('equal')
+
+        nearwall_df = half_df[half_df['r'] > 8]
+        sns.histplot(data=nearwall_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2],color=color,alpha=0.5)
+        plt.xlabel('Phi')
+        plt.ylabel('Percent')
+        plt.ylim(0,30)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Phi Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+        else:
+            plt.title('Phi Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+        #plt.colorbar(label='Frequency')
+        plt.show()
+        sns.histplot(data=half_df, x='theta',stat='percent',bins=20,binrange=[-np.pi,np.pi],color=color,alpha=0.5)
+        plt.xlabel('Theta')
+        plt.ylabel('Percent')
+        plt.ylim(0,12.5)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Theta Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+        else:
+            plt.title('Theta Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+        #plt.colorbar(label='Frequency')
+        plt.show()
+        sns.histplot(data=half_df, x='spd_r',stat='percent',bins=10,binrange=[0,2.5],color=color,alpha=0.5)
+        
+        plt.xlabel('Radial Speed')
+        plt.ylabel('Percent')
+        plt.ylim(0,100)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Radial Speed Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
+        else:
+            plt.title('Radial Speed Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
+        #plt.colorbar(label='Frequency')
+        plt.show()
+
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=half_df, x='r', y='spd_r', s=5, color=color,alpha=0.5)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Relationship between Radial Speed and Radial Position for Sanded '+str(n) +'dpf')
+        else:
+            plt.title('Relationship between Radial Speed and Radial Position for Clear' + str(x)+'dpf')
+        plt.xlabel('Radial Position')
+        plt.ylabel('Radial Speed')
+        plt.xlim(0,10)
+        plt.ylim(0,3)
+        plt.grid(True)
+        plt.show()
+
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=half_df, x='r', y='vr', s=5, color=color,alpha=0.5)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Relationship between Radial Velocity and Radial Position for Sanded '+str(n) +'dpf')
+        else:
+            plt.title('Relationship between Radial Velocity and Radial Position for Clear' + str(x)+'dpf')
+        plt.xlabel('Radial Position')
+        plt.ylabel('Radial Velocity')
+        plt.xlim(0,10)
+        plt.ylim(-3,3)
+        plt.grid(True)
+        plt.show()
+
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=half_df, x='r', y='phi', s=5,color=color,alpha=0.5)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Relationship between Wall Angle and Radial Position for Sanded '+str(n) +'dpf')
+        else:
+            plt.title('Relationship between Wall Angle and Radial Position for Clear' + str(x)+'dpf')
+        plt.xlabel('Radial Position')
+        plt.ylabel('Angle to Wall')
+        plt.xlim(0,10)
+        plt.grid(True)
+        plt.show()
+    turns = np.array(turns)
+    '''plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
+    plt.xlabel('X-bins')
+    plt.ylabel('Y-bins')
     if x % 10 == 0:
         n = int(x/10)
-        plt.title('Relationship between Wall Angle and Radial Position for Sanded '+str(n) +'dpf')
+        plt.title('Heatmap for Turning Location 1 Fish Sanded Tank ' +str(n) +'dpf')
     else:
-        plt.title('Relationship between Wall Angle and Radial Position for Clear' + str(x)+'dpf')
-    plt.xlabel('Radial Position')
-    plt.ylabel('Angle to Wall')
-    plt.xlim(0,10)
-    plt.grid(True)
-    plt.show()
+        plt.title('Heatmap for Turning Location 1 Fish Clear Tank ' + str(x)+'dpf')
+    plt.colorbar(label='Frequency')
+    plt.show()'''
 
     outputs.append(half_df)
-
+dpf = [7,14,21]
+plt.errorbar(x=dpf,y=tt_avg,yerr = tt_std,fmt='o',color=color)
+plt.xlabel('Days Post Fertilization')
+plt.ylabel('Turning Time Along Wall')
+if x % 10 == 0:
+    n = int(x/10)
+    plt.title('Mean Turning Time over dpf for Sanded')
+else:
+    plt.title('Mean Turning Time over dpf for Clear')
+plt.show()
 for i in range(len(outputs)):
     if arr[i] % 10 == 0:
         outputs[i]['Age'] = str(arr[i]/10)+'dpf'
