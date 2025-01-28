@@ -12,10 +12,19 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 arr = [7,14,21]
-outputs = []
-voutputs = []
 indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
+
+outputs = []
+voutputs = []
+
+days = ['7dpf', '14dpf', '21dpf']
+
+tt_avg_s = []
+tt_std_s = []
+tt_avg_c = []
+tt_std_c = []
+turns_sep = []
 for x in arr:
     radius = 5
     if x==0:
@@ -363,12 +372,12 @@ for x in arr:
         plt.title('Relationship between Radial Velocity and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Velocity')
-        plt.xlim(0,10)
+        plt.xlim(0,radius)
         plt.ylim(-3,3)
         plt.grid(True)
         plt.show()
         turns = np.array(turns)
-        plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
+        plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
         plt.xlabel('X-bins')
         plt.ylabel('Y-bins')
         plt.title('Heatmap for Turning Location 1 Fish Half Sanded Tank ' + str(x)+'dpf')

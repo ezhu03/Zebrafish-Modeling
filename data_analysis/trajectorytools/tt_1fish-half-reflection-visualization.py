@@ -18,15 +18,15 @@ from matplotlib.animation import PillowWriter
 
 plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
 
-file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
-video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
+#file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+#video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
 
-#file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
-#video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/1fish15min1fps-half-1-21dpf_tracked.avi"
+file = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+video = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/1fish-1fps-15min-21dpf-half1_2024-07-16-122129-0000_tracked.avi"
 
 # Save the merged array to a new .npy file
 #np.save("merged_file.npy", merged_array)
-
+radius = 5
 
 
 # Step 1: Install Required Packages
@@ -65,22 +65,22 @@ def processtr(tr):
 
 tr = processtr(tr)
 
-positions = tr.s*(10/tr.params['radius'])
+positions = tr.s*(radius/tr.params['radius'])
 
 velocities = tr.v
 
-radius = 10
+
 
 def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     mag = np.sqrt(xposition **2 + yposition**2)
     magv = np.sqrt(xvelocity **2 + yvelocity**2)
-    distance = 2*(10 - mag)
+    distance = 2*(radius - mag)
 
     reflection = 0.85
 
     angles = np.arange(0,6.28,0.01)
-    xbound = 10*np.cos(angles) 
-    ybound = 10*np.sin(angles) 
+    xbound = radius*np.cos(angles) 
+    ybound = radius*np.sin(angles) 
     labels=np.zeros(len(angles))
     for i in range(len(angles)):
         magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
@@ -88,7 +88,19 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
         phi = np.arccos((xvelocity*(xbound[i]-xposition)+yvelocity*(ybound[i]-yposition))/(magv*magd))
         if angles[i] > 1.57 and angles[i] < 4.71 and theta > 0.85 and theta < 2.29 and phi < 2.958:
             labels[i]=1
-    sns.scatterplot(x=xbound, y=ybound, hue=labels, ax=axis)
+        elif angles[i] < 1.57 or angles[i] > 4.71:
+            labels[i]=2
+    colors = []
+    for label in labels:
+        if label == 0:
+            colors.append('No Reflection')
+        elif label == 1:
+            colors.append('Reflection')
+        elif label == 2:
+            colors.append('Sanded')
+    sns.scatterplot(x=xbound, y=ybound, hue=colors, palette={'No Reflection': 'dimgrey', 'Reflection': 'lightgrey', 'Sanded': 'darkred'}, ax=axis)
+    axis.legend(loc='upper right')
+    axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
     axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
 # Function to update the frame
 """def update(frame):
@@ -158,7 +170,7 @@ cap = cv2.VideoCapture(video_path)
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 # Create the figure and gridspec
-fig = plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(11, 5))
 gs = GridSpec(1, 2, width_ratios=[1, 1])  # 1 row, 2 columns, video takes 3/4 of the width
 
 # Subplot for the video
@@ -173,15 +185,15 @@ ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 # Create the animation for the additional plot
 #ani_plot = animation.FuncAnimation(fig, update_plot, frames=total_frames, interval=100)
 
-print(plt)
-plt.show()
+#print(plt)
+#plt.show()
 
 # Release the video capture object
 
 
-#writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
 # Assuming `ani` is your animation object
-#ani.save('reflection-visualization-half-7dpf-1.mp4', writer=writer)
+ani.save('reflection-visualization-half-21dpf-1.mp4', writer=writer)
 
 cap.release()

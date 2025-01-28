@@ -108,8 +108,3 @@ def radial_binning(pos, arr):
     print(mean_values)
 
 radial_binning(positions,correlations)
-
-
-
-
-

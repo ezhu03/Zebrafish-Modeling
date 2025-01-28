@@ -19,7 +19,7 @@ def openfile(file, sigma = 1):
                                       smooth_params={'sigma': sigma})
     return tr
 
-
+radius = 5
 def processtr(tr):
     center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
     tr.origin_to(center)
@@ -47,9 +47,19 @@ sc = np.delete(trc.s, [3,6,21], axis = 1)
 vc = np.delete(trc.v, [3,6,21], axis =1)
 ac = np.delete(trc.a, [3,6,21], axis = 1)
 
+sc = sc*trc.params['length_unit']*(2*radius/2048)
+vc = vc*(trc.params['length_unit']/trc.params['time_unit'])*(2*radius/2048)
+ac = ac*(trc.params['length_unit']/(trc.params['time_unit']*trc.params['time_unit']))*(2*radius/2048)
+
+
 sa = np.delete(tra.s, [2], axis = 1)
 va = np.delete(tra.v, [2], axis =1)
 aa = np.delete(tra.a, [2], axis = 1)
+
+sa = sa*trc.params['length_unit']*(2*radius/2048)
+va = va*(trc.params['length_unit']/trc.params['time_unit'])*(2*radius/2048)
+aa = aa*(trc.params['length_unit']/(trc.params['time_unit']*trc.params['time_unit']))*(2*radius/2048)
+
 
 pcircle = np.reshape(sc, (sc.shape[0]*sc.shape[1] , 2))
 vcircle = np.reshape(vc, (vc.shape[0]*vc.shape[1] , 2))
@@ -80,18 +90,19 @@ posann['center'] = (trc.params['radius']/tra.params['radius']) * np.sqrt(posann[
 
 #sns.histplot(data = poscircle, x=0, y=1, stat="density", bins = [20,20], common_norm=True, palette = sns.color_palette("RdBu", 10))
 #plt.show()
-plt.hist2d(pcircle[:, 0], pcircle[: , 1], bins=(20, 20), cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.010)
-plt.xlabel('X-bins')
-plt.ylabel('Y-bins')
+plt.hist2d(pcircle[:, 0], pcircle[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
+#plt.xlabel('X-bins')
+#plt.ylabel('Y-bins')
 plt.title('Heatmap for 25 Fish Clear Circular Tank')
 plt.colorbar(label='Frequency')
 plt.show()
-plt.hist2d(pann[:, 0], pann[: , 1], bins=(20, 20), cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.010)
-plt.xlabel('X-bins')
-plt.ylabel('Y-bins')
+plt.hist2d(pann[:, 0], pann[: , 1], bins=(10, 10), range=[[-1*radius,radius],[-1*radius,radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
+#plt.xlabel('X-bins')
+#plt.ylabel('Y-bins')
 plt.title('Heatmap for 25 Fish Sanded Annulus Tank')
 plt.colorbar(label='Frequency')
 plt.show()
+'''
 sns.histplot(data = poscircle, x='center', bins = 40, binrange = [0,17],label = "circle",stat="density",alpha = 0.5, color="#bfd37a")
 sns.histplot(data = posann, x='center', bins = 40, binrange = [0,17],label ="annulus",stat="density",alpha=0.5, color="#89b2ae")
 plt.title('Position')
@@ -139,4 +150,4 @@ plt.tight_layout()
 
 # Show the plots
 plt.show()
-print(tra.params['radius'])
+print(tra.params['radius'])'''

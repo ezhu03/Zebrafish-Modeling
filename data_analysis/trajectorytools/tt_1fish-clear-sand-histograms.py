@@ -296,7 +296,7 @@ for x in arr:
     dist = []
     
 
-
+    
     center = (0, 0)
 
     # Create circle

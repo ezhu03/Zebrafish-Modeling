@@ -27,10 +27,10 @@ file: path to the numpy file containing the position and velocity data
 video: path to the tracked video file to be displayed
 '''
 
-radius = 10
+radius = 5
 
-file = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-video = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/1fish-1fps-15min-21dpf-clear1_2024-05-21-134623-0000_tracked.avi"
+file = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+video = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/1fish-1fps-15min-21dpf-half1_2024-07-16-122129-0000_tracked.avi"
 
 #file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
 #video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/1fish15min1fps-half-1-21dpf_tracked.avi"
@@ -63,7 +63,7 @@ uses the trajectorytools package to process the data and print out the positions
 returns a useable trajectory object tr
 '''
 def processtr(tr):
-    center, radius = tr.estimate_center_and_radius_from_locations(in_px=True)
+    center, radiusr = tr.estimate_center_and_radius_from_locations(in_px=True)
     tr.origin_to(center)
     tr.new_length_unit(tr.params['body_length_px'], 'BL')
     tr.new_time_unit(tr.params['frame_rate'], 's')
@@ -81,7 +81,7 @@ def processtr(tr):
 
 tr = processtr(tr)
 
-positions = tr.s*(10/tr.params['radius'])
+positions = tr.s*(radius/tr.params['radius'])
 
 velocities = tr.v
 
@@ -98,8 +98,8 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     reflection = 0.85
 
     angles = np.arange(0,6.28,0.01)
-    xbound = 10*np.cos(angles) 
-    ybound = 10*np.sin(angles) 
+    xbound = radius*np.cos(angles) 
+    ybound = radius*np.sin(angles) 
     labels=np.zeros(len(angles))
     for i in range(len(angles)):
         magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
@@ -107,7 +107,14 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
         phi = np.arccos((xvelocity*(xbound[i]-xposition)+yvelocity*(ybound[i]-yposition))/(magv*magd))
         if theta > 0.85 and theta < 2.29 and phi < 2.958:
             labels[i]=1
-    sns.scatterplot(x=xbound, y=ybound, hue=labels, ax=axis)
+    colors = []
+    for label in labels:
+        if label == 0:
+            colors.append('No Reflection')
+        else:
+            colors.append('Reflection')
+    sns.scatterplot(x=xbound, y=ybound, hue=colors, palette={'No Reflection': 'dimgrey', 'Reflection': 'lightgrey'}, ax=axis)
+    axis.legend(loc='upper right')
     axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
 # Function to update the frame
 """def update(frame):
@@ -168,6 +175,7 @@ def update(frame):
     vy = -1*velocities[frame-1][0][1]
     plotReflection(x, y, vx, vy, ax2)
     ax2.set_title('Reflection Visualization')
+        
 
 
 '''
@@ -181,7 +189,7 @@ cap = cv2.VideoCapture(video_path)
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 # Create the figure and gridspec
-fig = plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(11, 5))
 gs = GridSpec(1, 2, width_ratios=[1, 1])  # 1 row, 2 columns, video takes 3/4 of the width
 
 # Subplot for the video
@@ -196,8 +204,8 @@ ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 # Create the animation for the additional plot
 #ani_plot = animation.FuncAnimation(fig, update_plot, frames=total_frames, interval=100)
 
-print(plt)
-plt.show()
+#print(plt)
+#plt.show()
 
 # Release the video capture object
 
