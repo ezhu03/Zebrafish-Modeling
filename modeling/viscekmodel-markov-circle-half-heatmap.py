@@ -4,13 +4,22 @@ from matplotlib.patches import Circle
 import random
 import math
 from time import perf_counter
+import seaborn as sns
 import os
-
+speed_global = 0.5
+noise_global = 0.1
+box_radius = 5
+num_agents = 5
+time = 1000
+const = 1
+radius = 0
+starttime=100
+iterations=100
 class MarkovChain:
     def __init__(self):
         self.transition_matrix = {
-            'A': {'A': 0.01, 'B': 0.99},
-            'B': {'A': 0.2, 'B': 0.8}
+            'A': {'A': 1, 'B': 0},
+            'B': {'A': 1, 'B': 0}
         }
         sampleList = ['A','B']
         self.current_state = random.choices(sampleList, weights=(10, 10), k=1)[0]
@@ -48,8 +57,7 @@ def reflection(r,x,y,vx,vy):
         magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
         theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
         phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
-        if theta > 0.85 and theta < 2.29 and phi < 2.958:
-
+        if angles[i] > 1.57 and angles[i] < 4.71 and theta > 0.85 and theta < 2.29 and phi < 2.958:
             labels[i]=1
         if vx>0:
             curr_angle = np.arctan(vy/vx)
@@ -91,8 +99,8 @@ def update_velocities(positions, velocities, radius, speed, noise):
         current_state = mc[i].next_state()
         #print(current_state)
         if current_state == 'A':
-            speed[i] = 1.5+0.25*np.random.normal()
-            noise[i] = 0.25
+            speed[i] = speed_global+noise_global*np.random.normal()
+            noise[i] = noise_global
         elif current_state == 'B':
             speed[i] = 0.001
             noise[i] = 0.00001
@@ -164,19 +172,12 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 fig, ax = plt.subplots()
-iterations=10000
+
 allxpos = []
 allypos = []
 for a in range(iterations):
-    # Set up the simulation parameters
-    box_radius = 10
-    num_agents = 1
-    speed = 0.1*np.ones((num_agents,1))
-    noise = 0.01*np.ones(num_agents)
-    time = 750
-    const = 100
-    radius = 0
-    starttime=250
+    speed = 0.5*np.ones((num_agents,1))
+    noise = 0.1*np.ones(num_agents)
 
     mc = []
     for i in range(num_agents):
@@ -212,47 +213,61 @@ for a in range(iterations):
                 anglabels = reflection(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
                 # Find indices where the value is 1
                 indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
-                if not indices_with_1:
-                    pass
-                else:
+
                 # Pick a random index where the value is 1
                     
 
 
 
-                    veladj = np.random.normal(size=2) * noise[j] * distance * 0.01
-                    xbord = distance*velocities[j][0]+positions[j][0]
-                    ybord = distance*velocities[j][1]+positions[j][1]
+                veladj = np.random.normal(size=2) * noise[j] * distance * 0.01
+                xbord = distance*velocities[j][0]+positions[j][0]
+                ybord = distance*velocities[j][1]+positions[j][1]
 
-                    dirr = np.cross([xbord,ybord],velocities[j])
-                    if xbord > 0:
+                dirr = np.cross([xbord,ybord],velocities[j])
+                if xbord > 0 and not indices_with_1:
 
-                        if dirr>0 and velocities[j][0]>0:
-                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
-                        elif dirr>0:
-                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+                    if dirr>0 and velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+                    elif dirr>0:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
 
-                        elif velocities[j][0]>0:
-                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
-                        else:
-                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
-                                
-                        velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
-                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                    elif velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
                     else:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                            
+                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                elif indices_with_1:
+                    
+                    random_index = random.choice(indices_with_1)
+                    angle = random_index/100
+                    rxn = np.cos(angle)*box_radius
+                    ryn = np.sin(angle)*box_radius
+                    vector =[rxn - positions[j][0],ryn - positions[j][1]]
+                    vector = vector/np.linalg.norm(vector)
+                    velocities[j]=speed[j]*vector+ veladj
+                else:
+                    if dirr>0 and velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
+                    elif dirr>0:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.5, 0.25, 1)
 
-                        random_index = random.choice(indices_with_1)
-                        angle = random_index/100
-
-                        vxn = np.cos(angle)*distance*0.01
-                        vyn = np.sin(angle)*distance*0.01
-
-                        vector =[vxn,vyn]
-                        velocities[j]=vector+ veladj
+                    elif velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                    else:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.5, 0.25, 1)
+                            
+                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
                 
         newpositions = positions + velocities
 
@@ -267,9 +282,9 @@ for a in range(iterations):
                 allxpos.append(p[0])
                 allypos.append(p[1])
         # Plot the agents as arrows
-        '''ax.clear()
+        ax.clear()
         circle = Circle([0,0], box_radius, edgecolor='b', facecolor='none')
-        plt.gca().add_patch(circle)'''
+        plt.gca().add_patch(circle)
         vstandard = np.random.uniform(size=(num_agents, 2))
         for j in range(num_agents):
             vs = np.sqrt(velocities[j,0]**2 + velocities[j,1]**2)
@@ -277,11 +292,11 @@ for a in range(iterations):
             vstandard[j][1]=velocities[j,1]/vs
 
         
-        '''ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
+        ax.quiver(positions[:, 0], positions[:, 1], vstandard[:, 0], vstandard[:, 1], color='red',
                 units='xy', scale=1, headwidth=2)
         ax.set_xlim(-box_radius, box_radius)
         ax.set_ylim(-box_radius, box_radius)
-        plt.pause(0.005)'''
+        #plt.pause(0.05)
         #t2 = perf_counter()
         #print(t2-t1)
 
@@ -292,20 +307,20 @@ for a in range(iterations):
     #    ypositions.append(position[0,1])
 
 
-plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-10,10],[-10,10]], cmap=plt.cm.jet, density=True, vmin = 0, vmax = 0.01)
+plt.hist2d(allxpos, allypos, bins=(10, 10), range=[[-1*box_radius,box_radius],[-1*box_radius,box_radius]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
 
 
 # Add labels and a colorbar
 plt.xlabel('X-bins')
 plt.ylabel('Y-bins')
-plt.xlim(-10, 10)
-plt.ylim(-10, 10)
+plt.xlim(-box_radius, box_radius)
+plt.ylim(-box_radius, box_radius)
 plt.title('Heatmap for Half Tank')
 plt.colorbar(label='Frequency')
 
 data = np.array([allxpos,allypos])
 os.chdir('modeling/data')
-file_name = 'const%sradius%sboxradius%siter%sfish%s.npz'%(const,radius,box_radius,iterations,num_agents)
+file_name = 'const%sradius%sboxradius%siter%sfish%shalf.npz'%(const,radius,box_radius,iterations,num_agents)
 with open(file_name, 'w') as file:
     pass
 np.savez(file_name, x=allxpos, y=allypos)

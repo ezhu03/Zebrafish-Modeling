@@ -189,7 +189,7 @@ for x in arr:
 
     
     phalf = np.concatenate(processedpos,axis=0)
-    print(phalf.shape)
+    #print(phalf.shape)
     phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
 
     center = (0, 0)
@@ -214,7 +214,7 @@ for x in arr:
 
 
     vhalf = np.concatenate(processedvel,axis=0)
-    print(vhalf.shape)
+    #print(vhalf.shape)
     vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1], 2])
     dist = []
     
@@ -241,7 +241,7 @@ for x in arr:
     phalf['r'] = np.sqrt(phalf['x']**2 + phalf['y']**2)
     phalf['y'] = -1 * phalf['y']
     phalf['theta'] = np.arctan2(-1*phalf['x'],phalf['y'])
-    print(phalf)
+    #print(phalf)
     #outputs.append(phalf)
 
     vhalf= pd.DataFrame(vhalf,columns=['vx','vy'])
@@ -249,12 +249,14 @@ for x in arr:
     vhalf['spd'] = np.sqrt(vhalf['vx']**2 + vhalf['vy']**2)
     vhalf['vy'] = -1 * vhalf['vy']
     vhalf['vtheta'] = np.arctan2(-1*vhalf['vx'],vhalf['vy'])
-    
-    print('avg spd: ' + str(np.mean(vhalf['spd'])))
+    plt.figure()
+    plt.title('avg spd: ' + str(np.mean(vhalf['spd'])))
+    plt.hist(vhalf['spd'], bins=20, range=[0, 2], density=True)
+    plt.show()
     #voutputs.append(vhalf)
 
     half_df =  pd.concat([phalf, vhalf], axis=1)
-    print(half_df)
+    #print(half_df)
     half_df['vrx'] = half_df['vx']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
     half_df['vry'] = half_df['vy']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
     half_df['vr'] = half_df['spd']*(half_df['x']*half_df['vx']+half_df['y']*half_df['vy'])/(half_df['r']*half_df['spd'])
@@ -263,14 +265,15 @@ for x in arr:
     half_df['vty'] = half_df['vy']-half_df['vry']
     half_df['spd_t'] = np.sqrt(half_df['vtx']**2+half_df['vty']**2)
     phi_temp = np.arccos((-np.cos(half_df['theta'])*half_df['vx']-np.sin(half_df['theta']*half_df['vy']))/half_df['spd'])
-    print(phi_temp)
+    #print('avg_speed at ', x, 'dpf: ', half_df['spd'])
+    #print(phi_temp)
     for i in range(len(phi_temp)):
         if phi_temp[i] > np.pi/2:
             phi_temp[i] = np.pi-phi_temp[i]
     half_df['phi'] = phi_temp
     half_df['refl_prop'] = refl_prop
     half_df['side'] = half_df['theta'].apply(lambda x: 'clear' if x > 0 else 'sanded')
-    print(half_df['side'])
+    #print(half_df['side'])
 
     turn_times_s = []
     turn_times_c = []
