@@ -157,20 +157,14 @@ for x in arr:
             file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
             file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
             file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half4-crispr/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half5-crispr/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
-            file9 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear4-crispr/trajectories/validated.npy"
-            file10 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear5-crispr/trajectories/validated.npy"
-            file11 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
-            file12 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
-            file13 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
-            file14 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded4-crispr/trajectories/validated.npy"
-            file15 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded5-crispr/trajectories/validated.npy"
+            file4 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
+            file5 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
+            file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
+            file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
+            file8 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
+            file9 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
             
-            files = [file1, file2, file3, file4, file5, file6, file7, file8, file9, file10, file11, file12, file13, file14, file15]
+            files = [file1, file2, file3, file4, file5, file6, file7, file8, file9]
 
 
     def count_ones(array):
