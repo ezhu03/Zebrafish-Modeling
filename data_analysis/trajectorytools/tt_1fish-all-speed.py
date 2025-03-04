@@ -362,7 +362,8 @@ for x in arr:
     half_df['phi'] = phi_temp
     half_df['refl_prop'] = refl_prop
     half_df['side'] = half_df['theta'].apply(lambda x: 'clear' if x > 0 else 'sanded')
-    filename = 'speeddistribution' + str(x) + 'dpf.npy'
+    #filename = 'speeddistribution' + str(x) + 'dpf.npy'
+    filename = 'speeddistribution' + str(x) + 'dpf_blind.npy'
     np.save(filename, np.array(half_df["spd"]))
     #print(half_df['side'])
 '''

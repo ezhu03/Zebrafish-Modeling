@@ -1,0 +1,17 @@
+{
+    "version": "5.2.11",
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\5.21.24\\1fish-1fps-15min-21dpf-clear3_2024-05-21-142221-0000.avi"
+    ],
+    "frames_per_second": 15,
+    "body_length": 116.0,
+    "stats": {
+        "estimated_accuracy": 1.0
+    },
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {},
+    "length_unit": null
+}

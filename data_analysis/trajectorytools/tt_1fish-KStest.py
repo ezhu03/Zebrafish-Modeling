@@ -6,20 +6,21 @@ from numpy import load
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 #from scipy import stats
-from scipy.stats import ks_2samp
+from scipy.stats import ks_2samp, gaussian_kde
 import seaborn as sns
 import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
-borders = ['Sanded','Sanded']
-days = [1,2]
+borders = ['Sanded','Clear']
+days = [2,2]
 vision = ['Y','Y']
 outputs = []
 voutputs = []
 arrdays = [7,14,21]
-l1 = 'CDF of Blind ' + str(borders[0]) + ' at ' + str(arrdays[days[0]]) + 'dpf'
-l2 = 'CDF of Blind ' + str(borders[1]) + ' at ' + str(arrdays[days[1]]) + 'dpf'
+radius = 5
+l1 = 'CDF of ' + str(borders[0]) + ' at ' + str(arrdays[days[0]]) + 'dpf'
+l2 = 'CDF of ' + str(borders[1]) + ' at ' + str(arrdays[days[1]]) + 'dpf'
 for i in range(len(borders)):
     print(i)
     val = borders[i]
@@ -40,11 +41,11 @@ for i in range(len(borders)):
     if x==0:
         break
     if x == 7:
-        file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-1/trajectories/validated.npy"
-        file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-2/trajectories/validated.npy"
-        file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-3/trajectories/validated.npy"
-        file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-4/trajectories/validated.npy"
-        file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-clear-5/trajectories/validated.npy"
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
+        file4 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/validated.npy"
+        file5 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
         file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
         file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
@@ -243,13 +244,13 @@ for i in range(len(borders)):
     def plotReflection(xposition, yposition, xvelocity, yvelocity):
         mag = np.sqrt(xposition **2 + yposition**2)
         magv = np.sqrt(xvelocity **2 + yvelocity**2)
-        distance = 2*(10 - mag)
+        distance = 2*(radius - mag)
 
         reflection = 0.85
 
         angles = np.arange(0,6.28,0.01)
-        xbound = 10*np.cos(angles) 
-        ybound = 10*np.sin(angles) 
+        xbound = radius*np.cos(angles) 
+        ybound = radius*np.sin(angles) 
         labels=np.zeros(len(angles))
         for i in range(len(angles)):
             magd = np.sqrt((xbound[i]-xposition)**2+(ybound[i]-yposition)**2)
@@ -263,11 +264,10 @@ for i in range(len(borders)):
     correlations = []
     pos_arr = []
     times=10
-    radius=10
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-        pos1= tr.s*tr.params['length_unit']*(20/2048)
+        pos1= tr.s*tr.params['length_unit']*(2*radius/2048)
 
         pos1 = np.array(pos1.reshape(pos1.shape[0],2))
 
@@ -297,7 +297,7 @@ for i in range(len(borders)):
     for temp in trs:
         processed_temp = processtr(temp)
         border_turning(processed_temp)
-        temppos = processed_temp.s*processed_temp.params['length_unit']*(20/2048)
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(20/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)
@@ -518,18 +518,21 @@ for output in outputs:
 print(rvals)
 subsample_size = 100
 count = 0
+p_values = []
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     x = np.random.choice(rvals[0], subsample_size, replace=False)
     y = np.random.choice(rvals[1], subsample_size, replace=False)
     ks_statistic, p_value = ks_2samp(x, y)
 
+    p_values.append(p_value)
+
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
     #print(f"P-Value: {p_value}")
 
     # Interpret the results
-    if p_value < 0.01:
+    if p_value < 0.001:
         #print("The two distributions are significantly different.")
         count+=1
     #else:
@@ -538,31 +541,136 @@ for i in range(1000):
 print(f"Confidence: {count}")
 x_sorted = np.sort(rvals[0])
 y_sorted = np.sort(rvals[1])
-
+colors = []
+for i in range(2):
+    border = borders[i]
+    x = arrdays[days[i]]
+    if border == 'Clear':
+        if x == 7:
+            colors.append('darkblue')
+        if x == 14: 
+            colors.append('blue')
+        if x == 21:
+            colors.append('lightblue')
+    elif border == 'Sanded':
+        if x == 7:
+            colors.append('darkred')
+        if x == 14: 
+            colors.append('red')
+        if x == 21:
+            colors.append('lightsalmon')
+    else:
+        if x == 7:
+            colors.append('darkpurple')
+        if x == 14: 
+            colors.append('purple')
+        if x == 21:
+            colors.append('violet')
 # Compute the empirical cumulative distribution function (CDF)
 cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
 cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
+xx = np.sort(np.unique(np.concatenate([x_sorted, y_sorted])))
 
+# Compute the empirical cdf values at these grid points.
+# For a given point, the cdf is the fraction of sample values <= that point.
+F_x = np.searchsorted(x_sorted, xx, side='right') / len(x_sorted)
+F_y = np.searchsorted(y_sorted, xx, side='right') / len(y_sorted)
+
+# Compute the area between the two curves using the trapezoidal rule.
+area = np.trapz(np.abs(F_x - F_y), xx)
+
+print("Area between the two cdfs:", area)
 # Plot the CDFs of both samples
-plt.figure(figsize=(8, 6))
-plt.step(x_sorted, cdf_x, label=l1, where='post')
-plt.step(y_sorted, cdf_y, label=l2, where='post')
-plt.title('Empirical Cumulative Distribution Functions (CDF)')
-plt.xlabel('Value')
+plt.figure(figsize=(4, 4))
+plt.step(x_sorted, cdf_x,color = colors[0],label=l1, where='post')
+plt.step(y_sorted, cdf_y, color = colors[1],label=l2, where='post')
+plt.xlabel('Radius')
 plt.ylabel('CDF')
-plt.xlim(0,10)
+plt.xlim(0,radius)
 plt.legend()
 plt.grid(True)
 
 # Show the plot
 plt.show()
 
+plt.figure(figsize=(4, 4))
+plt.boxplot(p_values, vert=True, patch_artist=True,showfliers=False)
+# Customize plot
+plt.title("Box-and-Whisker Plot")
+plt.ylabel("Values")
+plt.show()
+
+
+
+# Plot KDEs for both distributions
+sns.kdeplot(x_sorted, label='Distribution 1', shade=True,bw_method=0.2)
+sns.kdeplot(y_sorted, label='Distribution 2', shade=True,bw_method=0.2)
+
+plt.xlabel('Radius')
+plt.ylabel('Density')
+plt.title('Kernel Density Estimation of Radial Distributions')
+plt.legend()
+plt.show()
+# Number of samples to draw from each KDE (adjust as needed)
+n_samples = 100
+kde_x = gaussian_kde(x_sorted,bw_method=0.2)
+kde_y = gaussian_kde(y_sorted,bw_method=0.2)
+
 count = 0
+p_values=[]
+for i in range(1000):
+    # Perform the Kolmogorov-Smirnov test
+    samples_x = kde_x.resample(n_samples).flatten()  # flatten to 1D array
+    samples_y = kde_y.resample(n_samples).flatten()
+    ks_statistic, p_value = ks_2samp(samples_x, samples_y)
+    p_values.append(p_value)
+
+    # Output the results
+    #print(f"KS Statistic: {ks_statistic}")
+    #print(f"P-Value: {p_value}")
+    #print(ks_statistic)
+    # Interpret the results
+    if p_value < 0.01:
+        #print("The two distributions are significantly different.")
+        count+=1
+print(f"Confidence: {count}")
+# Show the plot
+plt.show()
+plt.figure(figsize=(2, 6))
+plt.violinplot(p_values, vert=True,showextrema=False)
+#plt.yscale('log')
+plt.ylim(0,0.5)
+plt.xlim(0.5,1.5)
+plt.axhline(y=0.01, color='red', linestyle='--', linewidth=2)
+# Customize plot
+#plt.title(violin_title)
+plt.ylabel("Values")
+plt.show()
+
+# Sort the samples
+x_sorted = np.sort(tvals[0])
+y_sorted = np.sort(tvals[1])
+
+# Compute the empirical cumulative distribution function (CDF)
+cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
+cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
+
+# Plot the CDFs of both samples
+plt.figure(figsize=(4, 4))
+plt.step(x_sorted, cdf_x, label=l1, color = colors[0], where='post')
+plt.step(y_sorted, cdf_y, label=l2, color = colors[1], where='post')
+plt.xlabel('Angle')
+plt.ylabel('CDF')
+plt.legend()
+plt.grid(True)
+count = 0
+p_values = []
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     x = np.random.choice(tvals[0], subsample_size, replace=False)
     y = np.random.choice(tvals[1], subsample_size, replace=False)
     ks_statistic, p_value = ks_2samp(x, y)
+    p_values.append(p_value)
 
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
@@ -576,24 +684,6 @@ for i in range(1000):
         #print("The two distributions are not significantly different.")
 # Sort the samples
 print(f"Confidence: {count}")
-# Sort the samples
-x_sorted = np.sort(tvals[0])
-y_sorted = np.sort(tvals[1])
-
-# Compute the empirical cumulative distribution function (CDF)
-cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
-cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
-
-
-# Plot the CDFs of both samples
-plt.figure(figsize=(8, 6))
-plt.step(x_sorted, cdf_x, label=l1, where='post')
-plt.step(y_sorted, cdf_y, label=l2, where='post')
-plt.title('Empirical Cumulative Distribution Functions (CDF)')
-plt.xlabel('Value')
-plt.ylabel('CDF')
-plt.legend()
-plt.grid(True)
 
 # Show the plot
 plt.show()

@@ -1,0 +1,127 @@
+{
+    "number_of_error_frames": 4,
+    "estimated_accuracy": 1.0,
+    "accumulation_trial": 0,
+    "identities_labels": [
+        "1"
+    ],
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\5.21.24\\1fish-1fps-15min-21dpf-sanded1_2024-05-21-143926-0000.avi"
+    ],
+    "number_of_animals": 1,
+    "intensity_ths": [
+        24,
+        255
+    ],
+    "area_ths": [
+        1200,
+        2500
+    ],
+    "name": "1fish-1fps-15min-21dpf-sanded1",
+    "tracking_intervals": [
+        [
+            0,
+            899
+        ]
+    ],
+    "resolution_reduction": 1.0,
+    "roi_list": [
+        "+ Ellipse {'center': [1013, 1035], 'axes': [1023, 1033], 'angle': 20}",
+        "- Ellipse {'center': [1757, 397], 'axes': [14, 246], 'angle': 151}",
+        "- Polygon [[1948.1, 815.0], [1973.6, 815.0], [1970.2, 1042.7], [2020.2, 1049.5]]",
+        "- Polygon [[1907.4, 1400.5], [1840.0, 1533.0], [1853.1, 1541.6], [1924.0, 1405.7]]",
+        "- Ellipse {'center': [1128, 1997], 'axes': [18, 101], 'angle': 89}",
+        "- Polygon [[515.2, 1847.8], [515.2, 1856.2], [748.2, 1939.4], [748.2, 1950.2]]",
+        "- Polygon [[757.2, 1941.2], [757.8, 1959.8], [1028.5, 1989.7], [1028.5, 2009.5]]",
+        "- Polygon [[176.4, 1516.1], [381.8, 1730.5], [376.4, 1744.3]]",
+        "- Polygon [[214.7, 1579.0], [247.6, 1578.4], [359.0, 1716.1], [346.4, 1729.9]]",
+        "- Polygon [[557.0, 155.6], [560.0, 170.1], [897.2, 41.4], [901.0, 65.9]]",
+        "- Polygon [[639.5, 121.8], [650.3, 134.1], [803.6, 81.2]]",
+        "- Polygon [[1253.2, 1970.4], [1266.9, 1996.2], [1562.1, 1832.4], [1583.4, 1858.6]]",
+        "- Polygon [[1562.1, 1818.6], [1583.4, 1843.6], [1749.7, 1652.3], [1767.2, 1677.3]]",
+        "- Polygon [[1915.6, 1372.8], [1950.6, 1377.8], [1983.2, 1085.3], [2021.9, 1085.3]]",
+        "- Ellipse {'center': [1472, 1892], 'axes': [40, 101], 'angle': 55}"
+    ],
+    "use_bkg": true,
+    "knowledge_transfer_folder": null,
+    "check_segmentation": false,
+    "identity_transfer": false,
+    "track_wo_identities": false,
+    "frames_per_episode": 500,
+    "background_subtraction_stat": "median",
+    "number_of_frames_for_background": 50,
+    "number_of_parallel_workers": 7,
+    "data_policy": "idmatcher.ai",
+    "id_image_size": [
+        100,
+        100,
+        1
+    ],
+    "protocol3_action": "ask",
+    "convert_trajectories_to_csv_and_json": true,
+    "add_time_column_to_csv": false,
+    "exclusive_rois": false,
+    "identity_transfer_succeded": false,
+    "bounding_box_images_in_ram": false,
+    "version": "5.2.11",
+    "accumulation_statistics_data": [],
+    "original_width": 2048,
+    "original_height": 2048,
+    "frames_per_second": 15,
+    "number_of_frames": 899,
+    "session_folder": "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\5.21.24\\session_1fish-1fps-15min-21dpf-sanded1",
+    "first_frame_first_global_fragment": [],
+    "identities_groups": {},
+    "setup_points": {},
+    "general_timer": {
+        "name": "Tracking session",
+        "start_time": "2024-05-23T11:02:48.300082",
+        "finish_time": "2024-05-23T11:03:02.386966"
+    },
+    "detect_animals_timer": {
+        "name": "Animal detection",
+        "start_time": "2024-05-23T11:02:48.300082",
+        "finish_time": "2024-05-23T11:03:00.566601"
+    },
+    "crossing_detector_timer": {
+        "name": "Crossing detection",
+        "start_time": "2024-05-23T11:03:00.681966",
+        "finish_time": "2024-05-23T11:03:01.753459"
+    },
+    "fragmentation_timer": {
+        "name": "Fragmentation",
+        "start_time": "2024-05-23T11:03:01.784764",
+        "finish_time": "2024-05-23T11:03:01.831599"
+    },
+    "tracking_timer": {
+        "name": "Tracking",
+        "start_time": "2024-05-23T11:03:01.983355",
+        "finish_time": "2024-05-23T11:03:01.983355"
+    },
+    "protocol2_timer": {
+        "name": "Protocol 2"
+    },
+    "protocol3_pretraining_timer": {
+        "name": "Protocol 3 pre-training"
+    },
+    "protocol3_accumulation_timer": {
+        "name": "Protocol 3 accumulation"
+    },
+    "identify_timer": {
+        "name": "Identification"
+    },
+    "impossible_jumps_timer": {
+        "name": "Impossible jumps correction"
+    },
+    "crossing_solver_timer": {
+        "name": "Crossings solver"
+    },
+    "create_trajectories_timer": {
+        "name": "Trajectories creation",
+        "start_time": "2024-05-23T11:03:02.183363",
+        "finish_time": "2024-05-23T11:03:02.386966"
+    },
+    "median_body_length": 142.0,
+    "n_animals": 1,
+    "length_calibrations": []
+}

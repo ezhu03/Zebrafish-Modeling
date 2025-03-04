@@ -1,0 +1,16 @@
+{
+    "version": "5.2.7",
+    "video_paths": [
+        "E:\\Zebrafish\\AVI\\2.28.24\\1fish15min1fps-half-3_2024-02-28-144953-0000.avi"
+    ],
+    "frames_per_second": 15,
+    "body_length": 48.0,
+    "stats": {
+        "estimated_accuracy": 1.0
+    },
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {}
+}
