@@ -8,6 +8,7 @@ import os
 import seaborn as sns
 
 day = int(input('dpf: '))
+sv = input('save (Y/N): ')
 spds = np.load('speeddistribution'+str(day)+'dpf.npy')
 
 class MarkovChain:
@@ -61,19 +62,19 @@ def reflection(r,x,y,vx,vy):
         else:
             curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
             
-        if dirr > 0:
-            val = int(curr_angle*100)
-            for i in range(314):
-                val%=628
-                labels[val]=0
-                val-=1
+    if dirr > 0:
+        val = int(curr_angle*100)
+        for i in range(314):
+            val%=628
+            labels[val]=0
+            val-=1
                 
-        else:
-            val = int(curr_angle*100)
-            for i in range(314):
-                val%=628
-                labels[val]=0
-                val+=1
+    else:
+        val = int(curr_angle*100)
+        for i in range(314):
+            val%=628
+            labels[val]=0
+            val+=1
                 
     return labels
 
@@ -175,10 +176,10 @@ for a in range(iterations):
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 5
+    const = 3
     radius = 0
     starttime=300
-    noise_ratio = 0.3
+    noise_ratio = 0
 
     mc = []
     for i in range(num_agents):
@@ -207,11 +208,14 @@ for a in range(iterations):
         for j in range(num_agents):
             distance =  np.abs(boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1]))
             weight = math.exp(-const*(distance)/box_radius)
-       #print(weight)
-            if weight>1: 
-                weight = 1
+            
+            if weight<1: 
+                doing = "nothing"
+            else:
+                weight = int(1)
         #weight = math.exp(-const*(distance*speed[j])/box_radius)
             sample = [0, 1]
+            print(weight)
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
             
@@ -328,11 +332,12 @@ plt.ylim(-5, 5)
 arrsize = len(allxpos)
 data = np.array([allxpos,allypos]).T
 print(data)
-os.chdir('modeling/data')
-file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_half.npy'%(const,radius,box_radius,iterations,num_agents,day)
-with open(file_name, 'w') as file:
-    pass
-np.save(file_name, data)
+if sv == "Y":
+    os.chdir('modeling/data')
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_half.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    with open(file_name, 'w') as file:
+        pass
+    np.save(file_name, data)
 # Show the plot
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))

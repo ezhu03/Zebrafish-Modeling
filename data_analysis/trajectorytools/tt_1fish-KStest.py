@@ -593,18 +593,11 @@ plt.grid(True)
 # Show the plot
 plt.show()
 
-plt.figure(figsize=(4, 4))
-plt.boxplot(p_values, vert=True, patch_artist=True,showfliers=False)
-# Customize plot
-plt.title("Box-and-Whisker Plot")
-plt.ylabel("Values")
-plt.show()
-
 
 
 # Plot KDEs for both distributions
-sns.kdeplot(x_sorted, label='Distribution 1', shade=True,bw_method=0.2)
-sns.kdeplot(y_sorted, label='Distribution 2', shade=True,bw_method=0.2)
+sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
+sns.kdeplot(y_sorted, color = colors[1],label='Distribution 2', fill=True,bw_method=0.25)
 
 plt.xlabel('Radius')
 plt.ylabel('Density')
@@ -613,18 +606,19 @@ plt.legend()
 plt.show()
 # Number of samples to draw from each KDE (adjust as needed)
 n_samples = 100
-kde_x = gaussian_kde(x_sorted,bw_method=0.2)
-kde_y = gaussian_kde(y_sorted,bw_method=0.2)
+kde_x = gaussian_kde(x_sorted,bw_method=0.25)
+kde_y = gaussian_kde(y_sorted,bw_method=0.25)
 
 count = 0
 p_values=[]
+D_values=[]
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     samples_x = kde_x.resample(n_samples).flatten()  # flatten to 1D array
     samples_y = kde_y.resample(n_samples).flatten()
     ks_statistic, p_value = ks_2samp(samples_x, samples_y)
     p_values.append(p_value)
-
+    D_values.append(ks_statistic)
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
     #print(f"P-Value: {p_value}")
@@ -636,15 +630,45 @@ for i in range(1000):
 print(f"Confidence: {count}")
 # Show the plot
 plt.show()
-plt.figure(figsize=(2, 6))
-plt.violinplot(p_values, vert=True,showextrema=False)
-#plt.yscale('log')
-plt.ylim(0,0.5)
-plt.xlim(0.5,1.5)
+
+pos_left = [0.7, 1.3]   # positions for the violins/boxplots
+fig, ax = plt.subplots(figsize=(4,6))
+
+# Create the violin plots
+parts = ax.violinplot([p_values, D_values], vert=True, showextrema=False, positions=pos_left)    
+colors = ['blue', 'green']
+for i, pc in enumerate(parts['bodies']):
+    pc.set_facecolor(colors[i])
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+# Overlay the box plots to show quartiles and the median
+boxplot = ax.boxplot([p_values, D_values],
+                     positions=pos_left,
+                     widths=0.1,
+                     patch_artist=True,
+                     showfliers=False,
+                     vert=True)
+
+# Customize the box plots (optional)
+for patch in boxplot['boxes']:
+    patch.set_facecolor('white')  # fill color
+    patch.set_edgecolor('black')
+for median in boxplot['medians']:
+    median.set_color('black')
+for whisker in boxplot['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot['caps']:
+    cap.set_color('black')
+
+# Set x-axis ticks and labels
+ax.set_xticks(pos_left)
+ax.set_xticklabels(["p-values", "D-statistic"])
+ax.set_ylim(0, 0.5)
+
+# Add a horizontal line at y=0.01
 plt.axhline(y=0.01, color='red', linestyle='--', linewidth=2)
-# Customize plot
-#plt.title(violin_title)
-plt.ylabel("Values")
+
+#plt.title("Violin Plot with Embedded Box Plot")
 plt.show()
 
 # Sort the samples
@@ -686,4 +710,79 @@ for i in range(1000):
 print(f"Confidence: {count}")
 
 # Show the plot
+plt.show()
+# Plot KDEs for both distributions
+sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
+sns.kdeplot(y_sorted, color = colors[1],label='Distribution 2', fill=True,bw_method=0.25)
+
+plt.xlabel('Radius')
+plt.ylabel('Density')
+plt.title('Kernel Density Estimation of Radial Distributions')
+plt.legend()
+plt.show()
+# Number of samples to draw from each KDE (adjust as needed)
+n_samples = 100
+kde_x = gaussian_kde(x_sorted,bw_method=0.25)
+kde_y = gaussian_kde(y_sorted,bw_method=0.25)
+
+count = 0
+p_values=[]
+D_values=[]
+for i in range(1000):
+    # Perform the Kolmogorov-Smirnov test
+    samples_x = kde_x.resample(n_samples).flatten()  # flatten to 1D array
+    samples_y = kde_y.resample(n_samples).flatten()
+    ks_statistic, p_value = ks_2samp(samples_x, samples_y)
+    p_values.append(p_value)
+    D_values.append(ks_statistic)
+    # Output the results
+    #print(f"KS Statistic: {ks_statistic}")
+    #print(f"P-Value: {p_value}")
+    #print(ks_statistic)
+    # Interpret the results
+    if p_value < 0.01:
+        #print("The two distributions are significantly different.")
+        count+=1
+print(f"Confidence: {count}")
+# Show the plot
+plt.show()
+
+pos_left = [0.7, 1.3]   # positions for the violins/boxplots
+fig, ax = plt.subplots(figsize=(4,6))
+
+# Create the violin plots
+parts = ax.violinplot([p_values, D_values], vert=True, showextrema=False, positions=pos_left)    
+colors = ['blue', 'green']
+for i, pc in enumerate(parts['bodies']):
+    pc.set_facecolor(colors[i])
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+# Overlay the box plots to show quartiles and the median
+boxplot = ax.boxplot([p_values, D_values],
+                     positions=pos_left,
+                     widths=0.1,
+                     patch_artist=True,
+                     showfliers=False,
+                     vert=True)
+
+# Customize the box plots (optional)
+for patch in boxplot['boxes']:
+    patch.set_facecolor('white')  # fill color
+    patch.set_edgecolor('black')
+for median in boxplot['medians']:
+    median.set_color('black')
+for whisker in boxplot['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot['caps']:
+    cap.set_color('black')
+
+# Set x-axis ticks and labels
+ax.set_xticks(pos_left)
+ax.set_xticklabels(["p-values", "D-statistic"])
+ax.set_ylim(0, 0.5)
+
+# Add a horizontal line at y=0.01
+plt.axhline(y=0.01, color='red', linestyle='--', linewidth=2)
+
+#plt.title("Violin Plot with Embedded Box Plot")
 plt.show()

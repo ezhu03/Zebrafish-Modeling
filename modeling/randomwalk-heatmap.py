@@ -11,10 +11,11 @@ import pandas as pd
 import matplotlib.animation as animation
 
 day = int(input('dpf: '))
-spds = np.load('speeddistribution'+str(day)+'dpf.npy')
+spds = np.load('speeddistribution'+str(day)+'dpf_blind.npy')
 
 num = 10  # Number of particles
-time = 900  # Time steps
+start = 300
+time = 1200  # Time steps
 
 positions = [[] for _ in range(num)]  # Store paths for all particles
 
@@ -26,9 +27,9 @@ def bounded_gaussian(mean=0, std=1, lower=-5, upper=5):
 
 def random_walk_within_circle(radius=10, time_steps=1000, particle_index=0):
     x, y = bounded_gaussian(), bounded_gaussian()
-    positions[particle_index].append((x, y))
+    #positions[particle_index].append((x, y))
 
-    for _ in range(time_steps):
+    for t in range(time_steps):
         step_size = spds[np.random.randint(0, len(spds))]
         angle = np.random.uniform(0, 2 * np.pi)
         dx = step_size * np.cos(angle)
@@ -39,13 +40,14 @@ def random_walk_within_circle(radius=10, time_steps=1000, particle_index=0):
 
         if new_x**2 + new_y**2 <= radius**2:
             x, y = new_x, new_y
-        positions[particle_index].append((x, y))
+        if t >= start:
+            positions[particle_index].append((x, y))
     # Define file path
     output_dir = './modeling/data/randomwalk/'  # Change to relative path for better portability
     os.makedirs(output_dir, exist_ok=True)  # Create directory if it doesn't exist
 
 # Generate file name
-    pos_file = os.path.join(output_dir, f'positions{day}dpf{particle_index}.npy')
+    pos_file = os.path.join(output_dir, f'positions{day}dpf{particle_index}_blind.npy')
     # Save the file
     with open(pos_file, 'wb') as f:
         np.save(f, np.array(positions[particle_index]))
@@ -81,7 +83,7 @@ def update(frame):
     time_text.set_text(f'Time: {frame}')
     return scat, time_text
 
-ani = animation.FuncAnimation(fig, update, frames=time, interval=10, blit=False, repeat=False)
+ani = animation.FuncAnimation(fig, update, frames=time-start, interval=10, blit=False, repeat=False)
 
 plt.show()
     
