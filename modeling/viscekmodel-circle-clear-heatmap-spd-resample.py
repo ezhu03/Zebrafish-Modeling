@@ -10,9 +10,8 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 
 day = int(input('dpf: '))
-sv = input('save (Y/N): ')
 spds = np.load('speeddistribution'+str(day)+'dpf.npy')
-
+sv = input('save (Y/N): ')
 class MarkovChain:
     def __init__(self):
         self.transition_matrix = {
@@ -40,28 +39,17 @@ def boundary_distance(r,x,y,vx, vy):
     return (-b+math.sqrt(np.abs(b**2-4*a*c)))/(2*a)
 
 def reflection(r,x,y,vx,vy):
-    distance = boundary_distance(r,x,y,vx,vy)
     magv = np.sqrt(vx **2 + vy**2)
     angles = np.arange(0,6.28,0.01)
     xbound = r*np.cos(angles) 
     ybound = r*np.sin(angles) 
     labels=np.zeros(len(angles))
-    xbord = distance*vx+x
-    ybord = distance*vy+y
-    dirr = np.cross([xbord,ybord],[vx,vy])
     for i in range(len(angles)):
         magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
         theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
         phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
-        if angles[i] > 1.57 and angles[i] < 4.71 and theta > 0.85 and theta < 2.29 and phi < 2.958:
+        if theta > 0.85 and theta < 2.29 and phi < 2.958:
             labels[i]=1
-        if vx>0:
-            curr_angle = np.arctan(vy/vx)
-            if curr_angle <0:
-                curr_angle = 2*np.pi+curr_angle
-        else:
-            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                
     return labels
 
 # Define a function to update the velocities of the agents
@@ -109,7 +97,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     normv = np.linalg.norm(velocities, axis=1)
     normv[normv == 0] = 1  # Avoid division by zero
     for i in range(num_agents):
-        velocities[i] = velocities[i]/normv[i] * speed[i] * np.random.uniform()
+        velocities[i] = velocities[i]/normv[i] * speed[i]
     #Normalize the direction and set the velocity of each agent
     norm = np.linalg.norm(mean_direction, axis=1)
     norm[norm == 0] = 1  # Avoid division by zero
@@ -150,23 +138,22 @@ def update_velocities(positions, velocities, radius, speed, noise):
     
     return velocities
 # Run the simulation and display the results
-fig, ax = plt.subplots()
+
 iterations=10
 allxpos = []
 allypos = []
 for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 5
-
     num_agents = 1
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 3
+    const = 0
     radius = 0
     starttime=300
     noise_ratio = 0.3
-
+    
     mc = []
     for i in range(num_agents):
         mc.append(MarkovChain())
@@ -181,8 +168,10 @@ for a in range(iterations):
     y = radii * np.sin(angles)
         
     positions = np.column_stack((x, y))
-    velocities = np.random.uniform(size=(num_agents, 2)) * speed
-    #print(a, "...running...")
+    spd = random.choice(spds)
+    velocities = np.ones((num_agents, 2)) * spd
+    print(a, "...running...")
+    #fig, ax = plt.subplots(figsize=(5, 5))
     for i in range(time):
         t1 = perf_counter()
         # Update the velocities of the agents
@@ -194,49 +183,49 @@ for a in range(iterations):
         for j in range(num_agents):
             distance =  np.abs(boundary_distance(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1]))
             weight = math.exp(-const*(distance)/box_radius)
-            
-            '''if weight<1: 
-                doing = "nothing"
-            else:
-                weight = int(1)'''
+       #print(weight)
+            move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
+            if move[0]**2+move[1]**2>(box_radius-0.4)**2:
+                print("movement failed")
+                weight = 1
+            if weight>1: 
+                weight = 1
         #weight = math.exp(-const*(distance*speed[j])/box_radius)
             sample = [0, 1]
-            #print(weight)
             randomval= random.choices(sample, weights=(weight, 1-weight), k=1)
             if randomval[0] == 0:
             
             # Pick a random index where the value is 1
                 
-
-                theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
-                unit_vector = np.array([np.cos(theta), np.sin(theta)])
-                veladj = unit_vector * noise[j]
-                xbord = distance*velocities[j][0]+positions[j][0]
-                ybord = distance*velocities[j][1]+positions[j][1]
-                dirr = np.cross([xbord,ybord],velocities[j])
-                if xbord > 0:
-
-                    if dirr>0 and velocities[j][0]>0:
-                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                        new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
-                    elif dirr>0:
-                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                        new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
-
-                    elif velocities[j][0]>0:
-                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                        new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
-                    else:
-                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                        new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
-                                
-                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
-                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
-                else:
+                truth = True
+                while(truth):
+                    theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
+                    unit_vector = np.array([np.cos(theta), np.sin(theta)])
+                    veladj = unit_vector * noise[j]
+                    xbord = distance*velocities[j][0]+positions[j][0]
+                    ybord = distance*velocities[j][1]+positions[j][1]
+                    dirr = np.cross([xbord,ybord],velocities[j])
+                
                     anglabels = reflection(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-                # Find indices where the value is 1
+                    # Find indices where the value is 1
                     indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
                     if not indices_with_1:
+                        print('failing here1')
+                        theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
+                        speed[j] = random.choice(spds)
+                        noise[j] = noise_ratio*speed[j]
+                        theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
+                        unit_vector = np.array([np.cos(theta), np.sin(theta)])
+                        norm_v = np.linalg.norm(velocities[j])
+                        
+                        veladj = unit_vector * noise[j]
+                        velocities[j]=speed[j]*norm_v+veladj
+
+                        '''xbord = distance*velocities[j][0]+positions[j][0]
+                        ybord = distance*velocities[j][1]+positions[j][1]
+                        dirr = np.cross([xbord,ybord],velocities[j])
+                        
+
                         if dirr>0 and velocities[j][0]>0:
                             curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
                             new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
@@ -252,25 +241,38 @@ for a in range(iterations):
                             new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
                                         
                         velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
-                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]'''
+                        move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
+                        if move[0]**2+move[1]**2<(box_radius-0.4)**2:
+                            truth = False
                     else:
-
+                        print('failing here2')
+                        speed[j] = random.choice(spds)
+                        noise[j] = noise_ratio*speed[j]
+                        theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
+                        unit_vector = np.array([np.cos(theta), np.sin(theta)])
+                        veladj = unit_vector * noise[j]
                         random_index = random.choice(indices_with_1)
                         angle = random_index/100
                         vxn = np.cos(angle)*speed[j]
                         vyn = np.sin(angle)*speed[j]
-                        
+                            
                         vector =np.array([vxn,vyn]).flatten()
-                        #print(vector,veladj)
+                            #print(vector,veladj)
                         velocities[j]=vector+ veladj
+                        move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
+                        if move[0]**2+move[1]**2<(box_radius-0.4)**2:
+                            truth = False
                 
         newpositions = positions + velocities
 
         for j in range(num_agents):
             if newpositions[j][0]**2+newpositions[j][1]**2>(box_radius-0.4)**2:
                 newpositions[j]=positions[j]
+                print("movement failed")
+
         positions = newpositions
-        
+        print("time: ",i)
         #positions %= box_size
         if(i>starttime):
             for p in positions:
@@ -292,7 +294,8 @@ for a in range(iterations):
         #ax.set_xlim(-box_radius, box_radius)
         #ax.set_ylim(-box_radius, box_radius)
         #plt.pause(0.005)
-        
+        #t2 = perf_counter()
+        #print(t2-t1)
 
     #plt.show()
 
@@ -331,13 +334,14 @@ for a in range(iterations):
         plt.ylim(-5, 5)
         plt.show()
 center = (0, 0)
+
+    # Create circle
 theta = np.linspace(0, 2 * np.pi, 300)
 xc = center[0] + box_radius * np.cos(theta)
 yc = center[1] + box_radius * np.sin(theta)
 plt.figure(figsize=(3, 3))
 plt.plot(xc, yc, label=f'Circle with radius {radius}')
 plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-1*box_radius,box_radius],[-1*box_radius,box_radius]],  cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
-
 
 # Add labels and a colorbar
 #plt.xlabel('X-bins')
@@ -349,9 +353,9 @@ plt.ylim(-5, 5)
 arrsize = len(allxpos)
 data = np.array([allxpos,allypos]).T
 print(data)
-if sv == "Y":
+if sv == 'Y':
     os.chdir('modeling/data')
-    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_half.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_clear.npy'%(const,radius,box_radius,iterations,num_agents,day)
     with open(file_name, 'w') as file:
         pass
     np.save(file_name, data)

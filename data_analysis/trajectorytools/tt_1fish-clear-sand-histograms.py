@@ -15,6 +15,8 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 # iterate through the dpf values
 val = input('Sanded or Clear? : ')
 if val == 'Sanded':
@@ -23,6 +25,7 @@ elif val == 'Clear':
     arr = [7,14,21]
 indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
+path = input('Physical Path? (Y/N) : ')
 
 outputs = []
 voutputs = []
@@ -101,9 +104,9 @@ for x in arr:
             files = [file1,file2,file3]
 
     if x==70:
-        file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-        file2 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-        file3= "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
@@ -270,6 +273,54 @@ for x in arr:
         temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
+
+        if path == 'Y':
+            all_positions = np.reshape(np.array(temppos), (-1,2))
+            allxpos = all_positions[:, 0]
+            allypos = all_positions[:, 1]
+
+            plt.figure(figsize=(6,6))
+            center = (0, 0)
+            theta = np.linspace(0, 2 * np.pi, 300)
+            xc = center[0] + radius * np.cos(theta)
+            yc = center[1] + radius * np.sin(theta)
+            plt.plot(xc, yc, label=f'Circle with radius {radius}')
+
+            # Generate a color gradient
+            norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
+            cmap = sns.color_palette("light:b", as_cmap=True)
+            colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
+            print(len(allxpos))
+            # Plot arrows between successive points
+            for i in range(len(allxpos) - 1):
+                plt.arrow(allxpos[i], allypos[i],
+                        allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
+                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=0.75)
+
+            plt.title("Physical Path")
+            plt.grid(False)
+            plt.xlim(-5, 5)
+            plt.ylim(-5, 5)
+            plt.show()
+        '''        all_positions = np.reshape(np.array(temppos), (-1,2))
+        allxpos = all_positions[:, 0]
+        allypos = all_positions[:, 1]
+        plt.figure(figsize=(6,6))
+        center = (0, 0)
+        theta = np.linspace(0, 2 * np.pi, 300)
+        xc = center[0] + radius * np.cos(theta)
+        yc = center[1] + radius * np.sin(theta)
+        plt.plot(xc, yc, label=f'Circle with radius {radius}')
+        #plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-1*radius,radius],[-1*radius,radius]],  cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
+
+        plt.plot(allxpos, allypos, marker='o', markersize=2, linestyle='-', color='blue')
+        plt.title("Physical Path")
+        #plt.xlabel("x")
+        #plt.ylabel("Y Position")
+        plt.grid(False)
+        plt.xlim(-5, 5)
+        plt.ylim(-5, 5)
+        plt.show()'''
         processedvel.append(tempvel)
         
 
@@ -445,7 +496,21 @@ for x in arr:
             plt.title('Relationship between Radial Speed and Radial Position for Clear' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Speed')
-        plt.xlim(0,10)
+        plt.xlim(0,5)
+        plt.ylim(0,3)
+        plt.grid(True)
+        plt.show()
+
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=half_df, x='r', y='spd', s=5, color=color,alpha=0.5)
+        if x % 10 == 0:
+            n = int(x/10)
+            plt.title('Relationship between Speed and Radial Position for Sanded '+str(n) +'dpf')
+        else:
+            plt.title('Relationship between Speed and Radial Position for Clear' + str(x)+'dpf')
+        plt.xlabel('Radial Position')
+        plt.ylabel('Radial Speed')
+        plt.xlim(0,5)
         plt.ylim(0,3)
         plt.grid(True)
         plt.show()
@@ -459,7 +524,7 @@ for x in arr:
             plt.title('Relationship between Radial Velocity and Radial Position for Clear' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Velocity')
-        plt.xlim(0,10)
+        plt.xlim(0,5)
         plt.ylim(-3,3)
         plt.grid(True)
         plt.show()

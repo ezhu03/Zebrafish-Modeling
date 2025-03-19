@@ -11,9 +11,11 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
+import matplotlib.colors as mcolors
 arr = [7,14,21]
 indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
+path = input('Path plots? (Y/N) : ')
 
 outputs = []
 voutputs = []
@@ -182,6 +184,35 @@ for x in arr:
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)
+
+        if path == 'Y':
+            all_positions = np.reshape(np.array(temppos), (-1,2))
+            allxpos = all_positions[:, 0]
+            allypos = -1 * all_positions[:, 1]
+
+            plt.figure(figsize=(6,6))
+            center = (0, 0)
+            theta = np.linspace(0, 2 * np.pi, 300)
+            xc = center[0] + radius * np.cos(theta)
+            yc = center[1] + radius * np.sin(theta)
+            plt.plot(xc, yc, label=f'Circle with radius {radius}')
+
+            # Generate a color gradient
+            norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
+            cmap = sns.color_palette("light:b", as_cmap=True)
+            colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
+            print(len(allxpos))
+            # Plot arrows between successive points
+            for i in range(len(allxpos) - 1):
+                plt.arrow(allxpos[i], allypos[i],
+                        allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
+                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=0.75)
+
+            plt.title("Physical Path")
+            plt.grid(False)
+            plt.xlim(-5, 5)
+            plt.ylim(-5, 5)
+            plt.show()
         
 
 
@@ -309,20 +340,19 @@ for x in arr:
 
     if(indiv == 'Y'):
 
-        plt.figure(figsize=(9, 6))
+        '''plt.figure(figsize=(9, 6))
         #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
         #ax.set_aspect('equal')
 
         nearwall_df = half_df[half_df['r'] > 8]
 
-
-        sns.histplot(data=nearwall_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2], hue='side', palette={'clear': 'blue', 'sanded': 'red'},alpha=0.5,multiple='dodge',common_norm=False)
+        sns.histplot(data=nearwall_df, x='phi', stat='percent', bins=10, binrange=[0, np.pi/2], hue='side', hue_order=['clear', 'sanded'], palette={'clear': 'blue', 'sanded': 'red'}, alpha=0.5, multiple='dodge', common_norm=False)
         plt.xlabel('Phi')
         plt.ylabel('Percent')
         plt.ylim(0,30)
-        plt.title('Phi Histogram for 1 Fish HalfSanded Tank ' +str(x) +'dpf')
+        plt.title('Phi Histogram for 1 Fish HalfSanded Tank ' + str(x) +'dpf')
         #plt.colorbar(label='Frequency')
-        plt.show()
+        plt.show()'''
 
         sns.histplot(data=half_df, x='theta',stat='percent',bins=20,binrange=[-np.pi,np.pi], hue='side', palette={'clear': 'blue', 'sanded': 'red'},alpha=0.5,multiple='dodge',common_norm=True)
         plt.xlabel('Theta')
@@ -348,7 +378,7 @@ for x in arr:
         plt.title('Relationship between Wall Angle and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Angle to Wall')
-        plt.xlim(0,10)
+        plt.xlim(0,5)
         plt.grid(True)
         plt.show()
 
@@ -357,7 +387,16 @@ for x in arr:
         plt.title('Relationship between Radial Speed and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Speed')
-        plt.xlim(0,10)
+        plt.xlim(0,5)
+        plt.ylim(0,3)
+        plt.grid(True)
+        plt.show()
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(data=half_df, x='r', y='spd', hue='side', palette={'clear': 'blue', 'sanded': 'red'}, s=5, alpha=0.5)
+        plt.title('Relationship between Radial Speed and Radial Position Half Sanded' + str(x)+'dpf')
+        plt.xlabel('Radial Position')
+        plt.ylabel('Speed')
+        plt.xlim(0,5)
         plt.ylim(0,3)
         plt.grid(True)
         plt.show()
@@ -367,17 +406,18 @@ for x in arr:
         plt.title('Relationship between Radial Velocity and Radial Position Half Sanded' + str(x)+'dpf')
         plt.xlabel('Radial Position')
         plt.ylabel('Radial Velocity')
-        plt.xlim(0,10)
+        plt.xlim(0,5)
         plt.ylim(-3,3)
         plt.grid(True)
         plt.show()
-        turns = np.array(turns)
+
+        '''turns = np.array(turns)
         plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
         plt.xlabel('X-bins')
         plt.ylabel('Y-bins')
         plt.title('Heatmap for Turning Location 1 Fish Half Sanded Tank ' + str(x)+'dpf')
         plt.colorbar(label='Frequency')
-        plt.show()
+        plt.show()'''
 
     
 

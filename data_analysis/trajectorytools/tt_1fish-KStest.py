@@ -12,9 +12,9 @@ import pandas as pd
 import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
-borders = ['Sanded','Clear']
+borders = ['Half','Sanded']
 days = [2,2]
-vision = ['Y','Y']
+vision = ['N','N']
 outputs = []
 voutputs = []
 arrdays = [7,14,21]
@@ -96,9 +96,9 @@ for i in range(len(borders)):
             files = [file1,file2,file3]
 
     if x==70:
-        file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-        file2 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-        file3= "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+        file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
+        file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
+        file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
         file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
         file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
         file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
@@ -518,23 +518,23 @@ for output in outputs:
 print(rvals)
 subsample_size = 100
 count = 0
-p_values = []
+p_values=[]
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     x = np.random.choice(rvals[0], subsample_size, replace=False)
     y = np.random.choice(rvals[1], subsample_size, replace=False)
     ks_statistic, p_value = ks_2samp(x, y)
-
     p_values.append(p_value)
 
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
     #print(f"P-Value: {p_value}")
-
+    print(ks_statistic)
     # Interpret the results
-    if p_value < 0.001:
+    if p_value < 0.01:
         #print("The two distributions are significantly different.")
         count+=1
+        
     #else:
         #print("The two distributions are not significantly different.")
 # Sort the samples
@@ -543,32 +543,29 @@ x_sorted = np.sort(rvals[0])
 y_sorted = np.sort(rvals[1])
 colors = []
 for i in range(2):
-    border = borders[i]
-    x = arrdays[days[i]]
+    border= borders[i]
+    sim="N"
     if border == 'Clear':
-        if x == 7:
-            colors.append('darkblue')
-        if x == 14: 
-            colors.append('blue')
-        if x == 21:
+        if sim == 'Y':
             colors.append('lightblue')
+        else:
+            colors.append('blue')
     elif border == 'Sanded':
-        if x == 7:
-            colors.append('darkred')
-        if x == 14: 
-            colors.append('red')
-        if x == 21:
+        if sim == 'Y':
             colors.append('lightsalmon')
+        else:
+            colors.append('red')
+    elif border == 'Brownian':
+        colors.append('brown')
     else:
-        if x == 7:
-            colors.append('darkpurple')
-        if x == 14: 
+        if sim == 'Y':
+            colors.append('orchid')
+        else:
             colors.append('purple')
-        if x == 21:
-            colors.append('violet')
 # Compute the empirical cumulative distribution function (CDF)
 cdf_x = np.arange(1, len(x_sorted) + 1) / len(x_sorted)
 cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
+# Create a common grid (the union of the unique values from both datasets)
 xx = np.sort(np.unique(np.concatenate([x_sorted, y_sorted])))
 
 # Compute the empirical cdf values at these grid points.
@@ -590,10 +587,9 @@ plt.xlim(0,radius)
 plt.legend()
 plt.grid(True)
 
+
 # Show the plot
 plt.show()
-
-
 
 # Plot KDEs for both distributions
 sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
@@ -610,21 +606,21 @@ kde_x = gaussian_kde(x_sorted,bw_method=0.25)
 kde_y = gaussian_kde(y_sorted,bw_method=0.25)
 
 count = 0
-p_values=[]
-D_values=[]
+p_values_r=[]
+D_values_r=[]
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     samples_x = kde_x.resample(n_samples).flatten()  # flatten to 1D array
     samples_y = kde_y.resample(n_samples).flatten()
     ks_statistic, p_value = ks_2samp(samples_x, samples_y)
-    p_values.append(p_value)
-    D_values.append(ks_statistic)
+    p_values_r.append(p_value)
+    D_values_r.append(ks_statistic)
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
     #print(f"P-Value: {p_value}")
     #print(ks_statistic)
     # Interpret the results
-    if p_value < 0.01:
+    if p_value < 0.05:
         #print("The two distributions are significantly different.")
         count+=1
 print(f"Confidence: {count}")
@@ -635,14 +631,14 @@ pos_left = [0.7, 1.3]   # positions for the violins/boxplots
 fig, ax = plt.subplots(figsize=(4,6))
 
 # Create the violin plots
-parts = ax.violinplot([p_values, D_values], vert=True, showextrema=False, positions=pos_left)    
-colors = ['blue', 'green']
+parts = ax.violinplot([p_values_r, D_values_r], vert=True, showextrema=False, positions=pos_left)    
+cp = ['blue', 'green']
 for i, pc in enumerate(parts['bodies']):
-    pc.set_facecolor(colors[i])
+    pc.set_facecolor(cp[i])
     pc.set_edgecolor('black')
     pc.set_alpha(0.25)
 # Overlay the box plots to show quartiles and the median
-boxplot = ax.boxplot([p_values, D_values],
+boxplot = ax.boxplot([p_values_r, D_values_r],
                      positions=pos_left,
                      widths=0.1,
                      patch_artist=True,
@@ -666,11 +662,37 @@ ax.set_xticklabels(["p-values", "D-statistic"])
 ax.set_ylim(0, 0.5)
 
 # Add a horizontal line at y=0.01
-plt.axhline(y=0.01, color='red', linestyle='--', linewidth=2)
+ax.plot([0.4, 1], [0.01, 0.01], color='red', linestyle='--', linewidth=2)
+ax.plot([1, 1.7], [0.23, 0.23], color='red', linestyle='--', linewidth=2)
 
 #plt.title("Violin Plot with Embedded Box Plot")
 plt.show()
+# Draw random samples from each KDE object
 
+
+# Apply the two-sample KS test
+
+
+count = 0
+for i in range(1000):
+    # Perform the Kolmogorov-Smirnov test
+    x = np.random.choice(tvals[0], subsample_size, replace=False)
+    y = np.random.choice(tvals[1], subsample_size, replace=False)
+    ks_statistic, p_value = ks_2samp(x, y)
+
+    # Output the results
+    #print(f"KS Statistic: {ks_statistic}")
+    #print(f"P-Value: {p_value}")
+
+    # Interpret the results
+    if p_value < 0.05:
+        #print("The two distributions are significantly different.")
+        count+=1
+        print(p_value)
+    #else:
+        #print("The two distributions are not significantly different.")
+# Sort the samples
+print(f"Confidence: {count}")
 # Sort the samples
 x_sorted = np.sort(tvals[0])
 y_sorted = np.sort(tvals[1])
@@ -687,30 +709,10 @@ plt.xlabel('Angle')
 plt.ylabel('CDF')
 plt.legend()
 plt.grid(True)
-count = 0
-p_values = []
-for i in range(1000):
-    # Perform the Kolmogorov-Smirnov test
-    x = np.random.choice(tvals[0], subsample_size, replace=False)
-    y = np.random.choice(tvals[1], subsample_size, replace=False)
-    ks_statistic, p_value = ks_2samp(x, y)
-    p_values.append(p_value)
-
-    # Output the results
-    #print(f"KS Statistic: {ks_statistic}")
-    #print(f"P-Value: {p_value}")
-
-    # Interpret the results
-    if p_value < 0.01:
-        #print("The two distributions are significantly different.")
-        count+=1
-    #else:
-        #print("The two distributions are not significantly different.")
-# Sort the samples
-print(f"Confidence: {count}")
 
 # Show the plot
 plt.show()
+
 # Plot KDEs for both distributions
 sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
 sns.kdeplot(y_sorted, color = colors[1],label='Distribution 2', fill=True,bw_method=0.25)
@@ -726,39 +728,43 @@ kde_x = gaussian_kde(x_sorted,bw_method=0.25)
 kde_y = gaussian_kde(y_sorted,bw_method=0.25)
 
 count = 0
-p_values=[]
-D_values=[]
+p_values_t=[]
+D_values_t=[]
 for i in range(1000):
     # Perform the Kolmogorov-Smirnov test
     samples_x = kde_x.resample(n_samples).flatten()  # flatten to 1D array
     samples_y = kde_y.resample(n_samples).flatten()
     ks_statistic, p_value = ks_2samp(samples_x, samples_y)
-    p_values.append(p_value)
-    D_values.append(ks_statistic)
+    p_values_t.append(p_value)
+    D_values_t.append(ks_statistic)
     # Output the results
     #print(f"KS Statistic: {ks_statistic}")
     #print(f"P-Value: {p_value}")
     #print(ks_statistic)
     # Interpret the results
-    if p_value < 0.01:
+    if p_value < 0.05:
         #print("The two distributions are significantly different.")
         count+=1
 print(f"Confidence: {count}")
 # Show the plot
 plt.show()
 
-pos_left = [0.7, 1.3]   # positions for the violins/boxplots
-fig, ax = plt.subplots(figsize=(4,6))
+import matplotlib.patches as mpatches
 
+pos_left = [0.7, 1.3, 1.9, 2.5]   # updated positions for the violins/boxplots
+fig, ax = plt.subplots(figsize=(4,6))
+plt.rcParams['figure.dpi'] = 3000
 # Create the violin plots
-parts = ax.violinplot([p_values, D_values], vert=True, showextrema=False, positions=pos_left)    
-colors = ['blue', 'green']
+parts = ax.violinplot([p_values_r, D_values_r, p_values_t, D_values_t],
+                       vert=True, showextrema=False, positions=pos_left)    
+cp = ['blue', 'green', 'blue', 'green']
 for i, pc in enumerate(parts['bodies']):
-    pc.set_facecolor(colors[i])
+    pc.set_facecolor(cp[i])
     pc.set_edgecolor('black')
     pc.set_alpha(0.25)
+
 # Overlay the box plots to show quartiles and the median
-boxplot = ax.boxplot([p_values, D_values],
+boxplot = ax.boxplot([p_values_r, D_values_r, p_values_t, D_values_t],
                      positions=pos_left,
                      widths=0.1,
                      patch_artist=True,
@@ -777,12 +783,21 @@ for cap in boxplot['caps']:
     cap.set_color('black')
 
 # Set x-axis ticks and labels
-ax.set_xticks(pos_left)
-ax.set_xticklabels(["p-values", "D-statistic"])
+ax.set_xticks([1, 2.2])
+ax.set_xticklabels(["radial", "angular"])
 ax.set_ylim(0, 0.5)
 
-# Add a horizontal line at y=0.01
-plt.axhline(y=0.01, color='red', linestyle='--', linewidth=2)
+# Add horizontal lines at specified y-values
+ax.plot([0.4, 1], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+ax.plot([1, 1.6], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+ax.plot([1.6, 2.2], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+ax.plot([2.2, 2.8], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+
+# Add legend labeling blue as "p-values" and green as "D-statistic"
+blue_patch = mpatches.Patch(color='blue', label='p-values', alpha=0.25)
+green_patch = mpatches.Patch(color='green', label='D-statistic', alpha=0.25)
+#ax.legend(handles=[blue_patch, green_patch], loc='center left', bbox_to_anchor=(1, 0.5))
 
 #plt.title("Violin Plot with Embedded Box Plot")
+plt.savefig('/Users/ezhu/Documents/test.svg')
 plt.show()

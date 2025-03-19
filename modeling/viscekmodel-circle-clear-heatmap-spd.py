@@ -6,10 +6,12 @@ import math
 from time import perf_counter
 import os
 import seaborn as sns
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
 
 day = int(input('dpf: '))
 spds = np.load('speeddistribution'+str(day)+'dpf.npy')
-
+sv = input('save (Y/N): ')
 class MarkovChain:
     def __init__(self):
         self.transition_matrix = {
@@ -275,7 +277,37 @@ for a in range(iterations):
     #for position in positions3:
     #    xpositions.append(position[0,0])
     #    ypositions.append(position[0,1])
+    if a == 0 or a==1: 
+        fig, ax = plt.subplots(figsize=(6,6))
+        center = (0, 0)
+        theta = np.linspace(0, 2 * np.pi, 300)
+        xc = center[0] + box_radius * np.cos(theta)
+        yc = center[1] + box_radius * np.sin(theta)
+        plt.plot(xc, yc, label=f'Circle with radius {radius}')
 
+        # Generate a color gradient
+        norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
+        cmap = sns.color_palette("light:b", as_cmap=True)
+        colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
+        print(len(allxpos))
+        # Plot arrows between successive points
+
+# Plot the trajectory
+        for i in range(len(allxpos) - 1):
+            ax.arrow(allxpos[i], allypos[i],
+                    allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
+                    head_width=0.05, head_length=0.05, 
+                    fc=cmap(norm(i)), ec=cmap(norm(i)), alpha=0.75)
+        plt.title("Simulated Path")
+        sm = cm.ScalarMappable(cmap=cmap, norm=norm)
+        sm.set_array([])  # Required to initialize data for colorbar
+        #cbar = fig.colorbar(sm, ax=ax)  # Assign colorbar to figure and axis
+        #cbar.set_label("Time(s)")
+        #cbar.set_ticks([0,300,600,900])
+        plt.grid(False)
+        plt.xlim(-5, 5)
+        plt.ylim(-5, 5)
+        plt.show()
 center = (0, 0)
 
     # Create circle
@@ -296,11 +328,12 @@ plt.ylim(-5, 5)
 arrsize = len(allxpos)
 data = np.array([allxpos,allypos]).T
 print(data)
-os.chdir('modeling/data')
-file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_clear.npy'%(const,radius,box_radius,iterations,num_agents,day)
-with open(file_name, 'w') as file:
-    pass
-np.save(file_name, data)
+if sv == 'Y':
+    os.chdir('modeling/data')
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_clear.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    with open(file_name, 'w') as file:
+        pass
+    np.save(file_name, data)
 # Show the plot
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))
