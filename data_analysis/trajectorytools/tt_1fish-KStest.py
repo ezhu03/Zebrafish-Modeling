@@ -753,7 +753,7 @@ import matplotlib.patches as mpatches
 
 pos_left = [0.7, 1.3, 1.9, 2.5]   # updated positions for the violins/boxplots
 fig, ax = plt.subplots(figsize=(4,6))
-plt.rcParams['figure.dpi'] = 3000
+#plt.rcParams['figure.dpi'] = 3000
 # Create the violin plots
 parts = ax.violinplot([p_values_r, D_values_r, p_values_t, D_values_t],
                        vert=True, showextrema=False, positions=pos_left)    
@@ -799,5 +799,85 @@ green_patch = mpatches.Patch(color='green', label='D-statistic', alpha=0.25)
 #ax.legend(handles=[blue_patch, green_patch], loc='center left', bbox_to_anchor=(1, 0.5))
 
 #plt.title("Violin Plot with Embedded Box Plot")
-plt.savefig('/Users/ezhu/Documents/test.svg')
+#plt.savefig('/Users/ezhu/Documents/test.svg')
+plt.show()
+
+# -------------------------------------------------------------------
+# NEW PLOT: Split p-values to one axis and D-statistics to another
+plt.rcParams['figure.dpi'] = 100
+# Create a new figure and a primary axis for p-values
+fig, ax1 = plt.subplots(figsize=(8, 6))
+# Create a secondary y-axis for D-statistics that shares the same x-axis
+ax2 = ax1.twinx()
+
+# --- Plot for p-values on ax1 ---
+pos = [0.7, 1.7]
+parts_p = ax1.violinplot([p_values_r, p_values_t],
+                           vert=True, showextrema=False,
+                           positions=pos)
+# Set the violin colors for p-values (blue)
+for pc in parts_p['bodies']:
+    pc.set_facecolor('blue')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+
+# Overlay the box plots for p-values
+boxplot_p = ax1.boxplot([p_values_r, p_values_t],
+                        positions=pos,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_p['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_p['medians']:
+    median.set_color('black')
+for whisker in boxplot_p['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_p['caps']:
+    cap.set_color('black')
+
+ax1.set_xticks(pos)
+ax1.set_xticklabels(["radial", "angular"])
+ax1.set_ylim(0, 1)
+ax1.set_ylabel("p-values", color="blue")
+ax1.tick_params(axis='y', labelcolor="blue")
+ax1.set_title("Violin Plots with Different y-axis Limits for p-values and D-statistic")
+
+# --- Plot for D-statistics on ax2 ---
+pos = [1.3, 2.3]
+parts_d = ax2.violinplot([D_values_r, D_values_t],
+                           vert=True, showextrema=False,
+                           positions=pos)
+# Set the violin colors for D-statistics (green)
+for pc in parts_d['bodies']:
+    pc.set_facecolor('green')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+
+# Overlay the box plots for D-statistics
+boxplot_d = ax2.boxplot([D_values_r, D_values_t],
+                        positions=pos,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_d['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_d['medians']:
+    median.set_color('black')
+for whisker in boxplot_d['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_d['caps']:
+    cap.set_color('black')
+pos=[1,2]
+ax2.set_xticks(pos)
+ax2.set_xticklabels(["radial", "angular"])
+ax2.set_ylim(0, 0.5)
+ax2.set_ylabel("D-statistic", color="green")
+ax2.tick_params(axis='y', labelcolor="green")
+
+plt.tight_layout()
 plt.show()

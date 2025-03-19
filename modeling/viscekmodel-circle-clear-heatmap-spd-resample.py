@@ -31,12 +31,28 @@ class MarkovChain:
 
 
 
-def boundary_distance(r,x,y,vx, vy):
-    # Calculate the vector from the object to the center of the boundary
-    b = 2*(x*vx+y*vy)
-    a = (vx**2+vy**2)
-    c = (x**2+y**2-r**2)
-    return (-b+math.sqrt(np.abs(b**2-4*a*c)))/(2*a)
+def boundary_distance(r, x, y, vx, vy):
+    # Ensure that the velocity is not zero.
+    if vx == 0 and vy == 0:
+        raise ValueError("Velocity cannot be zero.")
+    
+    # Coefficients for the quadratic equation a*t^2 + b*t + c = 0
+    a = vx*vx + vy*vy
+    b = 2 * (x*vx + y*vy)
+    c = x*x + y*y - r*r
+
+    # Compute the discriminant
+    discriminant = b*b - 4*a*c
+    if discriminant < 0:
+        # This case should not happen if (x,y) is inside the circle.
+        raise ValueError("No intersection found; check that (x,y) is inside the circle.")
+    
+    # We choose the positive root
+    t = (-b + math.sqrt(discriminant)) / (2 * a)
+    
+    # The distance is the time multiplied by the speed (sqrt(a))
+    distance = t * math.sqrt(a)
+    return distance
 
 def reflection(r,x,y,vx,vy):
     magv = np.sqrt(vx **2 + vy**2)
@@ -98,15 +114,16 @@ def update_velocities(positions, velocities, radius, speed, noise):
     normv[normv == 0] = 1  # Avoid division by zero
     for i in range(num_agents):
         velocities[i] = velocities[i]/normv[i] * speed[i]
-    #Normalize the direction and set the velocity of each agent
+    """#Normalize the direction and set the velocity of each agent
     norm = np.linalg.norm(mean_direction, axis=1)
     norm[norm == 0] = 1  # Avoid division by zero
     mean_direction /= norm[:, np.newaxis]
     for i in range(len(mean_direction)):
         if mean_direction[i][0] == 0 and mean_direction[i][1] == 0:
             velocities[i]=velocities[i]
+            print('no direction')
         else:
-            velocities[i] = mean_direction[i] * speed[i]
+            velocities[i] = mean_direction[i] * speed[i]"""
             
 
     #for i in range(num_agents):
@@ -149,10 +166,10 @@ for a in range(iterations):
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 0
+    const = 1
     radius = 0
     starttime=300
-    noise_ratio = 0.3
+    noise_ratio = 0.6
     
     mc = []
     for i in range(num_agents):
@@ -210,16 +227,18 @@ for a in range(iterations):
                     # Find indices where the value is 1
                     indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
                     if not indices_with_1:
+                        print(len(indices_with_1))
                         print('failing here1')
+                        noise_ratio = 1
                         theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
                         speed[j] = random.choice(spds)
                         noise[j] = noise_ratio*speed[j]
                         theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
                         unit_vector = np.array([np.cos(theta), np.sin(theta)])
                         norm_v = np.linalg.norm(velocities[j])
-                        
                         veladj = unit_vector * noise[j]
                         velocities[j]=speed[j]*norm_v+veladj
+                        noise_ratio = 0.6
 
                         '''xbord = distance*velocities[j][0]+positions[j][0]
                         ybord = distance*velocities[j][1]+positions[j][1]
@@ -245,34 +264,43 @@ for a in range(iterations):
                         move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
                         if move[0]**2+move[1]**2<(box_radius-0.4)**2:
                             truth = False
+                            print("sucess")
+                        else:
+                            print(move)
                     else:
-                        print('failing here2')
+                        #print('failing here2')
+                        noise_ratio = 1
                         speed[j] = random.choice(spds)
                         noise[j] = noise_ratio*speed[j]
                         theta = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
                         unit_vector = np.array([np.cos(theta), np.sin(theta)])
                         veladj = unit_vector * noise[j]
                         random_index = random.choice(indices_with_1)
+                        print(random_index)
                         angle = random_index/100
-                        vxn = np.cos(angle)*speed[j]
-                        vyn = np.sin(angle)*speed[j]
-                            
-                        vector =np.array([vxn,vyn]).flatten()
+                        rx = box_radius*np.cos(angle)
+                        ry = box_radius*np.sin(angle)
+                        vx = rx - positions[j][0]
+                        vy = ry - positions[j][1]
+                        vn = np.array([vx,vy])
+                        vn = np.linalg.norm(vn)
+                        new_v = vn * speed[j]
                             #print(vector,veladj)
-                        velocities[j]=vector+ veladj
+                        velocities[j]=new_v+ veladj
                         move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
                         if move[0]**2+move[1]**2<(box_radius-0.4)**2:
                             truth = False
+                        noise_ratio = 0.6
                 
         newpositions = positions + velocities
 
         for j in range(num_agents):
             if newpositions[j][0]**2+newpositions[j][1]**2>(box_radius-0.4)**2:
                 newpositions[j]=positions[j]
-                print("movement failed")
 
         positions = newpositions
-        print("time: ",i)
+        if i%100 == 0:
+            print("time: ",i)
         #positions %= box_size
         if(i>starttime):
             for p in positions:

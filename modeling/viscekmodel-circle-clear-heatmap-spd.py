@@ -234,12 +234,16 @@ for a in range(iterations):
 
                     random_index = random.choice(indices_with_1)
                     angle = random_index/100
-                    vxn = np.cos(angle)*speed[j]
-                    vyn = np.sin(angle)*speed[j]
-                        
-                    vector =np.array([vxn,vyn]).flatten()
+                    rx = box_radius*np.cos(angle)
+                    ry = box_radius*np.sin(angle)
+                    vx = rx - positions[j][0]
+                    vy = ry - positions[j][1]
+                    vn = np.array([vx,vy])
+                    vn = np.linalg.norm(vn)
+                    new_v = vn * speed[j]
+                            #print(vector,veladj)
+                    velocities[j]=new_v+ veladj
                         #print(vector,veladj)
-                    velocities[j]=vector+ veladj
                 
         newpositions = positions + velocities
 
