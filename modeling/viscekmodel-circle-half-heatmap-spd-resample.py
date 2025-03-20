@@ -64,7 +64,7 @@ def reflection(r,x,y,vx,vy):
         magd = np.sqrt((xbound[i]-x)**2+(ybound[i]-y)**2)
         theta = np.arccos((xbound[i]*(xbound[i]-x)+ybound[i]*(ybound[i]-y))/(r*magd))
         phi = np.arccos((vx*(xbound[i]-x)+vy*(ybound[i]-y))/(magv*magd))
-        if theta > 0.85 and theta < 2.29 and phi < 2.958:
+        if angles[i] > 1.57 and angles[i] < 4.71 and theta > 0.85 and theta < 2.29 and phi < 2.958:
             labels[i]=1
     return labels
 
@@ -226,7 +226,31 @@ for a in range(iterations):
                     anglabels = reflection(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
                     # Find indices where the value is 1
                     indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
-                    if not indices_with_1:
+                    if not indices_with_1 and xbord>0:
+                        if dirr>0 and velocities[j][0]>0:
+                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
+                        elif dirr>0:
+                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
+
+                        elif velocities[j][0]>0:
+                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
+                        else:
+                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                            new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
+                                    
+                        velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                        move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
+                        if move[0]**2+move[1]**2<(box_radius-0.4)**2:
+                            truth = False
+                            print("sucess")
+                        else:
+                            print(move)
+
+                    elif not indices_with_1:
                         #print(len(indices_with_1))
                         #print('failing here1')
                         noise_ratio = 0.3
@@ -383,7 +407,7 @@ data = np.array([allxpos,allypos]).T
 print(data)
 if sv == 'Y':
     os.chdir('modeling/data')
-    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_clear.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_half.npy'%(const,radius,box_radius,iterations,num_agents,day)
     with open(file_name, 'w') as file:
         pass
     np.save(file_name, data)

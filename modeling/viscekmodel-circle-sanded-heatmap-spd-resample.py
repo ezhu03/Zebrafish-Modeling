@@ -213,7 +213,6 @@ for a in range(iterations):
             if randomval[0] == 0:
             
             # Pick a random index where the value is 1
-                
                 truth = True
                 while(truth):
                     th = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
@@ -222,75 +221,43 @@ for a in range(iterations):
                     xbord = distance*velocities[j][0]+positions[j][0]
                     ybord = distance*velocities[j][1]+positions[j][1]
                     dirr = np.cross([xbord,ybord],velocities[j])
-                
-                    anglabels = reflection(box_radius,positions[j][0],positions[j][1],velocities[j][0],velocities[j][1])
-                    # Find indices where the value is 1
-                    indices_with_1 = [i for i, value in enumerate(anglabels) if value == 1]
-                    if not indices_with_1:
                         #print(len(indices_with_1))
-                        #print('failing here1')
-                        noise_ratio = 0.3
-                        th = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
-                        speed[j] = random.choice(spds)
-                        noise[j] = noise_ratio*speed[j]  # Random angle in [0, 2π)
-                        unit_vector = np.array([np.cos(th), np.sin(th)])
-                        norm_v = velocities[j]/np.linalg.norm(velocities[j])
-                        veladj = unit_vector * noise[j]
-                        velocities[j]=speed[j]*norm_v+veladj
-                        noise_ratio = 0.3
+                    #print('failing here1')
+                    th = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
+                    speed[j] = random.choice(spds)
+                    noise[j] = noise_ratio*speed[j]  # Random angle in [0, 2π)
+                    unit_vector = np.array([np.cos(th), np.sin(th)])
+                    norm_v = velocities[j]/np.linalg.norm(velocities[j])
+                    veladj = unit_vector * noise[j]
+                    velocities[j]=speed[j]*norm_v+veladj
 
-                        '''xbord = distance*velocities[j][0]+positions[j][0]
-                        ybord = distance*velocities[j][1]+positions[j][1]
-                        dirr = np.cross([xbord,ybord],velocities[j])
-                        
+                    xbord = distance*velocities[j][0]+positions[j][0]
+                    ybord = distance*velocities[j][1]+positions[j][1]
+                    dirr = np.cross([xbord,ybord],velocities[j])
+                    
 
-                        if dirr>0 and velocities[j][0]>0:
-                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
-                        elif dirr>0:
-                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
+                    if dirr>0 and velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
+                    elif dirr>0:
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle + np.random.normal(0.75, 0.5, 1)
 
-                        elif velocities[j][0]>0:
-                            curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
-                        else:
-                            curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
-                            new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
-                                        
-                        velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
-                        velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]'''
-                        move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
-                        if move[0]**2+move[1]**2<(box_radius-0.4)**2:
-                            truth = False
-                            print("sucess")
-                        else:
-                            print(move)
+                    elif velocities[j][0]>0:
+                        curr_angle = np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
                     else:
-                        #print('failing here2')
-                        noise_ratio = 0.3
-                        while(truth):
-                            speed[j] = random.choice(spds)
-                            noise[j] = noise_ratio*speed[j]
-                            th = np.random.uniform(0, 2*np.pi)  # Random angle in [0, 2π)
-                            unit_vector = np.array([np.cos(th), np.sin(th)])
-                            veladj = unit_vector * noise[j]
-                            random_index = random.choice(indices_with_1)
-                            #print(random_index)
-                            angle = random_index/100
-                            rx = box_radius*np.cos(angle)
-                            ry = box_radius*np.sin(angle)
-                            vx = rx - positions[j][0]
-                            vy = ry - positions[j][1]
-                            vn = np.array([vx,vy])
-                            vn = vn/np.linalg.norm(vn)
-                            new_v = vn * speed[j]
-                                #print(vector,veladj)
-                            velocities[j]=new_v+ veladj
-                            move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
-                            if move[0]**2+move[1]**2<(box_radius-0.2)**2:
-                                truth = False
-                        noise_ratio = 0.3
+                        curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
+                        new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
+                                    
+                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
+                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                    move = np.array([positions[j][0]+velocities[j][0],positions[j][1]+velocities[j][1]])
+                    if move[0]**2+move[1]**2<(box_radius-0.4)**2:
+                        truth = False
+                        print("sucess")
+                    else:
+                        print(move)
                 
         newpositions = positions + velocities
 
@@ -383,7 +350,7 @@ data = np.array([allxpos,allypos]).T
 print(data)
 if sv == 'Y':
     os.chdir('modeling/data')
-    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_clear.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_sanded.npy'%(const,radius,box_radius,iterations,num_agents,day)
     with open(file_name, 'w') as file:
         pass
     np.save(file_name, data)

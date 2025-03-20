@@ -13,7 +13,7 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 simulation = ['N','Y']
-borders = ['Clear','Clear']
+borders = ['Sanded','Sanded']
 days = [2,2]
 vision = ['N','N']
 outputs = []
