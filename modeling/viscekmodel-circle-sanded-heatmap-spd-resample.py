@@ -165,7 +165,7 @@ for a in range(iterations):
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 3
+    const = 10
     radius = 0
     starttime=300
     noise_ratio = 0.3
@@ -297,7 +297,7 @@ for a in range(iterations):
     #for position in positions3:
     #    xpositions.append(position[0,0])
     #    ypositions.append(position[0,1])
-    if a == 0 or a==1: 
+    if a < 5: 
         fig, ax = plt.subplots(figsize=(6,6))
         center = (0, 0)
         theta = np.linspace(0, 2 * np.pi, 300)
@@ -313,15 +313,24 @@ for a in range(iterations):
         # Plot arrows between successive points
 
 # Plot the trajectory
-        for i in range(len(allxpos) - 1):
-            ax.arrow(allxpos[i], allypos[i],
-                    allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
-                    head_width=0.05, head_length=0.05, 
-                    fc=cmap(norm(i)), ec=cmap(norm(i)), alpha=0.75)
+        xx = []
+        yy = []
+        delta = time-starttime-1
+        for i in range(delta):
+            xx.append(allxpos[i+delta*a])
+            yy.append(allypos[i+delta*a])
+        # Set normalization scale from 0 to 898 for consistent color mapping
+        norm = mcolors.Normalize(vmin=0, vmax=delta-1)
+        for i in range(delta-1):
+            color = cmap(norm(i))
+            ax.arrow(xx[i], yy[i],
+                xx[i+1] - xx[i], yy[i+1] - yy[i], 
+                head_width=0.05, head_length=0.05, 
+                fc=color, ec=color, alpha=0.75)
         plt.title("Simulated Path")
         sm = cm.ScalarMappable(cmap=cmap, norm=norm)
         sm.set_array([])  # Required to initialize data for colorbar
-        #cbar = fig.colorbar(sm, ax=ax)  # Assign colorbar to figure and axis
+        #cbar = fig.colorbar(sm, ax=ax)  # Uncomment if colorbar is needed
         #cbar.set_label("Time(s)")
         #cbar.set_ticks([0,300,600,900])
         plt.grid(False)
