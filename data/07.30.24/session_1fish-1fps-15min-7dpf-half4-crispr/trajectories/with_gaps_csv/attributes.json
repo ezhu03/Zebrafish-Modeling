@@ -1,0 +1,17 @@
+{
+    "version": "5.2.12",
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\07.30.24\\1fish-1fps-15min-7dpf-half4-crispr_2024-07-30-172550-0000.avi"
+    ],
+    "frames_per_second": 15,
+    "body_length": 31.0,
+    "stats": {
+        "estimated_accuracy": null
+    },
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {},
+    "length_unit": null
+}

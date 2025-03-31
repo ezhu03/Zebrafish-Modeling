@@ -1,0 +1,136 @@
+{
+    "global_fragments": [
+        {
+            "first_frame_of_the_core": 1,
+            "fragments_identifiers": [0],
+            "minimum_distance_travelled": 210.01122125286827
+        },
+        {
+            "first_frame_of_the_core": 26,
+            "fragments_identifiers": [1],
+            "minimum_distance_travelled": 192.45402381902943
+        },
+        {
+            "first_frame_of_the_core": 45,
+            "fragments_identifiers": [2],
+            "minimum_distance_travelled": 469.4320872849929
+        },
+        {
+            "first_frame_of_the_core": 116,
+            "fragments_identifiers": [3],
+            "minimum_distance_travelled": 59.741365178588566
+        },
+        {
+            "first_frame_of_the_core": 128,
+            "fragments_identifiers": [5],
+            "minimum_distance_travelled": 13.356773521308066
+        },
+        {
+            "first_frame_of_the_core": 139,
+            "fragments_identifiers": [6],
+            "minimum_distance_travelled": 95.25670728288804
+        },
+        {
+            "first_frame_of_the_core": 153,
+            "fragments_identifiers": [7],
+            "minimum_distance_travelled": 380.2801777005817
+        },
+        {
+            "first_frame_of_the_core": 208,
+            "fragments_identifiers": [8],
+            "minimum_distance_travelled": 119.45451647581143
+        },
+        {
+            "first_frame_of_the_core": 224,
+            "fragments_identifiers": [10],
+            "minimum_distance_travelled": 7.330871674963854
+        },
+        {
+            "first_frame_of_the_core": 233,
+            "fragments_identifiers": [11],
+            "minimum_distance_travelled": 570.6387509910011
+        },
+        {
+            "first_frame_of_the_core": 305,
+            "fragments_identifiers": [12],
+            "minimum_distance_travelled": 323.3599152797334
+        },
+        {
+            "first_frame_of_the_core": 335,
+            "fragments_identifiers": [13],
+            "minimum_distance_travelled": 96.87032029756288
+        },
+        {
+            "first_frame_of_the_core": 355,
+            "fragments_identifiers": [14],
+            "minimum_distance_travelled": 165.40946932440437
+        },
+        {
+            "first_frame_of_the_core": 390,
+            "fragments_identifiers": [15],
+            "minimum_distance_travelled": 212.4788182126306
+        },
+        {
+            "first_frame_of_the_core": 416,
+            "fragments_identifiers": [16],
+            "minimum_distance_travelled": 59.333388575665836
+        },
+        {
+            "first_frame_of_the_core": 430,
+            "fragments_identifiers": [17],
+            "minimum_distance_travelled": 139.63761245010858
+        },
+        {
+            "first_frame_of_the_core": 447,
+            "fragments_identifiers": [18],
+            "minimum_distance_travelled": 26.448078738284146
+        },
+        {
+            "first_frame_of_the_core": 463,
+            "fragments_identifiers": [19],
+            "minimum_distance_travelled": 45.860263796587965
+        },
+        {
+            "first_frame_of_the_core": 478,
+            "fragments_identifiers": [20],
+            "minimum_distance_travelled": 207.6552945866506
+        },
+        {
+            "first_frame_of_the_core": 507,
+            "fragments_identifiers": [21],
+            "minimum_distance_travelled": 17.055090511819436
+        },
+        {
+            "first_frame_of_the_core": 522,
+            "fragments_identifiers": [23],
+            "minimum_distance_travelled": 18.934483840431085
+        },
+        {
+            "first_frame_of_the_core": 530,
+            "fragments_identifiers": [24],
+            "minimum_distance_travelled": 61.80506335240632
+        },
+        {
+            "first_frame_of_the_core": 539,
+            "fragments_identifiers": [25],
+            "minimum_distance_travelled": 40.584961813780986
+        }
+    ],
+    "non_accumulable_global_fragments": [
+        {
+            "first_frame_of_the_core": 126,
+            "fragments_identifiers": [4],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 221,
+            "fragments_identifiers": [9],
+            "minimum_distance_travelled": 1.0692356847216296
+        },
+        {
+            "first_frame_of_the_core": 518,
+            "fragments_identifiers": [22],
+            "minimum_distance_travelled": 4.982749400949125
+        }
+    ]
+}

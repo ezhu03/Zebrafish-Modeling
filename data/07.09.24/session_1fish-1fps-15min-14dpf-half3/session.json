@@ -1,0 +1,97 @@
+{
+    "number_of_error_frames": 24,
+    "estimated_accuracy": 1.0,
+    "accumulation_trial": 0,
+    "identities_labels": [
+        "1"
+    ],
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\07.09.24\\1fish-1fps-15min-14dpf-half3_2024-07-09-154432-0000.avi"
+    ],
+    "number_of_animals": 1,
+    "intensity_ths": [
+        32,
+        255
+    ],
+    "area_ths": [
+        150,
+        500
+    ],
+    "name": "1fish-1fps-15min-14dpf-half3",
+    "tracking_intervals": [
+        [
+            0,
+            898
+        ]
+    ],
+    "resolution_reduction": 1.0,
+    "roi_list": null,
+    "use_bkg": true,
+    "knowledge_transfer_folder": null,
+    "check_segmentation": false,
+    "identity_transfer": false,
+    "track_wo_identities": false,
+    "frames_per_episode": 500,
+    "background_subtraction_stat": "median",
+    "number_of_frames_for_background": 50,
+    "number_of_parallel_workers": 2,
+    "data_policy": "idmatcher.ai",
+    "id_image_size": [
+        40,
+        40,
+        1
+    ],
+    "protocol3_action": "ask",
+    "convert_trajectories_to_csv_and_json": true,
+    "add_time_column_to_csv": false,
+    "exclusive_rois": false,
+    "identity_transfer_succeded": false,
+    "bounding_box_images_in_ram": false,
+    "version": "5.2.12",
+    "accumulation_statistics_data": [
+        {}
+    ],
+    "original_width": 2048,
+    "original_height": 2048,
+    "frames_per_second": 15,
+    "number_of_frames": 898,
+    "session_folder": "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\07.09.24\\session_1fish-1fps-15min-14dpf-half3",
+    "first_frame_first_global_fragment": [],
+    "identities_groups": {},
+    "setup_points": {},
+    "timers": {
+        "Tracking session": {
+            "name": "Tracking session",
+            "start_time": "2024-07-10T14:21:47.271696",
+            "finish_time": "2024-07-10T14:23:08.630101"
+        },
+        "Animal detection": {
+            "name": "Animal detection",
+            "start_time": "2024-07-10T14:21:48.280687",
+            "finish_time": "2024-07-10T14:23:05.941203"
+        },
+        "Crossing detection": {
+            "name": "Crossing detection",
+            "start_time": "2024-07-10T14:23:06.816760",
+            "finish_time": "2024-07-10T14:23:07.864462"
+        },
+        "Fragmentation": {
+            "name": "Fragmentation",
+            "start_time": "2024-07-10T14:23:07.895855",
+            "finish_time": "2024-07-10T14:23:07.927067"
+        },
+        "Tracking": {
+            "name": "Tracking",
+            "start_time": "2024-07-10T14:23:08.223907",
+            "finish_time": "2024-07-10T14:23:08.223907"
+        },
+        "Trajectories creation": {
+            "name": "Trajectories creation",
+            "start_time": "2024-07-10T14:23:08.381203",
+            "finish_time": "2024-07-10T14:23:08.614474"
+        }
+    },
+    "median_body_length": 57.0,
+    "n_animals": 1,
+    "length_calibrations": []
+}

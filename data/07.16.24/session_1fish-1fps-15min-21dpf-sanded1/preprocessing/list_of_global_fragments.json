@@ -1,0 +1,606 @@
+{
+    "global_fragments": [
+        {
+            "first_frame_of_the_core": 1,
+            "fragments_identifiers": [0],
+            "minimum_distance_travelled": 295.97200509262746
+        },
+        {
+            "first_frame_of_the_core": 16,
+            "fragments_identifiers": [2],
+            "minimum_distance_travelled": 334.6936565641957
+        },
+        {
+            "first_frame_of_the_core": 23,
+            "fragments_identifiers": [3],
+            "minimum_distance_travelled": 227.02895825925708
+        },
+        {
+            "first_frame_of_the_core": 30,
+            "fragments_identifiers": [4],
+            "minimum_distance_travelled": 299.49553838092606
+        },
+        {
+            "first_frame_of_the_core": 43,
+            "fragments_identifiers": [9],
+            "minimum_distance_travelled": 166.2702700789597
+        },
+        {
+            "first_frame_of_the_core": 51,
+            "fragments_identifiers": [14],
+            "minimum_distance_travelled": 176.70335692747963
+        },
+        {
+            "first_frame_of_the_core": 60,
+            "fragments_identifiers": [17],
+            "minimum_distance_travelled": 276.78633042403175
+        },
+        {
+            "first_frame_of_the_core": 67,
+            "fragments_identifiers": [20],
+            "minimum_distance_travelled": 550.6095869017187
+        },
+        {
+            "first_frame_of_the_core": 81,
+            "fragments_identifiers": [24],
+            "minimum_distance_travelled": 153.90197529486403
+        },
+        {
+            "first_frame_of_the_core": 88,
+            "fragments_identifiers": [28],
+            "minimum_distance_travelled": 87.62947990646052
+        },
+        {
+            "first_frame_of_the_core": 115,
+            "fragments_identifiers": [47],
+            "minimum_distance_travelled": 175.88794826034032
+        },
+        {
+            "first_frame_of_the_core": 178,
+            "fragments_identifiers": [100],
+            "minimum_distance_travelled": 259.51837537015325
+        },
+        {
+            "first_frame_of_the_core": 246,
+            "fragments_identifiers": [151],
+            "minimum_distance_travelled": 292.33613727069695
+        },
+        {
+            "first_frame_of_the_core": 285,
+            "fragments_identifiers": [177],
+            "minimum_distance_travelled": 191.71972484740456
+        },
+        {
+            "first_frame_of_the_core": 297,
+            "fragments_identifiers": [181],
+            "minimum_distance_travelled": 560.912070299137
+        },
+        {
+            "first_frame_of_the_core": 310,
+            "fragments_identifiers": [182],
+            "minimum_distance_travelled": 238.4896035751992
+        },
+        {
+            "first_frame_of_the_core": 316,
+            "fragments_identifiers": [184],
+            "minimum_distance_travelled": 299.5824331050689
+        }
+    ],
+    "non_accumulable_global_fragments": [
+        {
+            "first_frame_of_the_core": 14,
+            "fragments_identifiers": [1],
+            "minimum_distance_travelled": 39.00292844655328
+        },
+        {
+            "first_frame_of_the_core": 37,
+            "fragments_identifiers": [5],
+            "minimum_distance_travelled": 119.52194129660703
+        },
+        {
+            "first_frame_of_the_core": 55,
+            "fragments_identifiers": [15],
+            "minimum_distance_travelled": 57.35037514765731
+        },
+        {
+            "first_frame_of_the_core": 58,
+            "fragments_identifiers": [16],
+            "minimum_distance_travelled": 66.34398264764255
+        },
+        {
+            "first_frame_of_the_core": 79,
+            "fragments_identifiers": [23],
+            "minimum_distance_travelled": 45.47290044842496
+        },
+        {
+            "first_frame_of_the_core": 96,
+            "fragments_identifiers": [33],
+            "minimum_distance_travelled": 75.3388434738386
+        },
+        {
+            "first_frame_of_the_core": 99,
+            "fragments_identifiers": [35],
+            "minimum_distance_travelled": 131.49205500720933
+        },
+        {
+            "first_frame_of_the_core": 102,
+            "fragments_identifiers": [36],
+            "minimum_distance_travelled": 23.402693359454588
+        },
+        {
+            "first_frame_of_the_core": 109,
+            "fragments_identifiers": [42],
+            "minimum_distance_travelled": 65.75490671546115
+        },
+        {
+            "first_frame_of_the_core": 130,
+            "fragments_identifiers": [59],
+            "minimum_distance_travelled": 82.60979716348537
+        },
+        {
+            "first_frame_of_the_core": 135,
+            "fragments_identifiers": [63],
+            "minimum_distance_travelled": 106.38657643808881
+        },
+        {
+            "first_frame_of_the_core": 148,
+            "fragments_identifiers": [74],
+            "minimum_distance_travelled": 97.34450121165281
+        },
+        {
+            "first_frame_of_the_core": 163,
+            "fragments_identifiers": [87],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 172,
+            "fragments_identifiers": [95],
+            "minimum_distance_travelled": 46.777754184255876
+        },
+        {
+            "first_frame_of_the_core": 190,
+            "fragments_identifiers": [106],
+            "minimum_distance_travelled": 79.54879294695986
+        },
+        {
+            "first_frame_of_the_core": 195,
+            "fragments_identifiers": [110],
+            "minimum_distance_travelled": 38.05981335428354
+        },
+        {
+            "first_frame_of_the_core": 205,
+            "fragments_identifiers": [119],
+            "minimum_distance_travelled": 66.27395729671802
+        },
+        {
+            "first_frame_of_the_core": 210,
+            "fragments_identifiers": [123],
+            "minimum_distance_travelled": 61.139484259794585
+        },
+        {
+            "first_frame_of_the_core": 213,
+            "fragments_identifiers": [125],
+            "minimum_distance_travelled": 98.64608107736439
+        },
+        {
+            "first_frame_of_the_core": 219,
+            "fragments_identifiers": [129],
+            "minimum_distance_travelled": 69.0582597176738
+        },
+        {
+            "first_frame_of_the_core": 226,
+            "fragments_identifiers": [135],
+            "minimum_distance_travelled": 72.9294881969379
+        },
+        {
+            "first_frame_of_the_core": 229,
+            "fragments_identifiers": [137],
+            "minimum_distance_travelled": 86.65609740154807
+        },
+        {
+            "first_frame_of_the_core": 231,
+            "fragments_identifiers": [138],
+            "minimum_distance_travelled": 70.50651438586998
+        },
+        {
+            "first_frame_of_the_core": 242,
+            "fragments_identifiers": [148],
+            "minimum_distance_travelled": 49.76113118501094
+        },
+        {
+            "first_frame_of_the_core": 253,
+            "fragments_identifiers": [152],
+            "minimum_distance_travelled": 72.65406136855438
+        },
+        {
+            "first_frame_of_the_core": 269,
+            "fragments_identifiers": [167],
+            "minimum_distance_travelled": 54.38911214104509
+        },
+        {
+            "first_frame_of_the_core": 272,
+            "fragments_identifiers": [168],
+            "minimum_distance_travelled": 80.54044859774898
+        },
+        {
+            "first_frame_of_the_core": 278,
+            "fragments_identifiers": [173],
+            "minimum_distance_travelled": 89.80905661451774
+        },
+        {
+            "first_frame_of_the_core": 282,
+            "fragments_identifiers": [175],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 293,
+            "fragments_identifiers": [179],
+            "minimum_distance_travelled": 128.22332030070703
+        },
+        {
+            "first_frame_of_the_core": 328,
+            "fragments_identifiers": [190],
+            "minimum_distance_travelled": 64.9743953358597
+        },
+        {
+            "first_frame_of_the_core": 331,
+            "fragments_identifiers": [192],
+            "minimum_distance_travelled": 68.44940610907231
+        },
+        {
+            "first_frame_of_the_core": 378,
+            "fragments_identifiers": [238],
+            "minimum_distance_travelled": 90.48674527673441
+        },
+        {
+            "first_frame_of_the_core": 380,
+            "fragments_identifiers": [239],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 389,
+            "fragments_identifiers": [247],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 391,
+            "fragments_identifiers": [248],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 435,
+            "fragments_identifiers": [291],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 438,
+            "fragments_identifiers": [292],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 441,
+            "fragments_identifiers": [294],
+            "minimum_distance_travelled": 10.148380353104793
+        },
+        {
+            "first_frame_of_the_core": 444,
+            "fragments_identifiers": [295],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 458,
+            "fragments_identifiers": [308],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 467,
+            "fragments_identifiers": [316],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 473,
+            "fragments_identifiers": [321],
+            "minimum_distance_travelled": 51.83687990387249
+        },
+        {
+            "first_frame_of_the_core": 479,
+            "fragments_identifiers": [324],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 484,
+            "fragments_identifiers": [327],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 490,
+            "fragments_identifiers": [332],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 498,
+            "fragments_identifiers": [339],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 506,
+            "fragments_identifiers": [346],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 509,
+            "fragments_identifiers": [347],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 520,
+            "fragments_identifiers": [357],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 528,
+            "fragments_identifiers": [364],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 548,
+            "fragments_identifiers": [383],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 565,
+            "fragments_identifiers": [399],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 571,
+            "fragments_identifiers": [403],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 579,
+            "fragments_identifiers": [409],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 588,
+            "fragments_identifiers": [417],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 592,
+            "fragments_identifiers": [420],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 594,
+            "fragments_identifiers": [421],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 600,
+            "fragments_identifiers": [425],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 605,
+            "fragments_identifiers": [426],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 621,
+            "fragments_identifiers": [441],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 624,
+            "fragments_identifiers": [443],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 626,
+            "fragments_identifiers": [444],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 631,
+            "fragments_identifiers": [445],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 648,
+            "fragments_identifiers": [461],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 658,
+            "fragments_identifiers": [467],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 660,
+            "fragments_identifiers": [468],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 663,
+            "fragments_identifiers": [470],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 671,
+            "fragments_identifiers": [477],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 679,
+            "fragments_identifiers": [483],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 684,
+            "fragments_identifiers": [484],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 687,
+            "fragments_identifiers": [485],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 698,
+            "fragments_identifiers": [495],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 702,
+            "fragments_identifiers": [498],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 712,
+            "fragments_identifiers": [506],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 719,
+            "fragments_identifiers": [512],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 723,
+            "fragments_identifiers": [514],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 727,
+            "fragments_identifiers": [515],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 729,
+            "fragments_identifiers": [516],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 732,
+            "fragments_identifiers": [517],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 743,
+            "fragments_identifiers": [526],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 747,
+            "fragments_identifiers": [527],
+            "minimum_distance_travelled": 82.19606579238636
+        },
+        {
+            "first_frame_of_the_core": 752,
+            "fragments_identifiers": [530],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 760,
+            "fragments_identifiers": [536],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 762,
+            "fragments_identifiers": [537],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 764,
+            "fragments_identifiers": [538],
+            "minimum_distance_travelled": 51.12733097215091
+        },
+        {
+            "first_frame_of_the_core": 767,
+            "fragments_identifiers": [539],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 774,
+            "fragments_identifiers": [543],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 777,
+            "fragments_identifiers": [545],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 783,
+            "fragments_identifiers": [547],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 789,
+            "fragments_identifiers": [550],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 795,
+            "fragments_identifiers": [553],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 799,
+            "fragments_identifiers": [556],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 803,
+            "fragments_identifiers": [559],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 808,
+            "fragments_identifiers": [562],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 818,
+            "fragments_identifiers": [569],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 822,
+            "fragments_identifiers": [571],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 825,
+            "fragments_identifiers": [573],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 835,
+            "fragments_identifiers": [580],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 838,
+            "fragments_identifiers": [582],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 852,
+            "fragments_identifiers": [594],
+            "minimum_distance_travelled": 0
+        },
+        {
+            "first_frame_of_the_core": 867,
+            "fragments_identifiers": [608],
+            "minimum_distance_travelled": 88.93210371606949
+        },
+        {
+            "first_frame_of_the_core": 880,
+            "fragments_identifiers": [620],
+            "minimum_distance_travelled": 0
+        }
+    ]
+}

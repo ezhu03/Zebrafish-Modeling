@@ -1,0 +1,16 @@
+{
+    "version": "5.2.7",
+    "video_paths": [
+        "E:\\Zebrafish\\AVI\\2.28.24\\1fish1min10fps-clear-1_2024-02-28-155936-0000.avi"
+    ],
+    "frames_per_second": 10,
+    "body_length": 55.0,
+    "stats": {
+        "estimated_accuracy": null
+    },
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {}
+}

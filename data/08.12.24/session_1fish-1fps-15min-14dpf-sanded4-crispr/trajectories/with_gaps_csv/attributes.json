@@ -1,0 +1,17 @@
+{
+    "version": "5.2.12",
+    "video_paths": [
+        "E:\\Zebrafish\\AVI\\08.12.24\\1fish-1fps-15min-14dpf-sanded4-crispr_2024-08-12-171228-0000.avi"
+    ],
+    "frames_per_second": 15,
+    "body_length": 48.0,
+    "stats": {
+        "estimated_accuracy": null
+    },
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {},
+    "length_unit": null
+}

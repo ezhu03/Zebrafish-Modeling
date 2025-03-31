@@ -1,0 +1,101 @@
+{
+    "number_of_error_frames": 1,
+    "estimated_accuracy": 1.0,
+    "accumulation_trial": 0,
+    "identities_labels": [
+        "1"
+    ],
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\07.02.24\\1fish-1fps-15min-7dpf-sanded3_2024-07-02-155110-0000.avi"
+    ],
+    "number_of_animals": 1,
+    "intensity_ths": [
+        24,
+        255
+    ],
+    "area_ths": [
+        150,
+        400
+    ],
+    "name": "1fish-1fps-15min-7dpf-sanded3",
+    "tracking_intervals": [
+        [
+            0,
+            899
+        ]
+    ],
+    "resolution_reduction": 1.0,
+    "roi_list": [
+        "+ Ellipse {'center': [1014, 1019], 'axes': [1018, 1042], 'angle': 169}",
+        "- Ellipse {'center': [1006, 1020], 'axes': [923, 943], 'angle': 177}",
+        "+ Ellipse {'center': [1004, 1021], 'axes': [912, 924], 'angle': 1}"
+    ],
+    "use_bkg": true,
+    "knowledge_transfer_folder": null,
+    "check_segmentation": false,
+    "identity_transfer": false,
+    "track_wo_identities": false,
+    "frames_per_episode": 500,
+    "background_subtraction_stat": "median",
+    "number_of_frames_for_background": 50,
+    "number_of_parallel_workers": 2,
+    "data_policy": "idmatcher.ai",
+    "id_image_size": [
+        28,
+        28,
+        1
+    ],
+    "protocol3_action": "ask",
+    "convert_trajectories_to_csv_and_json": true,
+    "add_time_column_to_csv": false,
+    "exclusive_rois": false,
+    "identity_transfer_succeded": false,
+    "bounding_box_images_in_ram": false,
+    "version": "5.2.12",
+    "accumulation_statistics_data": [
+        {}
+    ],
+    "original_width": 2048,
+    "original_height": 2048,
+    "frames_per_second": 15,
+    "number_of_frames": 899,
+    "session_folder": "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\07.02.24\\session_1fish-1fps-15min-7dpf-sanded3",
+    "first_frame_first_global_fragment": [],
+    "identities_groups": {},
+    "setup_points": {},
+    "timers": {
+        "Tracking session": {
+            "name": "Tracking session",
+            "start_time": "2024-07-09T20:40:30.227692",
+            "finish_time": "2024-07-09T20:42:03.732194"
+        },
+        "Animal detection": {
+            "name": "Animal detection",
+            "start_time": "2024-07-09T20:40:33.561314",
+            "finish_time": "2024-07-09T20:42:02.695263"
+        },
+        "Crossing detection": {
+            "name": "Crossing detection",
+            "start_time": "2024-07-09T20:42:02.710889",
+            "finish_time": "2024-07-09T20:42:03.357194"
+        },
+        "Fragmentation": {
+            "name": "Fragmentation",
+            "start_time": "2024-07-09T20:42:03.388443",
+            "finish_time": "2024-07-09T20:42:03.419752"
+        },
+        "Tracking": {
+            "name": "Tracking",
+            "start_time": "2024-07-09T20:42:03.529068",
+            "finish_time": "2024-07-09T20:42:03.529068"
+        },
+        "Trajectories creation": {
+            "name": "Trajectories creation",
+            "start_time": "2024-07-09T20:42:03.638446",
+            "finish_time": "2024-07-09T20:42:03.732194"
+        }
+    },
+    "median_body_length": 39.0,
+    "n_animals": 1,
+    "length_calibrations": []
+}
