@@ -13,7 +13,7 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 simulation = ['N','Y']
-borders = ['Sanded','Sanded']
+borders = ['Half','Half']
 days = [2,2]
 vision = ['N','N']
 outputs = []
@@ -263,12 +263,16 @@ for i in range(len(simulation)):
                 files = [file1,file2,file3,file4,file5,file6,file7,file8,file9,file10]
             elif borders[i] == 'Sanded':
                 file1 = "modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"
+                file1 = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"
+                
                 files = [file1]
             elif borders[i] == 'Clear':
                 file1 = "modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_21dpf_clear.npy"
+                file1 = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_clear.npy"
                 files = [file1]
             elif borders[i] == 'Half':
                 file1 = "modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_21dpf_half.npy"
+                file1 = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_half.npy"
                 files = [file1]
 
 

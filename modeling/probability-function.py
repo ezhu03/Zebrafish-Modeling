@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # Constants
 R = 5
-const = 3
+const = 10
 
 # Define the function p(r)
 def p(r):
