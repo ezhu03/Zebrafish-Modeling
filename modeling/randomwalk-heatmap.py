@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.animation as animation
 
 day = int(input('dpf: '))
-spds = np.load('speeddistribution'+str(day)+'dpf_blind.npy')
+spds = np.load('speeddistribution'+str(day)+'dpf.npy')
 
 num = 10  # Number of particles
 start = 300
@@ -94,6 +94,7 @@ def plot_random_walk(positions, radius=10, color = 'blue'):
     all_x = [pos[0] for sublist in positions for pos in sublist]
     all_y = [pos[1] for sublist in positions for pos in sublist]   
     plt.figure(figsize=(3, 3))
+    plt.rcParams['figure.dpi'] = 100
     plt.hist2d(all_x, all_y, bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)    
     center = (0, 0)
 
@@ -111,6 +112,7 @@ def plot_random_walk(positions, radius=10, color = 'blue'):
     #plt.title('Random Walk within a Circle for '+ str(x)+'dpf fish')
     #plt.xlabel('X Position')
     #plt.ylabel('Y Position')
+    plt.savefig('/Users/ezhu/Downloads/randomwalk'+str(day)+'dpf_blind.png', dpi=3000, bbox_inches='tight')
     plt.show()
 
 plot_random_walk(positions, radius=5, color = 'blue')

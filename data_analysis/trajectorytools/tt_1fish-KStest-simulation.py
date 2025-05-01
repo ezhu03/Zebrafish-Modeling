@@ -20,8 +20,8 @@ outputs = []
 voutputs = []
 arrdays = [7,14,21]
 radius = 5
-l1 = 'CDF of ' + str(borders[0]) + ' at ' + str(arrdays[days[0]]) + 'dpf'
-l2 = 'CDF of Simulated ' + str(borders[1]) + ' at ' + str(arrdays[days[1]]) + 'dpf'
+l1 = 'of ' + str(borders[0]) + ' at ' + str(arrdays[days[0]]) + 'dpf'
+l2 = 'of Simulated ' + str(borders[1]) + ' at ' + str(arrdays[days[1]]) + 'dpf'
 violin_title = ''
 for i in range(len(simulation)):
     print(i)
@@ -44,163 +44,159 @@ for i in range(len(simulation)):
         if x==0:
             break
         if x == 7:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/01.25.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-            files = [file1,file2,file3,file4,file5,file6,file7,file8]
+            file1 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
+            file2 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
+            #file3 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
+            #file4 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/validated.npy"
+            #file5 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/validated.npy"
+            file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
+            file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
+            file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
+            files = [file1,file2,file6,file7,file8,file6,file7,file8]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-clear5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
-                file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+                file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+                file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+                file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+                file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear4-crispr/trajectories/validated.npy"
+                file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear5-crispr/trajectories/validated.npy"
+                file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+                file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+                file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3,file4,file5,file6,file7,file8]
 
         if x == 14:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
+            file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
+            file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
+            file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear3/trajectories/validated.npy"
+            file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
+            file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+                file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+                file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+                file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear3-crispr/trajectories/validated.npy"
+                file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear4-crispr/trajectories/validated.npy"
+                file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
+                file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+                file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3,file5,file6, file7]
 
-
         if x==21:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
+            file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
+            file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
+            file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
+            file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
+            file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
+            file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
+            file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
+            file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5,file6,file7,file8]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
+                file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
+                file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
+                file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3]
 
         if x==70:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
+            file1 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
+            file2 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
+            file3 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
+            file4 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
+            file5 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
+            file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5,file6]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
-                file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
+                file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+                file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
+                file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
+                file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded4-crispr/trajectories/validated.npy"
+                file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
+                file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+                file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3,file5,file6,file7]
 
         if x==140:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
+            file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
+            file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
+            file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded3/trajectories/validated.npy"
+            file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
+            file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
-                files = [file1,file2,file3,file4,file5, file6, file7]
-
+                file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+                file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+                file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded3-crispr/trajectories/validated.npy"
+                file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded4-crispr/trajectories/validated.npy"
+                file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
+                file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+                file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+                files = [file1,file2,file3,file4,file5,file6,file7]
         if x == 210:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
+            file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
+            file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
+            file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+            file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
+            file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
+            file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+            file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
+            file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5,file6,file7,file8]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
+                file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
+                file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
+                file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3]
         if x==700:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+            file1 = "data/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+            file2 = "data/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+            file3 = "data/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+            file4 = "data/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+            file5 = "data/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+            file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+            file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+            file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5,file6,file7,file8]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
-                file8 = "/Volumes/Hamilton/Zebrafish/AVI/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+                file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+                file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+                file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+                file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
+                file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
+                file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+                file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+                file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3,file4,file5,file6,file7,file8]
-
         elif x==1400:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
-            file2= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
-            file3= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
-            file4= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
-            file5= "/Volumes/Hamilton/Zebrafish/AVI/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
+            file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+            file2= "data/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+            file3= "data/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
+            file4= "data/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
+            file5= "data/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
-                file4 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
-                file5 = "/Volumes/Hamilton/Zebrafish/AVI/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
-                file6 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
-                file7 = "/Volumes/Hamilton/Zebrafish/AVI/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+                file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+                file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+                file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
+                file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
+                file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
+                file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+                file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3,file4,file5,file6,file7]
         elif x==2100:
-            file1 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
-            file2 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
-            file3 = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
-            file4 = "/Volumes/Hamilton/Zebrafish/AVI/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
-            file5 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
-            file6 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half2/trajectories/validated.npy"
-            file7 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half3/trajectories/validated.npy"
-            file8 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
-            file9 = "/Volumes/Hamilton/Zebrafish/AVI/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
+            file1 = "data/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+            file2 = "data/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+            file3 = "data/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
+            file4 = "data/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
+            file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+            file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half2/trajectories/validated.npy"
+            file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half3/trajectories/validated.npy"
+            file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
+            file9 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5,file6,file7,file8,file9]
             if blind == 'Y':
-                file1 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
-                file2 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
-                file3 = "/Volumes/Hamilton/Zebrafish/AVI/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
+                file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
+                file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
+                file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
                 files = [file1,file2,file3]
     elif simulation[i] == 'Y':
         x = arrdays[days[i]]
@@ -470,31 +466,35 @@ area = np.trapz(np.abs(F_x - F_y), xx)
 print("Area between the two cdfs:", area)
 # Plot the CDFs of both samples
 plt.figure(figsize=(4, 4))
-plt.step(x_sorted, cdf_x,color = colors[0],label=l1, where='post')
-plt.step(y_sorted, cdf_y, color = colors[1],label=l2, where='post')
+plt.step(x_sorted, cdf_x,color = colors[0],label="CDF " + l1, where='post')
+plt.step(y_sorted, cdf_y, color = colors[1],label="CDF " + l2, where='post')
 plt.xlabel('Radius')
-plt.ylabel('CDF')
+#plt.ylabel('CDF')
 plt.xlim(0,radius)
-plt.legend()
+plt.legend(loc='upper right')
 plt.grid(True)
+plt.savefig('/Users/ezhu/Downloads/ksplots1.png', dpi=3000, bbox_inches='tight')
 
 
 # Show the plot
 plt.show()
 
 # Plot KDEs for both distributions
-sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
-sns.kdeplot(y_sorted, color = colors[1],label='Distribution 2', fill=True,bw_method=0.25)
+sns.kdeplot(x_sorted, color = colors[0], label="PDF " + l1, fill=True,bw_method=0.25)
+sns.kdeplot(y_sorted, color = colors[1],label="PDF " + l2, fill=True,bw_method=0.25)
 
 plt.xlabel('Radius')
 plt.ylabel('Density')
 plt.title('Kernel Density Estimation of Radial Distributions')
-plt.legend()
+plt.legend(loc='upper left')
+plt.savefig('/Users/ezhu/Downloads/ksplots2.png', dpi=3000, bbox_inches='tight')
 plt.show()
 # Number of samples to draw from each KDE (adjust as needed)
 n_samples = 100
-kde_x = gaussian_kde(x_sorted,bw_method=0.25)
-kde_y = gaussian_kde(y_sorted,bw_method=0.25)
+#kde_x = gaussian_kde(x_sorted,bw_method=0.25)
+#kde_y = gaussian_kde(y_sorted,bw_method=0.25)
+kde_x = gaussian_kde(x_sorted,bw_method='scott')
+kde_y = gaussian_kde(y_sorted,bw_method='scott')
 
 count = 0
 p_values_r=[]
@@ -594,29 +594,33 @@ cdf_y = np.arange(1, len(y_sorted) + 1) / len(y_sorted)
 
 # Plot the CDFs of both samples
 plt.figure(figsize=(4, 4))
-plt.step(x_sorted, cdf_x, label=l1, color = colors[0], where='post')
-plt.step(y_sorted, cdf_y, label=l2, color = colors[1], where='post')
+plt.step(x_sorted, cdf_x, label="CDF " + l1, color = colors[0], where='post')
+plt.step(y_sorted, cdf_y, label="CDF " + l2, color = colors[1], where='post')
 plt.xlabel('Angle')
-plt.ylabel('CDF')
-plt.legend()
+#plt.ylabel('CDF')
+plt.legend(loc='upper right')
 plt.grid(True)
 
 # Show the plot
+plt.savefig('/Users/ezhu/Downloads/ksplots3.png', dpi=3000, bbox_inches='tight')
 plt.show()
 
 # Plot KDEs for both distributions
-sns.kdeplot(x_sorted, color = colors[0], label='Distribution 1', fill=True,bw_method=0.25)
-sns.kdeplot(y_sorted, color = colors[1],label='Distribution 2', fill=True,bw_method=0.25)
+sns.kdeplot(x_sorted, color = colors[0], label="PDF " + l1, fill=True,bw_method=0.25)
+sns.kdeplot(y_sorted, color = colors[1],label="PDF " + l2, fill=True,bw_method=0.25)
 
 plt.xlabel('Radius')
 plt.ylabel('Density')
-plt.title('Kernel Density Estimation of Radial Distributions')
-plt.legend()
+plt.title('Kernel Density Estimation of Angular Distributions')
+plt.legend(loc='upper left')
+plt.savefig('/Users/ezhu/Downloads/ksplots4.png', dpi=3000, bbox_inches='tight')
 plt.show()
 # Number of samples to draw from each KDE (adjust as needed)
 n_samples = 100
-kde_x = gaussian_kde(x_sorted,bw_method=0.25)
-kde_y = gaussian_kde(y_sorted,bw_method=0.25)
+#kde_x = gaussian_kde(x_sorted,bw_method=0.25)
+#kde_y = gaussian_kde(y_sorted,bw_method=0.25)
+kde_x = gaussian_kde(x_sorted,bw_method='scott')
+kde_y = gaussian_kde(y_sorted,bw_method='scott')
 
 count = 0
 p_values_t=[]
@@ -690,4 +694,88 @@ green_patch = mpatches.Patch(color='green', label='D-statistic', alpha=0.25)
 ax.legend(handles=[blue_patch, green_patch])
 
 #plt.title("Violin Plot with Embedded Box Plot")
+plt.show()
+# -------------------------------------------------------------------
+# NEW PLOT: Split p-values to one axis and D-statistics to another
+plt.rcParams['figure.dpi'] = 100
+# Create a new figure and a primary axis for p-values
+fig, ax1 = plt.subplots(figsize=(4, 6))
+# Create a secondary y-axis for D-statistics that shares the same x-axis
+ax2 = ax1.twinx()
+
+# --- Plot for p-values on ax1 ---
+pos = [0.7, 1.9]
+parts_p = ax1.violinplot([p_values_r, p_values_t],
+                           vert=True, showextrema=False,
+                           positions=pos)
+# Set the violin colors for p-values (blue)
+for pc in parts_p['bodies']:
+    pc.set_facecolor('blue')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+
+# Overlay the box plots for p-values
+boxplot_p = ax1.boxplot([p_values_r, p_values_t],
+                        positions=pos,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_p['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_p['medians']:
+    median.set_color('black')
+for whisker in boxplot_p['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_p['caps']:
+    cap.set_color('black')
+
+ax1.set_xticks(pos)
+ax1.set_xticklabels(["radial", "angular"])
+ax1.set_ylim(0, 1)
+#ax1.set_ylabel("p-values", color="blue")
+ax1.tick_params(axis='y', labelcolor="blue")
+#ax1.set_title("Violin Plots with Different y-axis Limits for p-values and D-statistic")
+
+# --- Plot for D-statistics on ax2 ---
+pos = [1.3, 2.5]
+parts_d = ax2.violinplot([D_values_r, D_values_t],
+                           vert=True, showextrema=False,
+                           positions=pos)
+# Set the violin colors for D-statistics (green)
+for pc in parts_d['bodies']:
+    pc.set_facecolor('green')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.25)
+
+# Overlay the box plots for D-statistics
+boxplot_d = ax2.boxplot([D_values_r, D_values_t],
+                        positions=pos,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_d['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_d['medians']:
+    median.set_color('black')
+for whisker in boxplot_d['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_d['caps']:
+    cap.set_color('black')
+pos=[1,2]
+ax2.set_xticks(pos)
+ax2.set_xticklabels(["radial", "angular"])
+ax2.set_ylim(0, 0.5)
+#ax2.set_ylabel("D-statistic", color="green")
+ax2.tick_params(axis='y', labelcolor="green")
+ax1.plot([0.4, 1], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+ax2.plot([1, 1.6], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+ax1.plot([1.6, 2.2], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+ax2.plot([2.2, 2.8], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+
+plt.tight_layout()
+plt.savefig("/Users/ezhu/Downloads/KSplot.png", dpi=3000, bbox_inches='tight')
 plt.show()
