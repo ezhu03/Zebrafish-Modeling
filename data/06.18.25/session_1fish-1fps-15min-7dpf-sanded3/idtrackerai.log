@@ -1,0 +1,160 @@
+11:14:04 Welcome to idtracker.ai 6.0.5                                                                    logging_utils.py:180
+         Date: 2025-06-23 11:14:04                                                                        logging_utils.py:184
+         Running Python '3.12.8' in 'Windows-11-10.0.26100-SP0'                                                               
+         Writing log in C:\Users\ezhu\idtrackerai.log                                                     logging_utils.py:189
+         Using NumPy 2.0.1                                                                                logging_utils.py:192
+         Using headless OpenCV 4.10.0.84                                                                  logging_utils.py:195
+         Regular OpenCV not found                                                                         logging_utils.py:204
+         Using "spawn" multiprocessing start method                                                       logging_utils.py:206
+         No parameter files detected                                                                            __main__.py:44
+         No terminal arguments detected                                                                         __main__.py:52
+         Initializing SegmentationGUI with PyQt6 6.9.0                                                     GUI_main_base.py:50
+11:14:14 Generating frame stack for background subtraction with 50 samples                                 segmentation.py:248
+11:15:51 Computing background (50 iterations). It took 0:01:37                                             segmentation.py:276
+         Computing background from a frame stack using 'median'                                            segmentation.py:310
+11:16:50 GUI params:                                                                                               main.py:271
+                                name='1fish-1fps-15min-7dpf-sanded3'                                                          
+                         video_paths=['\\\\Mac\\Hamilton\\Zebrafish\\AVI\\06.18.25\\1fish-1fps-15min-7dpf-sanded3_            
+         2025-06-18-110523-0000.avi']                                                                                         
+                       intensity_ths=[30, 255]                                                                                
+                            area_ths=[100, 500]                                                                               
+                  tracking_intervals=None                                                                                     
+                   number_of_animals=1                                                                                        
+                             use_bkg=True                                                                                     
+                  check_segmentation=False                                                                                    
+                 track_wo_identities=False                                                                                    
+                            roi_list=None                                                                                     
+         background_subtraction_stat='median'                                                                                 
+11:16:56 Using PyTorch 2.5.1                                                                                      device.py:15
+         WARNING No graphic device was found available, running neural networks on CPU. This may slow down the    device.py:38
+         training steps.                                                                                                      
+11:16:58 START Tracking session                                                                                      run.py:26
+         Initializing Session                                                                                   session.py:156
+         Setting video paths to:                                                                                session.py:168
+             \\Mac\Hamilton\Zebrafish\AVI\06.18.25\1fish-1fps-15min-7dpf-sanded3_2025-06-18-110523-0000.avi                   
+         The session has 899 frames (2 episodes)                                                                session.py:222
+                 Episode 0, frames (0 -> 449) of /1fish-1fps-15min-7dpf-sanded3_2025-06-18-110523-0000.avi      session.py:229
+                 Episode 1, frames (449 -> 899) of /1fish-1fps-15min-7dpf-sanded3_2025-06-18-110523-0000.avi    session.py:229
+         Directory \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3 has been created session.py:261
+         Directory \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing    session.py:262
+         has been created                                                                                                     
+         Number of parallel jobs: 2                                                                             session.py:284
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         START Animal detection                                                                                py_utils.py:196
+         Directory                                                                                     animals_detection.py:17
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\bounding_box_imag                        
+         es has been created                                                                                                  
+         Using previously computed background model from GUI                                           animals_detection.py:29
+         Segmenting video, 2 episodes in 2 parallel jobs                                                   segmentation.py:199
+         Saving bounding box images in                                                                     segmentation.py:202
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\bounding_box_images                      
+11:18:35 Segmenting video (2 iterations). It took 0:01:37                                                  segmentation.py:228
+         Generating ListOfBlobs object                                                                     list_of_blobs.py:48
+         861 detected blobs in total, an average of 1.0 blobs per frame                                animals_detection.py:57
+         There are 0 frames with more blobs than animals                                              animals_detection.py:101
+         FINISH Animal detection, it took 0:01:37                                                              py_utils.py:201
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         Saving ListOfBlobs at                                                                                      run.py:114
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_blobs.pi           
+         ckle                                                                                                                 
+         Writing list_of_blobs.pickle (203.6 kB). It took 0:00:00                                         list_of_blobs.py:100
+         START Crossing detection                                                                              py_utils.py:196
+         Computing body lengths (899 iterations). It took 0:00:00                                             model_area.py:75
+         The median body length is 32.6 pixels                                                                model_area.py:89
+         The automatic identification image size is 24                                                          session.py:497
+         No resolution reduction required                                                                       session.py:510
+         Identification image size set to [24, 24, 1], resolution reduction factor set to 1                     session.py:545
+         Directory                                                                                              __init__.py:27
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\identification_images has                
+         been created                                                                                                         
+11:18:37 Setting images for identification (2 iterations). It took 0:00:01                                list_of_blobs.py:226
+         Connecting blobs (899 iterations). It took 0:00:00                                               list_of_blobs.py:161
+         FINISH Crossing detection, it took 0:00:01                                                            py_utils.py:201
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         Saving ListOfBlobs at                                                                                      run.py:114
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_blobs.pi           
+         ckle                                                                                                                 
+         Writing list_of_blobs.pickle (213.7 kB). It took 0:00:00                                         list_of_blobs.py:100
+         START Fragmentation                                                                                   py_utils.py:196
+         Fragmenting blobs (899 iterations). It took 0:00:00                                               fragmentation.py:59
+         Creating list of fragments                                                                   list_of_fragments.py:191
+         Connecting coexisting fragments (816 iterations). It took 0:00:00                            list_of_fragments.py:432
+         816 Fragments in total, 816 individuals and 0 crossings                                           fragmentation.py:30
+         Total number of Global Fragments: 63                                                   list_of_global_fragments.py:78
+         Of which 3 are long enough to be accumulated                                           list_of_global_fragments.py:82
+         FINISH Fragmentation, it took 0:00:00                                                                 py_utils.py:201
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         Saving ListOfBlobs at                                                                                      run.py:114
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_blobs.pi           
+         ckle                                                                                                                 
+         Writing list_of_blobs.pickle (217.7 kB). It took 0:00:00                                         list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_fragment           
+         s.json                                                                                                               
+         Writing list_of_fragments.json (294.1 kB). It took 0:00:00                                   list_of_fragments.py:242
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_global_f           
+         ragments.json                                                                                                        
+         START Tracking                                                                                        py_utils.py:196
+         Tracking a single animal, assigning identity 1 to all blobs                                            __init__.py:53
+         FINISH Tracking, it took 0:00:00                                                                      py_utils.py:201
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         Saving ListOfBlobs at                                                                                      run.py:114
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_blobs.pi           
+         ckle                                                                                                                 
+         Writing list_of_blobs.pickle (221.2 kB). It took 0:00:00                                         list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_fragment           
+         s.json                                                                                                               
+11:18:38 Writing list_of_fragments.json (294.1 kB). It took 0:00:00                                   list_of_fragments.py:242
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_global_f           
+         ragments.json                                                                                                        
+         START Trajectories creation                                                                           py_utils.py:196
+         Directory                                                                                 trajectories_creation.py:80
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\trajectories                             
+         has been created                                                                                                     
+         Producing trajectories (899 iterations). It took 0:00:00                                 trajectories_creation.py:129
+         Saving trajectories in                                                                          trajectories_io.py:87
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\trajectories\trajec                      
+         tories.h5                                                                                                            
+         Creating converter from 5 to 3                                                                           attrs.py:205
+         Saving trajectories in                                                                          trajectories_io.py:40
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\trajectories\trajec                      
+         tories.npy                                                                                                           
+         Saving trajectories in                                                                          trajectories_io.py:53
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\trajectories\trajec                      
+         tories_csv                                                                                                           
+         Directory                                                                                       trajectories_io.py:54
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\trajectories\trajec                      
+         tories_csv has been created                                                                                          
+         FINISH Trajectories creation, it took 0:00:00                                                         py_utils.py:201
+         FINISH Tracking session, it took 0:01:40                                                                    run.py:67
+         Saving Session object in                                                                                   run.py:112
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\session.json                             
+         Saving ListOfBlobs at                                                                                      run.py:114
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_blobs.pi           
+         ckle                                                                                                                 
+         Writing list_of_blobs.pickle (221.2 kB). It took 0:00:00                                         list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_fragment           
+         s.json                                                                                                               
+         Writing list_of_fragments.json (294.1 kB). It took 0:00:00                                   list_of_fragments.py:242
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\preprocessing\list_of_global_f           
+         ragments.json                                                                                                        
+         Estimated accuracy: 100.0000%                                                                               run.py:75
+         Data policy: 'idmatcher.ai'                                                                            session.py:956
+         Directory                                                                                              session.py:975
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\bounding_box_images has                  
+         been removed                                                                                                         
+         Directory                                                                                              session.py:976
+         \\Mac\Hamilton\Zebrafish\AVI\06.18.25\session_1fish-1fps-15min-7dpf-sanded3\crossings_detector not                   
+         found, can't remove                                                                                                  
+         Compressing identification images (2 iterations). It took 0:00:00                                      session.py:992
+         Success                                                                                                     run.py:81

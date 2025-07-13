@@ -1,0 +1,237 @@
+{
+    "global_fragments": [
+        {
+            "fragments_identifiers": [341]
+        },
+        {
+            "fragments_identifiers": [360]
+        },
+        {
+            "fragments_identifiers": [360]
+        }
+    ],
+    "non_accumulable_global_fragments": [
+        {
+            "fragments_identifiers": [7]
+        },
+        {
+            "fragments_identifiers": [16]
+        },
+        {
+            "fragments_identifiers": [23]
+        },
+        {
+            "fragments_identifiers": [33]
+        },
+        {
+            "fragments_identifiers": [36]
+        },
+        {
+            "fragments_identifiers": [41]
+        },
+        {
+            "fragments_identifiers": [61]
+        },
+        {
+            "fragments_identifiers": [67]
+        },
+        {
+            "fragments_identifiers": [80]
+        },
+        {
+            "fragments_identifiers": [95]
+        },
+        {
+            "fragments_identifiers": [132]
+        },
+        {
+            "fragments_identifiers": [158]
+        },
+        {
+            "fragments_identifiers": [163]
+        },
+        {
+            "fragments_identifiers": [174]
+        },
+        {
+            "fragments_identifiers": [221]
+        },
+        {
+            "fragments_identifiers": [230]
+        },
+        {
+            "fragments_identifiers": [244]
+        },
+        {
+            "fragments_identifiers": [246]
+        },
+        {
+            "fragments_identifiers": [247]
+        },
+        {
+            "fragments_identifiers": [252]
+        },
+        {
+            "fragments_identifiers": [257]
+        },
+        {
+            "fragments_identifiers": [260]
+        },
+        {
+            "fragments_identifiers": [268]
+        },
+        {
+            "fragments_identifiers": [276]
+        },
+        {
+            "fragments_identifiers": [279]
+        },
+        {
+            "fragments_identifiers": [283]
+        },
+        {
+            "fragments_identifiers": [287]
+        },
+        {
+            "fragments_identifiers": [296]
+        },
+        {
+            "fragments_identifiers": [301]
+        },
+        {
+            "fragments_identifiers": [302]
+        },
+        {
+            "fragments_identifiers": [305]
+        },
+        {
+            "fragments_identifiers": [317]
+        },
+        {
+            "fragments_identifiers": [320]
+        },
+        {
+            "fragments_identifiers": [334]
+        },
+        {
+            "fragments_identifiers": [339]
+        },
+        {
+            "fragments_identifiers": [343]
+        },
+        {
+            "fragments_identifiers": [346]
+        },
+        {
+            "fragments_identifiers": [374]
+        },
+        {
+            "fragments_identifiers": [376]
+        },
+        {
+            "fragments_identifiers": [377]
+        },
+        {
+            "fragments_identifiers": [415]
+        },
+        {
+            "fragments_identifiers": [419]
+        },
+        {
+            "fragments_identifiers": [428]
+        },
+        {
+            "fragments_identifiers": [439]
+        },
+        {
+            "fragments_identifiers": [444]
+        },
+        {
+            "fragments_identifiers": [462]
+        },
+        {
+            "fragments_identifiers": [478]
+        },
+        {
+            "fragments_identifiers": [486]
+        },
+        {
+            "fragments_identifiers": [521]
+        },
+        {
+            "fragments_identifiers": [530]
+        },
+        {
+            "fragments_identifiers": [547]
+        },
+        {
+            "fragments_identifiers": [583]
+        },
+        {
+            "fragments_identifiers": [591]
+        },
+        {
+            "fragments_identifiers": [602]
+        },
+        {
+            "fragments_identifiers": [606]
+        },
+        {
+            "fragments_identifiers": [630]
+        },
+        {
+            "fragments_identifiers": [647]
+        },
+        {
+            "fragments_identifiers": [653]
+        },
+        {
+            "fragments_identifiers": [677]
+        },
+        {
+            "fragments_identifiers": [681]
+        },
+        {
+            "fragments_identifiers": [686]
+        },
+        {
+            "fragments_identifiers": [739]
+        },
+        {
+            "fragments_identifiers": [745]
+        },
+        {
+            "fragments_identifiers": [762]
+        },
+        {
+            "fragments_identifiers": [766]
+        },
+        {
+            "fragments_identifiers": [769]
+        },
+        {
+            "fragments_identifiers": [780]
+        },
+        {
+            "fragments_identifiers": [786]
+        },
+        {
+            "fragments_identifiers": [790]
+        },
+        {
+            "fragments_identifiers": [793]
+        },
+        {
+            "fragments_identifiers": [797]
+        },
+        {
+            "fragments_identifiers": [814]
+        },
+        {
+            "fragments_identifiers": [825]
+        },
+        {
+            "fragments_identifiers": [829]
+        }
+    ]
+}

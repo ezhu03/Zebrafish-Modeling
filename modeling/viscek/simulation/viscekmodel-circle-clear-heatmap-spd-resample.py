@@ -343,7 +343,7 @@ for a in range(iterations):
 
         # Generate a color gradient
         norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
-        cmap = sns.color_palette("light:b", as_cmap=True)
+        cmap = sns.color_palette("Spectral", as_cmap=True)
         colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
         print(len(allxpos))
         # Plot arrows between successive points
@@ -362,7 +362,7 @@ for a in range(iterations):
             ax.arrow(xx[i], yy[i],
                 xx[i+1] - xx[i], yy[i+1] - yy[i], 
                 head_width=0.05, head_length=0.05, 
-                fc=color, ec=color, alpha=0.75)
+                fc=color, ec=color, alpha=1)
         plt.title("Simulated Path")
         sm = cm.ScalarMappable(cmap=cmap, norm=norm)
         sm.set_array([])  # Required to initialize data for colorbar
@@ -372,6 +372,7 @@ for a in range(iterations):
         plt.grid(False)
         plt.xlim(-5, 5)
         plt.ylim(-5, 5)
+        plt.savefig('/Users/ezhu/Downloads/vicsekmodel_circle_clear_%s.png'%day, dpi=3000, bbox_inches='tight')
         plt.show()
 center = (0, 0)
 
@@ -400,5 +401,6 @@ if sv == 'Y':
         pass
     np.save(file_name, data)
 # Show the plot
+plt.savefig('/Users/ezhu/Downloads/viscekmodel_circle_clear_heatmap_%s.png'%day, dpi=3000, bbox_inches='tight')
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))

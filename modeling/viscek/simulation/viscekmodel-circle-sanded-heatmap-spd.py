@@ -167,7 +167,7 @@ def update_velocities(positions, velocities, radius, speed, noise):
     return velocities
 # Run the simulation and display the results
 #fig, ax = plt.subplots()
-iterations=1
+iterations=10
 allxpos = []
 allypos = []
 for a in range(iterations):
@@ -277,6 +277,7 @@ for a in range(iterations):
         #print(t2-t1)
     if a == 0 or a==1: 
         fig, ax = plt.subplots(figsize=(6,6))
+        plt.rcParams['figure.dpi'] = 300
         center = (0, 0)
         theta = np.linspace(0, 2 * np.pi, 300)
         xc = center[0] + box_radius * np.cos(theta)
@@ -305,6 +306,7 @@ for a in range(iterations):
         plt.grid(False)
         plt.xlim(-5, 5)
         plt.ylim(-5, 5)
+        plt.savefig('/Users/ezhu/Downloads/viscekmodel_circle_sanded_%s.png'%day, dpi=3000, bbox_inches='tight')
         plt.show()
     #plt.show()
 
@@ -316,6 +318,7 @@ theta = np.linspace(0, 2 * np.pi, 300)
 xc = center[0] + box_radius * np.cos(theta)
 yc = center[1] + box_radius * np.sin(theta)
 plt.figure(figsize=(3, 3))
+plt.rcParams['figure.dpi'] = 300
 plt.plot(xc, yc, label=f'Circle with radius {radius}')
 plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-1*box_radius,box_radius],[-1*box_radius,box_radius]],  cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
 
@@ -337,5 +340,6 @@ if sv == 'Y':
         pass
     np.save(file_name, data)
 # Show the plot
+plt.savefig('/Users/ezhu/Downloads/viscekmodel_circle_sanded_heatmap_%s.png'%day, dpi=3000, bbox_inches='tight')
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))

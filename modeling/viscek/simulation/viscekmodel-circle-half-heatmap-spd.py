@@ -329,6 +329,7 @@ for a in range(iterations):
         plt.grid(False)
         plt.xlim(-5, 5)
         plt.ylim(-5, 5)
+        plt.savefig('/Users/ezhu/Downloads/viscekmodel_circle_half_%s.png'%day, dpi=3000, bbox_inches='tight')
         plt.show()
 center = (0, 0)
 theta = np.linspace(0, 2 * np.pi, 300)
@@ -356,5 +357,6 @@ if sv == "Y":
         pass
     np.save(file_name, data)
 # Show the plot
+plt.savefig('/Users/ezhu/Downloads/viscekmodel_circle_half_heatmap_%s.png'%day, dpi=3000, bbox_inches='tight')
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))

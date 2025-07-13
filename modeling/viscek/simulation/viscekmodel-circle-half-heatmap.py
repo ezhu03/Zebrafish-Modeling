@@ -307,6 +307,7 @@ with open(file_name, 'w') as file:
     pass
 np.savez(file_name, x=allxpos, y=allypos)
 # Show the plot
+
 plt.show()
 print(np.mean(allxpos),np.std(allxpos))
 

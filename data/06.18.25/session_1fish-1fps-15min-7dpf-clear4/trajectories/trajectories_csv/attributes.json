@@ -1,0 +1,21 @@
+{
+    "version": "6.0.5",
+    "height": 2048,
+    "width": 2048,
+    "video_paths": [
+        "\\\\Mac\\Hamilton\\Zebrafish\\AVI\\06.18.25\\1fish-1fps-15min-7dpf-clear4_2025-06-18-124738-0000.avi"
+    ],
+    "frames_per_second": 15.000150001500016,
+    "body_length": 34.40930106817051,
+    "estimated_accuracy": 1.0,
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {},
+    "length_unit": null,
+    "silhouette_score": null,
+    "fraction_identified": 1.0,
+    "estimated_accuracy_after_interpolation": NaN,
+    "estimated_accuracy_identified": NaN
+}

@@ -15,7 +15,7 @@ import matplotlib.colors as mcolors
 arr = [7,14,21]
 indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
-path = input('Path plots? (Y/N) : ')
+
 
 outputs = []
 voutputs = []
@@ -28,6 +28,7 @@ tt_avg_c = []
 tt_std_c = []
 turns_sep = []
 for x in arr:
+    path = input('Path plots? (Y/N) : ')
     radius = 5
     if x==0:
         break
@@ -198,19 +199,20 @@ for x in arr:
 
             # Generate a color gradient
             norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
-            cmap = sns.color_palette("light:b", as_cmap=True)
+            cmap = sns.color_palette("Spectral", as_cmap=True)
             colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
             print(len(allxpos))
             # Plot arrows between successive points
             for i in range(len(allxpos) - 1):
                 plt.arrow(allxpos[i], allypos[i],
                         allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
-                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=0.75)
+                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=1)
 
             plt.title("Physical Path")
             plt.grid(False)
             plt.xlim(-5, 5)
             plt.ylim(-5, 5)
+            plt.savefig("/Users/ezhu/Downloads/cs-physical-path.png", dpi=3000, bbox_inches='tight')
             plt.show()
         
 

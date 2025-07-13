@@ -13,7 +13,7 @@ import trajectorytools as tt
 import trajectorytools.plot as ttplot
 import trajectorytools.socialcontext as ttsocial
 simulation = ['N','Y']
-borders = ['Half','Half']
+borders = ['Sanded','Sanded']
 days = [2,2]
 vision = ['N','N']
 outputs = []
@@ -44,15 +44,15 @@ for i in range(len(simulation)):
         if x==0:
             break
         if x == 7:
-            file1 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
-            file2 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
-            #file3 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-            #file4 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/validated.npy"
-            #file5 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/validated.npy"
+            file1 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/trajectories.npy"
+            file2 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/trajectories.npy"
+            file3 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/trajectories.npy"
+            file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/trajectories.npy"
+            file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/trajectories.npy"
             file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
             file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
             file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-            files = [file1,file2,file6,file7,file8,file6,file7,file8]
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
             if blind == 'Y':
                 file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
                 file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
@@ -646,7 +646,7 @@ plt.show()
 
 import matplotlib.patches as mpatches
 
-pos_left = [0.7, 1.3, 1.9, 2.5]   # updated positions for the violins/boxplots
+'''pos_left = [0.7, 1.3, 1.9, 2.5]   # updated positions for the violins/boxplots
 fig, ax = plt.subplots(figsize=(4,6))
 
 # Create the violin plots
@@ -694,7 +694,7 @@ green_patch = mpatches.Patch(color='green', label='D-statistic', alpha=0.25)
 ax.legend(handles=[blue_patch, green_patch])
 
 #plt.title("Violin Plot with Embedded Box Plot")
-plt.show()
+plt.show()'''
 # -------------------------------------------------------------------
 # NEW PLOT: Split p-values to one axis and D-statistics to another
 plt.rcParams['figure.dpi'] = 100
@@ -710,9 +710,9 @@ parts_p = ax1.violinplot([p_values_r, p_values_t],
                            positions=pos)
 # Set the violin colors for p-values (blue)
 for pc in parts_p['bodies']:
-    pc.set_facecolor('blue')
+    pc.set_facecolor('cornflowerblue')
     pc.set_edgecolor('black')
-    pc.set_alpha(0.25)
+    pc.set_alpha(0.5)
 
 # Overlay the box plots for p-values
 boxplot_p = ax1.boxplot([p_values_r, p_values_t],
@@ -735,7 +735,7 @@ ax1.set_xticks(pos)
 ax1.set_xticklabels(["radial", "angular"])
 ax1.set_ylim(0, 1)
 #ax1.set_ylabel("p-values", color="blue")
-ax1.tick_params(axis='y', labelcolor="blue")
+ax1.tick_params(axis='y', labelcolor="cornflowerblue")
 #ax1.set_title("Violin Plots with Different y-axis Limits for p-values and D-statistic")
 
 # --- Plot for D-statistics on ax2 ---
@@ -745,9 +745,9 @@ parts_d = ax2.violinplot([D_values_r, D_values_t],
                            positions=pos)
 # Set the violin colors for D-statistics (green)
 for pc in parts_d['bodies']:
-    pc.set_facecolor('green')
+    pc.set_facecolor('orange')
     pc.set_edgecolor('black')
-    pc.set_alpha(0.25)
+    pc.set_alpha(0.5)
 
 # Overlay the box plots for D-statistics
 boxplot_d = ax2.boxplot([D_values_r, D_values_t],
@@ -770,7 +770,7 @@ ax2.set_xticks(pos)
 ax2.set_xticklabels(["radial", "angular"])
 ax2.set_ylim(0, 0.5)
 #ax2.set_ylabel("D-statistic", color="green")
-ax2.tick_params(axis='y', labelcolor="green")
+ax2.tick_params(axis='y', labelcolor="orange")
 ax1.plot([0.4, 1], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
 ax2.plot([1, 1.6], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
 ax1.plot([1.6, 2.2], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
@@ -778,4 +778,94 @@ ax2.plot([2.2, 2.8], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
 
 plt.tight_layout()
 plt.savefig("/Users/ezhu/Downloads/KSplot.png", dpi=3000, bbox_inches='tight')
+plt.legend()
 plt.show()
+
+'''# NEW PLOT: Radial half only (p_values_r and D_values_r)
+plt.rcParams['figure.dpi'] = 100
+
+# Create a new figure and a primary axis for p-values
+fig, ax1 = plt.subplots(figsize=(3, 6))
+# Create a secondary y-axis for D-statistics that shares the same x-axis
+ax2 = ax1.twinx()
+
+# --- Plot for p-values on ax1 (radial only) ---
+pos_p = [0.7]
+parts_p = ax1.violinplot([p_values_r],
+                           vert=True, showextrema=False,
+                           positions=pos_p)
+for pc in parts_p['bodies']:
+    pc.set_facecolor('cornflowerblue')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.5)
+
+boxplot_p = ax1.boxplot([p_values_r],
+                        positions=pos_p,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_p['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_p['medians']:
+    median.set_color('black')
+for whisker in boxplot_p['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_p['caps']:
+    cap.set_color('black')
+
+ax1.set_xticks(pos_p)
+ax1.set_xticklabels(["radial"])
+ax1.set_ylim(0, 1)
+#ax1.set_ylabel("p-values", color="blue")
+ax1.tick_params(axis='y', labelcolor="cornflowerblue")
+
+# --- Plot for D-statistics on ax2 (radial only) ---
+pos_d = [1.3]
+parts_d = ax2.violinplot([D_values_r],
+                           vert=True, showextrema=False,
+                           positions=pos_d)
+for pc in parts_d['bodies']:
+    pc.set_facecolor('orange')
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.5)
+
+boxplot_d = ax2.boxplot([D_values_r],
+                        positions=pos_d,
+                        widths=0.1,
+                        patch_artist=True,
+                        showfliers=False,
+                        vert=True)
+for patch in boxplot_d['boxes']:
+    patch.set_facecolor('white')
+    patch.set_edgecolor('black')
+for median in boxplot_d['medians']:
+    median.set_color('black')
+for whisker in boxplot_d['whiskers']:
+    whisker.set_color('black')
+for cap in boxplot_d['caps']:
+    cap.set_color('black')
+
+ax2.set_xticks([1])
+ax2.set_xticklabels(["radial"])
+ax2.set_ylim(0, 0.5)
+#ax2.set_ylabel("D-statistic", color="green")
+ax2.tick_params(axis='y', labelcolor="orange")
+
+# Draw threshold lines (using the original red dashed lines as reference)
+ax1.plot([0.4, 1], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+ax2.plot([1, 1.6], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+#ax1.plot([1.6, 2.2], [0.05, 0.05], color='red', linestyle='--', linewidth=2)
+#ax2.plot([2.2, 2.8], [0.192, 0.192], color='red', linestyle='--', linewidth=2)
+
+# Create legend patches for the radial half
+blue_patch  = mpatches.Patch(facecolor='cornflowerblue', edgecolor='black', alpha=0.5, label='p-values')
+green_patch = mpatches.Patch(facecolor='orange', edgecolor='black', alpha=0.5, label='D-statistic')
+plt.legend(handles=[blue_patch, green_patch],
+           loc='upper right',
+           frameon=True)
+
+plt.tight_layout()
+plt.savefig("/Users/ezhu/Downloads/KSplot_r.png", dpi=3000, bbox_inches='tight')
+plt.show()'''

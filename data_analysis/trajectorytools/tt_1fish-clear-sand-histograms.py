@@ -25,7 +25,6 @@ elif val == 'Clear':
     arr = [7,14,21]
 indiv = input('Individual plots? (Y/N) : ')
 blind = input('Blind fish? (Y/N) : ')
-path = input('Physical Path? (Y/N) : ')
 
 outputs = []
 voutputs = []
@@ -35,6 +34,7 @@ days = ['7dpf', '14dpf', '21dpf']
 tt_avg = []
 tt_std = []
 for x in arr:
+    path = input('Physical Path? (Y/N) : ')
     '''
     SET THESE VALUES BEFORE RUNNING THE CODE
     radius: radius of the tank (for reflection calculation)
@@ -48,16 +48,16 @@ for x in arr:
     '''
     if x==0:
         break
-    if x == 7:
-        file1 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
-        file2 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
-        #file3 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-        file4 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/validated.npy"
-        file5 = "data/01.25.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/validated.npy"
+    elif x == 7:
+        file1 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/trajectories.npy"
+        file2 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/trajectories.npy"
+        file3 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/trajectories.npy"
+        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/trajectories.npy"
+        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/trajectories.npy"
         file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
         file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
         file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-        files = [file1, file2, file4, file5, file6, file7, file8]
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
@@ -67,15 +67,14 @@ for x in arr:
             file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
             file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
             file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
-            files = [file1, file2, file3, file4, file6, file7, file8]
-
-    if x == 14:
+            files = [file1,file2,file3,file4,file5,file6,file7,file8]
+    elif x == 14:
         file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
         file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
         file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear3/trajectories/validated.npy"
         file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
         file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
-        files = [file1, file2, file3, file4, file5]
+        files = [file1,file2,file3,file4,file5]
         if blind == 'Y':
             file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
             file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
@@ -84,9 +83,8 @@ for x in arr:
             file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
             file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
             file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
-            files = [file1, file2, file4, file5, file7]
-
-    if x == 21:
+            files = [file1,file2,file3,file5,file6, file7]
+    elif x==21:
         file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
         file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
         file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
@@ -95,21 +93,22 @@ for x in arr:
         file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
         file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
         file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
-        files = [file1, file2, file3, file4, file5, file6, file7, file8]
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
             file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
-            files = [file1, file2, file3, file1, file3]
-
-    if x == 70:
+            files = [file1,file2,file3]
+    elif x==70:
         file1 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
         file2 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
         file3 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
-        file4 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
-        file5 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
-        file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
-        files = [file1, file2, file3, file4, file5, file6]
+        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded1/trajectories/trajectories.npy"
+        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded2/trajectories/trajectories.npy"
+        file6 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded3/trajectories/trajectories.npy"
+        file7 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded4/trajectories/trajectories.npy"
+        file8 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded5/trajectories/trajectories.npy"
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
@@ -118,16 +117,14 @@ for x in arr:
             file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
             file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
-            file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
-            files = [file1, file2, file3, file5, file6, file7]
-
-    if x == 140:
+            files = [file1,file2,file3,file5,file6,file7]
+    elif x==140:
         file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
         file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
         file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded3/trajectories/validated.npy"
         file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
         file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
-        files = [file1, file2, file3, file4, file5]
+        files = [file1,file2,file3,file4,file5]
         if blind == 'Y':
             file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
@@ -136,9 +133,8 @@ for x in arr:
             file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
             file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
             file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
-            files = [file1, file2, file3, file5, file6]
-
-    if x == 210:
+            files = [file1,file2,file3,file4,file5, file6, file7]
+    elif x == 210:
         file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
         file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
         file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
@@ -147,12 +143,12 @@ for x in arr:
         file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
         file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
         file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
-        files = [file1, file2, file3, file4, file5, file6, file7, file8]
+        files = [file1,file2,file3,file4,file5,file6,file7,file8]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
             file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
-            files = [file1, file2, file3]
+            files = [file1,file2,file3]
 
 
 
@@ -278,6 +274,7 @@ for x in arr:
             allypos = all_positions[:, 1]
 
             plt.figure(figsize=(6,6))
+            plt.rcParams['figure.dpi'] = 100
             center = (0, 0)
             theta = np.linspace(0, 2 * np.pi, 300)
             xc = center[0] + radius * np.cos(theta)
@@ -286,19 +283,20 @@ for x in arr:
 
             # Generate a color gradient
             norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
-            cmap = sns.color_palette("light:b", as_cmap=True)
+            cmap = sns.color_palette("Spectral", as_cmap=True)
             colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
             print(len(allxpos))
             # Plot arrows between successive points
             for i in range(len(allxpos) - 1):
                 plt.arrow(allxpos[i], allypos[i],
                         allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
-                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=0.75)
+                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=1)
 
             plt.title("Physical Path")
             plt.grid(False)
             plt.xlim(-5, 5)
             plt.ylim(-5, 5)
+            plt.savefig("/Users/ezhu/Downloads/cs-physical-path.png", dpi=3000, bbox_inches='tight')
             plt.show()
         '''        all_positions = np.reshape(np.array(temppos), (-1,2))
         allxpos = all_positions[:, 0]

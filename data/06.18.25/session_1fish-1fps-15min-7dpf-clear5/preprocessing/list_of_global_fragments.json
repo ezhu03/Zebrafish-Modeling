@@ -1,0 +1,222 @@
+{
+    "global_fragments": [
+        {
+            "fragments_identifiers": [505]
+        },
+        {
+            "fragments_identifiers": [528]
+        }
+    ],
+    "non_accumulable_global_fragments": [
+        {
+            "fragments_identifiers": [5]
+        },
+        {
+            "fragments_identifiers": [15]
+        },
+        {
+            "fragments_identifiers": [31]
+        },
+        {
+            "fragments_identifiers": [37]
+        },
+        {
+            "fragments_identifiers": [40]
+        },
+        {
+            "fragments_identifiers": [44]
+        },
+        {
+            "fragments_identifiers": [56]
+        },
+        {
+            "fragments_identifiers": [120]
+        },
+        {
+            "fragments_identifiers": [151]
+        },
+        {
+            "fragments_identifiers": [161]
+        },
+        {
+            "fragments_identifiers": [193]
+        },
+        {
+            "fragments_identifiers": [209]
+        },
+        {
+            "fragments_identifiers": [219]
+        },
+        {
+            "fragments_identifiers": [223]
+        },
+        {
+            "fragments_identifiers": [224]
+        },
+        {
+            "fragments_identifiers": [230]
+        },
+        {
+            "fragments_identifiers": [234]
+        },
+        {
+            "fragments_identifiers": [255]
+        },
+        {
+            "fragments_identifiers": [282]
+        },
+        {
+            "fragments_identifiers": [297]
+        },
+        {
+            "fragments_identifiers": [303]
+        },
+        {
+            "fragments_identifiers": [328]
+        },
+        {
+            "fragments_identifiers": [331]
+        },
+        {
+            "fragments_identifiers": [333]
+        },
+        {
+            "fragments_identifiers": [348]
+        },
+        {
+            "fragments_identifiers": [371]
+        },
+        {
+            "fragments_identifiers": [372]
+        },
+        {
+            "fragments_identifiers": [390]
+        },
+        {
+            "fragments_identifiers": [412]
+        },
+        {
+            "fragments_identifiers": [419]
+        },
+        {
+            "fragments_identifiers": [421]
+        },
+        {
+            "fragments_identifiers": [438]
+        },
+        {
+            "fragments_identifiers": [440]
+        },
+        {
+            "fragments_identifiers": [441]
+        },
+        {
+            "fragments_identifiers": [442]
+        },
+        {
+            "fragments_identifiers": [444]
+        },
+        {
+            "fragments_identifiers": [474]
+        },
+        {
+            "fragments_identifiers": [511]
+        },
+        {
+            "fragments_identifiers": [516]
+        },
+        {
+            "fragments_identifiers": [517]
+        },
+        {
+            "fragments_identifiers": [518]
+        },
+        {
+            "fragments_identifiers": [520]
+        },
+        {
+            "fragments_identifiers": [523]
+        },
+        {
+            "fragments_identifiers": [530]
+        },
+        {
+            "fragments_identifiers": [532]
+        },
+        {
+            "fragments_identifiers": [533]
+        },
+        {
+            "fragments_identifiers": [539]
+        },
+        {
+            "fragments_identifiers": [569]
+        },
+        {
+            "fragments_identifiers": [570]
+        },
+        {
+            "fragments_identifiers": [574]
+        },
+        {
+            "fragments_identifiers": [580]
+        },
+        {
+            "fragments_identifiers": [602]
+        },
+        {
+            "fragments_identifiers": [629]
+        },
+        {
+            "fragments_identifiers": [634]
+        },
+        {
+            "fragments_identifiers": [645]
+        },
+        {
+            "fragments_identifiers": [655]
+        },
+        {
+            "fragments_identifiers": [683]
+        },
+        {
+            "fragments_identifiers": [694]
+        },
+        {
+            "fragments_identifiers": [722]
+        },
+        {
+            "fragments_identifiers": [760]
+        },
+        {
+            "fragments_identifiers": [763]
+        },
+        {
+            "fragments_identifiers": [764]
+        },
+        {
+            "fragments_identifiers": [768]
+        },
+        {
+            "fragments_identifiers": [778]
+        },
+        {
+            "fragments_identifiers": [779]
+        },
+        {
+            "fragments_identifiers": [780]
+        },
+        {
+            "fragments_identifiers": [785]
+        },
+        {
+            "fragments_identifiers": [799]
+        },
+        {
+            "fragments_identifiers": [800]
+        },
+        {
+            "fragments_identifiers": [821]
+        }
+    ]
+}
