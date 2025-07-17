@@ -22,6 +22,8 @@ Our integrated pipeline combining controlled genetic and arena manipulations wit
 
 ## Header 2
 
+![heatmap-all](./assets/img/heatmap_all.jpg)
+
 > This is a blockquote following a header.
 >
 > When something is important enough, you do it even if the odds are not in your favor.
