@@ -22,7 +22,7 @@ Our integrated pipeline combining controlled genetic and arena manipulations wit
 
 ## Header 2
 
-![heatmap-all](./assets/img/heatmap_all.jpg)
+<img src="./assets/img/heatmap_all.jpg" alt="heatmap-all" style="zoom: 150%;">
 
 > This is a blockquote following a header.
 >
