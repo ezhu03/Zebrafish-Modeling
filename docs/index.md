@@ -2,13 +2,9 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+A computational and data-driven framework for modeling and analyzing larval zebrafish behavior, combining experimental observations with physics-based simulations to uncover how sensory inputs and environmental boundaries shape collective motion.
 
-[Link to another page](./another-page.html).
-
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+This repository is built on research involving both wild-type zebrafish and TYR mutant (vision-impaired) zebrafish, aiming to dissect the role of visual and hydrodynamic cues in locomotion and group dynamics. By bridging behavioral biology with active matter physics, the tools and models here offer a systematic approach to understanding how fish interact with their environment and with each other.
 
 # Abstract
 
@@ -20,7 +16,7 @@ To examine underlying mechanisms, we extracted age-dependent speed distributions
 
 Our integrated pipeline combining controlled genetic and arena manipulations with rigorous statistical analysis and flexible computational models provides a framework for understanding sensorimotor integration in zebrafish and other small organisms. Through a simple, low-parameter model, we can recapitulate the various symmetry-breaking events that occur during the development of the zebrafish visual system. These findings explicate the developmental role of visual cues in spatial behavior and offer a modular platform for future studies linking neural circuitry to emergent movement patterns.
 
-## Header 2
+## Results
 
 <img src="./assets/img/heatmap_all.jpg" alt="heatmap-all" style="zoom: 150%;">
 
