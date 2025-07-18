@@ -80,3 +80,4 @@ overall behavior exhibited by the physical data, including both the symmetry-bre
 and preference for a clear boundary. Again, the individual paths reflect the physical
 paths, but they are less smoothed out.
 
+Download the full length senior thesis [here](Eric_Zhu_Senior_Thesis.pdf).
