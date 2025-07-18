@@ -1,7 +1,3 @@
----
-layout: default
----
-
 A computational and data-driven framework for modeling and analyzing larval zebrafish behavior, combining experimental observations with physics-based simulations to uncover how sensory inputs and environmental boundaries shape collective motion.
 
 This repository is built on research involving both wild-type zebrafish and TYR mutant (vision-impaired) zebrafish, aiming to dissect the role of visual and hydrodynamic cues in locomotion and group dynamics. By bridging behavioral biology with active matter physics, the tools and models here offer a systematic approach to understanding how fish interact with their environment and with each other.
