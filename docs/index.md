@@ -12,7 +12,7 @@ To examine underlying mechanisms, we extracted age-dependent speed distributions
 
 Our integrated pipeline combining controlled genetic and arena manipulations with rigorous statistical analysis and flexible computational models provides a framework for understanding sensorimotor integration in zebrafish and other small organisms. Through a simple, low-parameter model, we can recapitulate the various symmetry-breaking events that occur during the development of the zebrafish visual system. These findings explicate the developmental role of visual cues in spatial behavior and offer a modular platform for future studies linking neural circuitry to emergent movement patterns.
 
-## Results
+# Results
 
 <img src="./assets/img/setup.jpg" alt="setup" style="zoom: 200%;">
 
@@ -79,6 +79,4 @@ path of a single fish (G, H, I). Overall, our simulated distributions accurately
 overall behavior exhibited by the physical data, including both the symmetry-breaking
 and preference for a clear boundary. Again, the individual paths reflect the physical
 paths, but they are less smoothed out.
-
-### Header 3
 
