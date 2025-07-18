@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 
 day = int(input('dpf: '))
 sv = input('save (Y/N): ')
-spds = np.load('speeddistribution'+str(day)+'dpf.npy')
+spds = np.load('modeling/data/speeddistribution/speeddistribution'+str(day)+'dpf.npy')
 
 class MarkovChain:
     def __init__(self):

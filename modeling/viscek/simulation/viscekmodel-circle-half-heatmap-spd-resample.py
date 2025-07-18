@@ -10,7 +10,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 
 day = int(input('dpf: '))
-spds = np.load('speeddistribution'+str(day)+'dpf.npy')
+spds = np.load('modeling/data/speeddistribution/speeddistribution'+str(day)+'dpf.npy')
 sv = input('save (Y/N): ')
 turn = input('turn (Y/N): ')
 # Define a class for the Markov chain
