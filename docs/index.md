@@ -12,112 +12,72 @@ To examine underlying mechanisms, we extracted age-dependent speed distributions
 
 Our integrated pipeline combining controlled genetic and arena manipulations with rigorous statistical analysis and flexible computational models provides a framework for understanding sensorimotor integration in zebrafish and other small organisms. Through a simple, low-parameter model, we can recapitulate the various symmetry-breaking events that occur during the development of the zebrafish visual system. These findings explicate the developmental role of visual cues in spatial behavior and offer a modular platform for future studies linking neural circuitry to emergent movement patterns.
 
-## Results
+# Results
 
-<img src="./assets/img/heatmap_all.jpg" alt="heatmap-all" style="zoom: 150%;">
+<img src="./assets/img/setup.jpg" alt="setup" style="zoom: 200%;">
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+> Our experimental setup consists of running the PiVR software through the
+tablet to control the power of the red light emitted through the ceramic plates. We
+placed a Petri dish on the top ceramic plate and recorded from above using a Teledyne
+FLIR Grasshopper3 USB3 camera with a Zeiss Milvus 85mm f/1.4 lens. We connected
+the camera setup to the PointGrey FlyCapture2 SDK, where AVI file-format videos
+were recorded and saved onto a hard drive.
 
-### Header 3
+<img src="./assets/img/heatmap_all.jpg" alt="heatmap-all" style="zoom: 200%;">
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+> From the iteratively tracked videos, we can plot the spatial distribution
+of each condition (clear, sanded, and half-sanded) across various time points (7, 14,
+and 21dpf). We sand the half-dish on the right half of the dish as represented by the
+right half of all three plots (B, E, H). We scaled all plots to the same dimensions (10
+bins by 10 bins) with a shared frequency color bar to label distribution intensity. For
+the sanded dishes (C, F, I), there is no significant change in behavior. In contrast,
+across the clear dishes (A, D, G), a shift towards the boundary occurs over time.
+The behavior at 7dpf (A, B, C) is comparable across all three conditions. The main
+conclusion of these results is evident in the half-sanded dish (B, E, H), where, by
+21dpf, a clear symmetry breaking occurs, resulting in a strongly skewed distribution
+away from the sanded side.
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+<img src="./assets/img/heatmap_blind.jpg" alt="heatmap-blind" style="zoom: 200%;">
 
-#### Header 4
+> From the iteratively tracked videos of CRISPR/Cas9 tyr-knockout ze-
+brafish, we can make the same spatial distribution plots of each condition (clear,
+sanded, and half-sanded) across various time points (7, 14, and 21dpf). Again, we
+only sand the half-sanded dish on the right half of the dish, as reflected in all three
+plots. In this case, there are no significant changes in behavior across all plots. The
+sample size of this dataset is smaller, resulting in some random distribution; however,
+there is no consistent behavior across the time points and different conditions.
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+<img src="./assets/img/brownianheatmaps.jpg" alt="brownianheatmaps" style="zoom: 200%;">
 
-##### Header 5
+> Given our experimental data, we extracted the speed distributions at
+each time point for the control wild-type fish (A, B, C) and the tyr-knockout blind
+fish (D, E, F). We use those speed distributions to produce heatmaps of the position
+distributions from a Brownian random walk simulation. There is less symmetry due
+to slower speeds from the tyr-knockout blind distributions, leading to more random
+behavior across ten 900 timepoint iterations.
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+<img src="./assets/img/sandedspeedsim.jpg" alt="sandedspeedsim" style="zoom: 200%;">
 
-###### Header 6
+> We simulate our sanded dish using the speed distributions from the re-
+spective experimental data at each time point. We then apply our turning probability
+function, which has an exponential turning parameter of 10 (D), determining the like-
+lihood of turning based on the straight distance to the boundary. Combining the
+depicted function with normal movement and some noise level, we can produce simu-
+lated paths of a single zebrafish (F). We can compare it with an arbitrary experimental
+zebrafish (E) to see that our simulation produces development movement patterns,
+albeit with sharper turns. From this, we take ten 900 timepoint observations for each
+stage of development to again produce 2D spatial distribution heatmaps (A, B, C)
+representing our simulated sanded dish.
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+<img src="./assets/img/21dpf_simulation.jpg" alt="21dpfsim" style="zoom: 200%;">
 
-### There's a horizontal rule below this.
+> After simulating 10 iterations of 900 time points, we can produce the
+equivalent two-dimensional heatmaps for each simulation condition (A, B, C). We also
+include an arbitrary simulation of each condition, including the simulated zebrafish’s
+path (D, E, F). Directly below, the bottom row includes a physical zebrafish swimming
+path of a single fish (G, H, I). Overall, our simulated distributions accurately reflect the
+overall behavior exhibited by the physical data, including both the symmetry-breaking
+and preference for a clear boundary. Again, the individual paths reflect the physical
+paths, but they are less smoothed out.
 
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
+Download the full length senior thesis [here](../Eric_Zhu_Senior_Thesis.pdf).
