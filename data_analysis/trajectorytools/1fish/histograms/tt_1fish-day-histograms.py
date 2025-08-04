@@ -3,6 +3,7 @@ Given clear or sanded tank data, this will iterate through the data and produce 
 radial position, angle to the wall, and the angle to the wall given the initial reflection area.
 '''
 import os
+import sys
 from pprint import pprint
 import pathlib
 import numpy as np
@@ -18,23 +19,169 @@ import trajectorytools.socialcontext as ttsocial
 import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 # iterate through the dpf values
-val = input('Sanded or Clear? : ')
-if val == 'Sanded':
-    arr = [70,140,210]
-elif val == 'Clear':
-    arr = [7,14,21]
-indiv = input('Individual plots? (Y/N) : ')
-blind = input('Blind fish? (Y/N) : ')
+x = int(input('dpf : '))
+if x==7 or x==14 or x==21:
+    blind = input('Blind fish? (Y/N) : ')
+    indiv = input('Individual plots? (Y/N) : ')
+    if x == 7:
+        file1 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/trajectories.npy"
+        file2 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/trajectories.npy"
+        file3 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/trajectories.npy"
+        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/trajectories.npy"
+        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/trajectories.npy"
+        file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
+        file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
+        file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
+        clear = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+            file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear4-crispr/trajectories/validated.npy"
+            file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear5-crispr/trajectories/validated.npy"
+            file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
+            file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
+            file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
+            clear = [file1,file2,file3,file4,file5,file6,file7,file8]
+        file1 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
+        file2 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
+        file3 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
+        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded1/trajectories/trajectories.npy"
+        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded2/trajectories/trajectories.npy"
+        file6 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded3/trajectories/trajectories.npy"
+        file7 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded4/trajectories/trajectories.npy"
+        file8 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded5/trajectories/trajectories.npy"
+        sanded = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
+            file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded4-crispr/trajectories/validated.npy"
+            file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
+            file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
+            file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
+            sanded = [file1,file2,file3,file5,file6,file7]
+        file1 = "data/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
+        file2 = "data/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+        file3 = "data/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
+        file4 = "data/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
+        file5 = "data/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
+        file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half1/trajectories/validated.npy"
+        file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half2/trajectories/validated.npy"
+        file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-half3/trajectories/validated.npy"
+        half = [file1, file2, file3, file4, file5, file6, file7, file8]
+        if blind == 'Y':
+            file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"
+            file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-half3-crispr/trajectories/validated.npy"
+            half = [file1, file2, file3, file4, file5, file6, file7, file8]
+    elif x == 14:
+        file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
+        file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
+        file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear3/trajectories/validated.npy"
+        file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
+        file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
+        clear = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear3-crispr/trajectories/validated.npy"
+            file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear4-crispr/trajectories/validated.npy"
+            file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
+            file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
+            file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
+            clear = [file1,file2,file3,file5,file6, file7]
+        file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
+        file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
+        file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded3/trajectories/validated.npy"
+        file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
+        file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
+        sanded = [file1,file2,file3,file4,file5]
+        if blind == 'Y':
+            file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded3-crispr/trajectories/validated.npy"
+            file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded4-crispr/trajectories/validated.npy"
+            file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
+            file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
+            file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
+            sanded = [file1,file2,file3,file4,file5, file6, file7]
+        file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half1/trajectories/validated.npy"
+        file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half2/trajectories/validated.npy"
+        file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half3/trajectories/validated.npy"
+        file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half4/trajectories/validated.npy"
+        file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-half5/trajectories/validated.npy"
+        half = [file1, file2, file3, file4, file5]
+        if blind == 'Y':
+            file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half3-crispr/trajectories/validated.npy"
+            file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half4-crispr/trajectories/validated.npy"
+            file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-half5-crispr/trajectories/validated.npy"
+            file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-half1-crispr/trajectories/validated.npy"
+            file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
+            half = [file1, file2, file3, file4, file5, file6, file7]
+    elif x==21:
+        file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
+        file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
+        file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
+        file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
+        file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
+        file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
+        file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
+        file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
+        clear = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
+            file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
+            file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
+            clear = [file1,file2,file3]
+        file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
+        file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
+        file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+        file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
+        file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
+        file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
+        file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
+        file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
+        sanded = [file1,file2,file3,file4,file5,file6,file7,file8]
+        if blind == 'Y':
+            file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
+            file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
+            file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
+            sanded = [file1,file2,file3]
+        file1 = "data/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
+        file2 = "data/3.13.24/session_1fish15min1fps-half-2-21dpf/trajectories/validated.npy"
+        file3 = "data/3.13.24/session_1fish15min1fps-half-3-21dpf/trajectories/validated.npy"
+        file4 = "data/5.21.24/session_1fish-1fps-15min-21dpf-half-4/trajectories/validated.npy"
+        file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+        file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half2/trajectories/validated.npy"
+        file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half3/trajectories/validated.npy"
+        file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half4/trajectories/validated.npy"
+        file9 = "data/07.16.24/session_1fish-1fps-15min-21dpf-half5/trajectories/validated.npy"
+        half = [file1, file2, file3, file4, file5, file6, file7, file8, file9]
+        if blind == 'Y':
+            file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
+            file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
+            file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half3-crispr/trajectories/validated.npy"
+            half = [file1, file2, file3]
+else:
+    sys.exit('No data for ' + str(x) + ' dpf')
 
+# Create empty lists to store outputs
 outputs = []
 voutputs = []
 
 days = ['7dpf', '14dpf', '21dpf']
-
+arr = [clear, sanded, half]
 tt_avg = []
 tt_std = []
-for x in arr:
-    path = input('Physical Path? (Y/N) : ')
+for files in arr:
     '''
     SET THESE VALUES BEFORE RUNNING THE CODE
     radius: radius of the tank (for reflection calculation)
@@ -46,112 +193,7 @@ for x in arr:
     We go by convention that 7,14,21 is clear and 70,140,210 is sanded, and 700,1400,2100 is half sanded
     This code is designed to be used with clear data (7,14,21), the sanded and half sanded data is provided but not meant to be used for this code
     '''
-    if x==0:
-        break
-    elif x == 7:
-        file1 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear1/trajectories/trajectories.npy"
-        file2 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear2/trajectories/trajectories.npy"
-        file3 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear3/trajectories/trajectories.npy"
-        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear4/trajectories/trajectories.npy"
-        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-clear5/trajectories/trajectories.npy"
-        file6 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear1/trajectories/validated.npy"
-        file7 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear2/trajectories/validated.npy"
-        file8 = "data/07.02.24/session_1fish-1fps-15min-7dpf-clear3/trajectories/validated.npy"
-        files = [file1,file2,file3,file4,file5,file6,file7,file8]
-        if blind == 'Y':
-            file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
-            file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
-            file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
-            file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear4-crispr/trajectories/validated.npy"
-            file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear5-crispr/trajectories/validated.npy"
-            file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
-            file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
-            file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file4,file5,file6,file7,file8]
-    elif x == 14:
-        file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear1/trajectories/validated.npy"
-        file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear2/trajectories/validated.npy"
-        file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear3/trajectories/validated.npy"
-        file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear4/trajectories/validated.npy"
-        file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-clear5/trajectories/validated.npy"
-        files = [file1,file2,file3,file4,file5]
-        if blind == 'Y':
-            file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
-            file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
-            file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear3-crispr/trajectories/validated.npy"
-            file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear4-crispr/trajectories/validated.npy"
-            file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-clear5-crispr/trajectories/validated.npy"
-            file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear1-crispr/trajectories/validated.npy"
-            file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-clear2-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file5,file6, file7]
-    elif x==21:
-        file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-        file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
-        file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
-        file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-        file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear2/trajectories/validated.npy"
-        file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear3/trajectories/validated.npy"
-        file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear4/trajectories/validated.npy"
-        file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear5/trajectories/validated.npy"
-        files = [file1,file2,file3,file4,file5,file6,file7,file8]
-        if blind == 'Y':
-            file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
-            file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
-            file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3]
-    elif x==70:
-        file1 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded1/trajectories/validated.npy"
-        file2 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded2/trajectories/validated.npy"
-        file3 = "data/07.02.24/session_1fish-1fps-15min-7dpf-sanded3/trajectories/validated.npy"
-        file4 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded1/trajectories/trajectories.npy"
-        file5 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded2/trajectories/trajectories.npy"
-        file6 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded3/trajectories/trajectories.npy"
-        file7 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded4/trajectories/trajectories.npy"
-        file8 = "data/06.18.25/session_1fish-1fps-15min-7dpf-sanded5/trajectories/trajectories.npy"
-        files = [file1,file2,file3,file4,file5,file6,file7,file8]
-        if blind == 'Y':
-            file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
-            file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
-            file3 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded3-crispr/trajectories/validated.npy"
-            file4 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded4-crispr/trajectories/validated.npy"
-            file5 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded5-crispr/trajectories/validated.npy"
-            file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
-            file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file5,file6,file7]
-    elif x==140:
-        file1 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded1/trajectories/validated.npy"
-        file2 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded2/trajectories/validated.npy"
-        file3 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded3/trajectories/validated.npy"
-        file4 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded4/trajectories/validated.npy"
-        file5 = "data/07.09.24/session_1fish-1fps-15min-14dpf-sanded5/trajectories/validated.npy"
-        files = [file1,file2,file3,file4,file5]
-        if blind == 'Y':
-            file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
-            file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
-            file3 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded3-crispr/trajectories/validated.npy"
-            file4 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded4-crispr/trajectories/validated.npy"
-            file5 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded5-crispr/trajectories/validated.npy"
-            file6 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
-            file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3,file4,file5, file6, file7]
-    elif x == 210:
-        file1 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-        file2 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-        file3 = "data/5.21.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
-        file4 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded1/trajectories/validated.npy"
-        file5 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded2/trajectories/validated.npy"
-        file6 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded3/trajectories/validated.npy"
-        file7 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded4/trajectories/validated.npy"
-        file8 = "data/07.16.24/session_1fish-1fps-15min-21dpf-sanded5/trajectories/validated.npy"
-        files = [file1,file2,file3,file4,file5,file6,file7,file8]
-        if blind == 'Y':
-            file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
-            file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
-            file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
-            files = [file1,file2,file3]
-
-
-
+    
 
     def count_ones(array):
         count = 0
@@ -267,61 +309,6 @@ for x in arr:
         temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
-
-        if path == 'Y':
-            all_positions = np.reshape(np.array(temppos), (-1,2))
-            allxpos = all_positions[:, 0]
-            allypos = all_positions[:, 1]
-
-            fig, ax = plt.subplots(figsize=(7.5,6))
-            plt.rcParams['figure.dpi'] = 100
-            center = (0, 0)
-            theta = np.linspace(0, 2 * np.pi, 300)
-            xc = center[0] + radius * np.cos(theta)
-            yc = center[1] + radius * np.sin(theta)
-            ax.plot(xc, yc, label=f'Circle with radius {radius}')
-
-            # Generate a color gradient
-            norm = mcolors.Normalize(vmin=0, vmax=len(allxpos))
-            cmap = sns.color_palette("Spectral", as_cmap=True)
-            colors = [cmap(norm(i)) for i in range(len(allxpos) - 1)]
-            print(len(allxpos))
-            # Plot arrows between successive points
-            for i in range(len(allxpos) - 1):
-                ax.arrow(allxpos[i], allypos[i],
-                        allxpos[i+1] - allxpos[i], allypos[i+1] - allypos[i], 
-                        head_width=0.05, head_length=0.05, fc=colors[i], ec=colors[i], alpha=1)
-
-            # Add colorbar legend for time (s)
-            sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
-            sm.set_array([])
-            plt.colorbar(sm, ax=ax, label='Time (s)')
-
-            plt.title("Physical Path")
-            plt.grid(False)
-            plt.xlim(-5, 5)
-            plt.ylim(-5, 5)
-            plt.savefig("/Users/ezhu/Downloads/cs-physical-path.png", dpi=3000, bbox_inches='tight')
-            plt.show()
-        '''        all_positions = np.reshape(np.array(temppos), (-1,2))
-        allxpos = all_positions[:, 0]
-        allypos = all_positions[:, 1]
-        plt.figure(figsize=(6,6))
-        center = (0, 0)
-        theta = np.linspace(0, 2 * np.pi, 300)
-        xc = center[0] + radius * np.cos(theta)
-        yc = center[1] + radius * np.sin(theta)
-        plt.plot(xc, yc, label=f'Circle with radius {radius}')
-        #plt.hist2d(allxpos, allypos, bins=(10, 10),range = [[-1*radius,radius],[-1*radius,radius]],  cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05)
-
-        plt.plot(allxpos, allypos, marker='o', markersize=2, linestyle='-', color='blue')
-        plt.title("Physical Path")
-        #plt.xlabel("x")
-        #plt.ylabel("Y Position")
-        plt.grid(False)
-        plt.xlim(-5, 5)
-        plt.ylim(-5, 5)
-        plt.show()'''
         processedvel.append(tempvel)
         
 
@@ -346,30 +333,6 @@ for x in arr:
     print(vhalf.shape)
     vhalf = np.reshape(vhalf, [vhalf.shape[0]*vhalf.shape[1], 2])
     dist = []
-    
-
-    
-    center = (0, 0)
-
-    # Create circle
-    theta = np.linspace(0, 2 * np.pi, 300)
-    xc = center[0] + radius * np.cos(theta)
-    yc = center[1] + radius * np.sin(theta)
-    plt.figure(figsize=(3, 3))
-    plt.rcParams['figure.dpi'] = 100
-    plt.plot(xc, yc, label=f'Circle with radius {radius}')
-    plt.hist2d(phalf[:, 0], -1*phalf[: , 1], bins=(10, 10), range=[[-5,5],[-5,5]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.05
-            )
-    #plt.xlabel('X-bins')
-    #plt.ylabel('Y-bins')
-    '''if x % 10 == 0:
-        n = int(x/10)
-        plt.title('Heatmap for 1 Fish Sanded Tank ' +str(n) +'dpf')
-    else:
-        plt.title('Heatmap for 1 Fish Clear Tank ' + str(x)+'dpf')'''
-    #plt.colorbar(label='Frequency')
-    plt.savefig("/Users/ezhu/Downloads/cs-histogram.png", dpi=3000, bbox_inches='tight')
-    plt.show()
 
 
 
@@ -557,60 +520,68 @@ for x in arr:
     plt.show()'''
 
     outputs.append(half_df)
-dpf = [7,14,21]
-plt.errorbar(x=dpf,y=tt_avg,yerr = tt_std,fmt='o',color=color)
-plt.xlabel('Days Post Fertilization')
-plt.ylabel('Turning Time Along Wall')
-if x % 10 == 0:
-    n = int(x/10)
-    plt.title('Mean Turning Time over dpf for Sanded')
-else:
-    plt.title('Mean Turning Time over dpf for Clear')
-plt.show()
-for i in range(len(outputs)):
-    if arr[i] % 10 == 0:
-        outputs[i]['Age'] = str(arr[i]/10)+'dpf'
-    else:
-        outputs[i]['Age'] = str(arr[i])+'dpf'
-combined_df = pd.concat(outputs)
-'''colors=sns.color_palette(palette='YlGnBu_r')
-for i in range(len(outputs)):
-    #plt.hist(data=outputs[i],x='center',density=True,bins=10,range=[0,10],color=(colors[i], 0.3))
-    if arr[0]%10==0:
-        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]/10) + 'dpf')
-    else:
-        sns.histplot(data=outputs[i], x='center',stat='percent',bins=20,binrange=[0,10],color=colors[2*i+1],alpha=1-i/3, label = str(arr[i]) + 'dpf')'''
-sns.histplot(data=combined_df, x='r',stat='percent',hue='Age',bins=10,binrange=[0,10],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Distance From Center for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Distance From Center for 1 Fish Clear Tank Over Time')
-plt.show()
 
-sns.histplot(data=combined_df, x='spd',stat='percent',hue='Age',bins=10,binrange=[0,5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Speed for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Speed for 1 Fish Clear Tank Over Time')
-plt.show()
-
-sns.histplot(data=combined_df, x='spd_r',stat='percent',hue='Age',bins=10,binrange=[0,2.5],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
-x = arr[0]
-if x % 10 == 0:
-    
-    plt.title('Radial Speed for 1 Fish Sanded Tank Over Time')
-else:
-    plt.title('Radial Speed for 1 Fish Clear Tank Over Time')
-plt.show()
-
+import matplotlib.pyplot as plt
+arrnames = ['clear', 'sanded', 'half']
+# Histogram overlay
 plt.figure(figsize=(10, 6))
-sns.scatterplot(data=combined_df, x='r', y='spd_r', s=5, hue='Age',palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.25)
-plt.title('Relationship between Radial Speed and Radial Position')
-plt.xlabel('Radial Position')
-plt.ylabel('Radial Speed')
-plt.grid(True)
+for i, output in enumerate(outputs):
+    plt.hist(output['theta'], bins=40, range=[-np.pi, np.pi], alpha=0.4, label=arrnames[i], density=True)
+plt.xlabel('Theta')
+plt.ylabel('Density')
+plt.title('Overlay of Theta Positioning (Histogram) for Each Output')
+plt.legend()
+plt.show()
+
+
+#plt.rcParams['figure.dpi'] = 300
+# KDE overlay (kept as separate)
+plt.figure(figsize=(10, 6))
+for i, output in enumerate(outputs):
+    sns.kdeplot(
+        output['theta'],
+        label=arrnames[i],
+        fill=False,
+        alpha=0.4,
+        linewidth=5.,
+        clip=[-np.pi, np.pi]
+    )
+plt.xlabel('Theta')
+plt.ylabel('Density')
+#plt.title('Overlay of Theta Positioning for Each Output (KDE)')
+plt.xlim([-np.pi, np.pi])
+plt.ylim([0, 0.4])
+plt.legend()
+
+plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
+plt.show()
+
+# Smoothed Circular plot overlay using KDE
+from scipy.stats import gaussian_kde
+
+plt.figure(figsize=(8, 6))
+ax = plt.subplot(111, polar=True)
+
+n_points = 360
+theta_grid = np.linspace(-np.pi, np.pi, n_points)
+colors = ['blue', 'red', 'green']
+
+for i, output in enumerate(outputs):
+    data = output['theta']
+    # Extend data for circular continuity
+    wrapped_data = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
+    kde = gaussian_kde(wrapped_data, bw_method='scott')
+    kde_vals = kde(theta_grid)
+    #kde_vals /= np.sum(kde_vals)  # Normalize
+
+    ax.plot(theta_grid, kde_vals, label=arrnames[i], linewidth=5, color=colors[i])
+
+ax.set_theta_zero_location('N')
+ax.set_theta_direction(-1)
+ax.set_title('Smoothed Circular Overlay of Theta Distributions')
+ax.set_ylim(0,0.1)
+ax.set_yticks([])  # Hide radial ticks
+plt.legend(loc='upper right')
+plt.tight_layout()
+plt.savefig('/Users/ezhu/Downloads/angular_overlay_circular.png', dpi=3000)
 plt.show()

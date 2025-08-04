@@ -150,7 +150,7 @@ for i in range(len(simulation)):
                 files = [file1,file2,file3]
         if x==700:
             file1 = "data/2.28.24/session_1fish15min1fps-half-1/trajectories/validated.npy"
-            file2 = "data/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
+            file2 = "data/2.28.24/session_1fi.  sh15min1fps-half-2/trajectories/validated.npy"
             file3 = "data/2.28.24/session_1fish15min1fps-half-3/trajectories/validated.npy"
             file4 = "data/2.28.24/session_1fish15min1fps-half-4/trajectories/validated.npy"
             file5 = "data/2.28.24/session_1fish15min1fps-half-5/trajectories/validated.npy"
