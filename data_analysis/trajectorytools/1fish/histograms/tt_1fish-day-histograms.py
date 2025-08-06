@@ -570,7 +570,7 @@ for i, output in enumerate(outputs):
     data = output['theta']
     # Extend data for circular continuity
     wrapped_data = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
-    kde = gaussian_kde(wrapped_data, bw_method='scott')
+    kde = gaussian_kde(wrapped_data, bw_method=0.05)
     kde_vals = kde(theta_grid)
     #kde_vals /= np.sum(kde_vals)  # Normalize
 
@@ -579,7 +579,7 @@ for i, output in enumerate(outputs):
 ax.set_theta_zero_location('N')
 ax.set_theta_direction(-1)
 ax.set_title('Smoothed Circular Overlay of Theta Distributions')
-ax.set_ylim(0,0.1)
+ax.set_ylim(0,0.12)
 ax.set_yticks([])  # Hide radial ticks
 plt.legend(loc='upper right')
 plt.tight_layout()
