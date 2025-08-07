@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-data7 = np.load("speeddistribution7dpf.npy")
-data7b = np.load("speeddistribution7dpf_blind.npy")
-data14 = np.load("speeddistribution14dpf.npy")
-data14b = np.load("speeddistribution14dpf_blind.npy")
-data21 = np.load("speeddistribution21dpf.npy")
-data21b = np.load("speeddistribution21dpf_blind.npy")
+data7 = np.load("modeling/data/speeddistribution/speeddistribution7dpf.npy")
+data7b = np.load("modeling/data/speeddistribution/speeddistribution7dpf_blind.npy")
+data14 = np.load("modeling/data/speeddistribution/speeddistribution14dpf.npy")
+data14b = np.load("modeling/data/speeddistribution/speeddistribution14dpf_blind.npy")
+data21 = np.load("modeling/data/speeddistribution/speeddistribution21dpf.npy")
+data21b = np.load("modeling/data/speeddistribution/speeddistribution21dpf_blind.npy")
 
 # NEW PLOT: Split p-values to one axis and D-statistics to another
 plt.rcParams['figure.dpi'] = 100
@@ -84,5 +84,30 @@ legend_patches = [
 ]
 ax1.legend(handles=legend_patches, loc='upper right')
 plt.tight_layout()
-#plt.savefig("/Users/ezhu/Downloads/KSplot.png", dpi=3000, bbox_inches='tight')
+plt.savefig("/Users/ezhu/Downloads/speed_distribution_all.png", dpi=3000, bbox_inches='tight')
+plt.show()
+
+# KDE plot for control data
+import seaborn as sns
+plt.figure(figsize=(5, 4))
+sns.kdeplot(data7, color='blue', label='7 dpf', linewidth=5, alpha=0.4)
+sns.kdeplot(data14, color='purple', label='14 dpf', linewidth=5, alpha=0.4)
+sns.kdeplot(data21, color='red', label='21 dpf', linewidth=5, alpha=0.4)
+plt.xlabel('Speed')
+plt.ylabel('Density')
+plt.legend(title='Control')
+plt.tight_layout()
+plt.savefig("/Users/ezhu/Downloads/speed_distribution_control.png", dpi=3000, bbox_inches='tight')
+plt.show()
+
+# KDE plot for blind data
+plt.figure(figsize=(5, 4))
+sns.kdeplot(data7b, color='blue', label='7 dpf', linewidth=5, alpha=0.4)
+sns.kdeplot(data14b, color='purple', label='14 dpf', linewidth=5, alpha=0.4)
+sns.kdeplot(data21b, color='red', label='21 dpf', linewidth=5, alpha=0.4)
+plt.xlabel('Speed')
+plt.ylabel('Density')
+plt.legend(title='Blind')
+plt.tight_layout()
+plt.savefig("/Users/ezhu/Downloads/speed_distribution_blind.png", dpi=3000, bbox_inches='tight')
 plt.show()

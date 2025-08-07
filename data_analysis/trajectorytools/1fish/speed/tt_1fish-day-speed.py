@@ -521,93 +521,62 @@ for files in arr:
 
     outputs.append(half_df)
 
-import matplotlib.pyplot as plt
-arrnames = ['clear', 'sanded', 'half']
-# Histogram overlay
-plt.figure(figsize=(10, 6))
-for i, output in enumerate(outputs):
-    plt.hist(output['theta'], bins=40, range=[-np.pi, np.pi], alpha=0.4, label=arrnames[i], density=True)
-plt.xlabel('Theta')
-plt.ylabel('Density')
-plt.title('Overlay of Theta Positioning (Histogram) for Each Output')
-plt.legend()
-plt.show()
-
-
-#plt.rcParams['figure.dpi'] = 300
-# KDE overlay (kept as separate)
-plt.figure(figsize=(10, 6))
-colors = ['blue', 'red', 'purple']
-for i, output in enumerate(outputs):
-    sns.kdeplot(
-        output['theta'],
-        label=arrnames[i],
-        fill=False,
-        alpha=0.4,
-        linewidth=5.,
-        clip=[-np.pi, np.pi], color=colors[i]
-    )
-plt.xlabel('Angluar Distribution')
-plt.ylabel('Density')
-#plt.title('Overlay of Theta Positioning for Each Output (KDE)')
-plt.xlim([-np.pi, np.pi])
-plt.ylim([0, 0.4])
-plt.legend()
-
-#plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
-plt.show()
-
-# Smoothed Circular plot overlay using KDE
-from scipy.stats import gaussian_kde
-
-plt.figure(figsize=(8, 6))
-ax = plt.subplot(111, polar=True)
-
-n_points = 360
-theta_grid = np.linspace(-np.pi, np.pi, n_points)
+from scipy.stats import binned_statistic_2d
 
 for i, output in enumerate(outputs):
-    data = output['theta']
-    # Extend data for circular continuity
-    wrapped_data = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
-    kde = gaussian_kde(wrapped_data, bw_method=0.05)
-    kde_vals = kde(theta_grid)
-    #kde_vals /= np.sum(kde_vals)  # Normalize
+    plt.figure(figsize=(10, 8))
 
-    ax.plot(theta_grid, kde_vals, label=arrnames[i], linewidth=5, color=colors[i],alpha=0.4)
+    # Define grid
+    x_bins = np.linspace(output['x'].min(), output['x'].max(), 50)
+    y_bins = np.linspace(output['y'].min(), output['y'].max(), 50)
 
-ax.set_theta_zero_location('N')
-ax.set_theta_direction(-1)
-#ax.set_title('Smoothed Circular Overlay of Theta Distributions')
-ax.set_ylim(0,0.12)
-ax.set_yticks([])  # Hide radial ticks
+    # Bin the velocities
+    vx_stat, _, _, _ = binned_statistic_2d(output['x'], output['y'], output['vx'], statistic='mean', bins=[x_bins, y_bins])
+    vy_stat, x_edges, y_edges, _ = binned_statistic_2d(output['x'], output['y'], output['vy'], statistic='mean', bins=[x_bins, y_bins])
 
-# Move legend outside the plot, top right
-plt.legend(loc='upper right', bbox_to_anchor=(1.05, 1.05))
-plt.tight_layout()
-#plt.savefig('/Users/ezhu/Downloads/angular_overlay_circular.png', dpi=3000)
-plt.show()
+    # Compute bin centers
+    x_centers = 0.5 * (x_edges[:-1] + x_edges[1:])
+    y_centers = 0.5 * (y_edges[:-1] + y_edges[1:])
+    X, Y = np.meshgrid(x_centers, y_centers)
 
-#plt.rcParams['figure.dpi'] = 300
-# KDE overlay (kept as separate)
-plt.figure(figsize=(10, 6))
-colors = ['blue', 'red', 'purple']
-for i, output in enumerate(outputs):
-    sns.kdeplot(
-        output['spd'],
-        label=arrnames[i],
-        fill=False,
-        alpha=0.4,
-        linewidth=5.,
-        #clip=[-np.pi, np.pi], 
-        color=colors[i]
-    )
-plt.xlabel('Speed Distribution')
-plt.ylabel('Density')
-#plt.title('Overlay of Theta Positioning for Each Output (KDE)')
-plt.xlim([0,3])
-plt.ylim([0, 3])
-plt.legend()
+    plt.quiver(X, Y, vx_stat.T, vy_stat.T, angles='xy', scale_units='xy', scale=1, width=0.0025, alpha=0.8)
 
-#plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
+    plt.xlabel('X Position')
+    plt.ylabel('Y Position')
+    plt.title('Smoothed Velocity Flow Field')
+    plt.grid(True)
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.show()
+# Merge all dataframes in outputs into one big dataframe
+alloutputs = pd.concat(outputs, ignore_index=True)
+# Optionally save the merged dataframe
+# merged_df.to_csv("merged_outputs.csv", index=False)
+
+# --- 2D heatmap of average speeds from alloutputs ---
+from scipy.stats import binned_statistic_2d
+
+center = (0, 0)
+theta = np.linspace(0, 2 * np.pi, 300)
+xc = center[0] + radius * np.cos(theta)
+yc = center[1] + radius * np.sin(theta)
+
+x_vals = alloutputs['x']
+y_vals = alloutputs['y']
+speeds = alloutputs['spd']
+
+# Create binned average heatmap
+stat, x_edges, y_edges, binnumber = binned_statistic_2d(
+    x_vals, y_vals, values=speeds, statistic='mean',
+    bins=[10, 10], range=[[-5, 5], [-5, 5]]
+)
+stat = np.nan_to_num(stat)  # replace NaN with 0
+
+plt.figure(figsize=(8, 8))
+plt.rcParams['figure.dpi'] = 300
+plt.plot(xc, yc, label=f'Circle with radius {radius}')
+plt.imshow(stat.T, origin='lower', extent=[-5, 5, -5, 5], cmap=sns.color_palette("light:b", as_cmap=True), vmin=0.2, vmax=1)
+plt.colorbar(label='Average Speed')
+#plt.title('2D Heatmap of Average Speed')
+plt.savefig('/Users/ezhu/Downloads/2D_heatmap_average_speed.png', dpi=3000, bbox_inches='tight')
 plt.show()
