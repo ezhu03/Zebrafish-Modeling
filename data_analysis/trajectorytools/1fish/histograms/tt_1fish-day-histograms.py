@@ -536,28 +536,35 @@ plt.show()
 
 #plt.rcParams['figure.dpi'] = 300
 # KDE overlay (kept as separate)
+# KDE overlay as percentage (area = 100%)
+from scipy.stats import gaussian_kde
+
 plt.figure(figsize=(10, 6))
 colors = ['blue', 'red', 'purple']
+theta_grid = np.linspace(-np.pi, np.pi, 512)
+
 for i, output in enumerate(outputs):
-    sns.kdeplot(
-        output['theta'],
-        label=arrnames[i],
-        fill=False,
-        alpha=0.4,
-        linewidth=5.,
-        clip=[-np.pi, np.pi], color=colors[i]
-    )
-plt.xlabel('Angluar Distribution')
-plt.ylabel('Density')
-#plt.title('Overlay of Theta Positioning for Each Output (KDE)')
+    data = output['theta'].dropna().values
+    # circular wrapping for continuity
+    wrapped = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
+    kde = gaussian_kde(wrapped, bw_method=0.05)
+    vals = kde(theta_grid)
+    # normalize to percentage (area under curve = 100)
+    area = np.trapz(vals, theta_grid)
+    vals_pct = (vals / area) * 100.0
+    plt.plot(theta_grid, vals_pct, label=arrnames[i], alpha=0.4, linewidth=5., color=colors[i])
+
+plt.xlabel('Angular Distribution (θ, radians)')
+plt.ylabel('Probability (% per radian)')
 plt.xlim([-np.pi, np.pi])
-plt.ylim([0, 0.4])
+plt.ylim([0,50])
 plt.legend()
+
 
 #plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
 plt.show()
 
-# Smoothed Circular plot overlay using KDE
+# Smoothed Circular plot overlay using KDE, scaled to percentage
 from scipy.stats import gaussian_kde
 
 plt.figure(figsize=(8, 6))
@@ -567,46 +574,78 @@ n_points = 360
 theta_grid = np.linspace(-np.pi, np.pi, n_points)
 
 for i, output in enumerate(outputs):
-    data = output['theta']
-    # Extend data for circular continuity
-    wrapped_data = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
-    kde = gaussian_kde(wrapped_data, bw_method=0.05)
-    kde_vals = kde(theta_grid)
-    #kde_vals /= np.sum(kde_vals)  # Normalize
-
-    ax.plot(theta_grid, kde_vals, label=arrnames[i], linewidth=5, color=colors[i],alpha=0.4)
+    data = output['theta'].dropna().values
+    wrapped = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
+    kde = gaussian_kde(wrapped, bw_method=0.05)
+    vals = kde(theta_grid)
+    area = np.trapz(vals, theta_grid)
+    vals_pct = (vals / area) * 100.0
+    ax.plot(theta_grid, vals_pct, label=arrnames[i], linewidth=5, color=colors[i], alpha=0.4)
 
 ax.set_theta_zero_location('N')
 ax.set_theta_direction(-1)
-#ax.set_title('Smoothed Circular Overlay of Theta Distributions')
-ax.set_ylim(0,0.12)
-ax.set_yticks([])  # Hide radial ticks
-
-# Move legend outside the plot, top right
+ax.set_yticks([])  # keep clean
+ax.set_ylabel('Probability (% per radian)', labelpad=20)
+ax.set_ylim([0, 50])
 plt.legend(loc='upper right', bbox_to_anchor=(1.05, 1.05))
 plt.tight_layout()
+
 #plt.savefig('/Users/ezhu/Downloads/angular_overlay_circular.png', dpi=3000)
 plt.show()
 
+# Polar histogram (rose plot) showing percent per bin
+plt.figure(figsize=(8, 6))
+ax = plt.subplot(111, polar=True)
+
+# choose number of angular bins
+n_bins = 24
+edges = np.linspace(-np.pi, np.pi, n_bins + 1)
+width = edges[1] - edges[0]
+
+for i, output in enumerate(outputs):
+    data = output['theta'].dropna().values
+    # Histogram in angular bins
+    counts, _ = np.histogram(data, bins=edges)
+    # Convert to percentage of samples per bin
+    perc = counts / counts.sum() * 100.0 if counts.sum() > 0 else np.zeros_like(counts)
+    centers = edges[:-1] + width / 2.0
+    # Draw bars for each group with transparency for overlay
+    ax.bar(centers, perc, width=width, bottom=0, alpha=0.35, color=colors[i], edgecolor='none', label=arrnames[i])
+
+ax.set_theta_zero_location('N')
+ax.set_theta_direction(-1)
+# radial labels as percentages
+ax.set_rlabel_position(225)
+ax.set_ylim([0, 20])  # set radial limits
+ax.set_yticks([5, 10, 15, 20])
+ax.set_yticklabels(['5%', '10%', '15%', '20%'])
+ax.set_ylabel('Percent of samples per bin', labelpad=20)
+
+plt.legend(loc='upper right', bbox_to_anchor=(1.05, 1.05))
+plt.tight_layout()
+#plt.savefig('/Users/ezhu/Downloads/angular_histogram_circular.png', dpi=3000)
+plt.show()
+
 #plt.rcParams['figure.dpi'] = 300
-# KDE overlay (kept as separate)
+# KDE overlay for speed as percentage (area = 100%)
+from scipy.stats import gaussian_kde
+
 plt.figure(figsize=(10, 6))
 colors = ['blue', 'red', 'purple']
+xgrid = np.linspace(0, 3, 512)  # match your desired x-range
+
 for i, output in enumerate(outputs):
-    sns.kdeplot(
-        output['spd'],
-        label=arrnames[i],
-        fill=False,
-        alpha=0.4,
-        linewidth=5.,
-        #clip=[-np.pi, np.pi], 
-        color=colors[i]
-    )
-plt.xlabel('Speed Distribution')
-plt.ylabel('Density')
-#plt.title('Overlay of Theta Positioning for Each Output (KDE)')
-plt.xlim([0,3])
-plt.ylim([0, 3])
+    data = output['spd'].dropna().values
+    kde = gaussian_kde(data)  # default bw; adjust if desired
+    vals = kde(xgrid)
+    area = np.trapz(vals, xgrid)
+    vals_pct = (vals / area) * 100.0
+    plt.plot(xgrid, vals_pct, label=arrnames[i], alpha=0.4, linewidth=5., color=colors[i])
+
+plt.xlabel('Speed')
+plt.ylabel('Probability (% per unit speed)')
+plt.xlim([0, 3])
+plt.ylim([0, 100])
 plt.legend()
 
 #plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
