@@ -614,3 +614,37 @@ plt.xlabel('Radial Position')
 plt.ylabel('Radial Speed')
 plt.grid(True)
 plt.show()
+
+plt.figure(figsize=(10, 6))
+colors = ['blue', 'purple','red']
+
+# 1D histogram settings
+bin_edges = np.linspace(0, 5, 11)  # 0–10 range into 20 bins
+
+for i, output in enumerate(outputs):
+    data = output['r'].dropna().values
+    if data.size == 0:
+        continue
+    # Scale to percent per bin so each series sums to 100%
+    weights = np.ones_like(data, dtype=float) * (100.0 / data.size)
+    # Draw normal histogram bars but unfilled (outlined only)
+    plt.hist(
+        data,
+        bins=bin_edges,
+        weights=weights,
+        histtype='bar',
+        linewidth=2.5,
+        edgecolor=colors[i % len(colors)],
+        facecolor='none',
+        fill=False,
+        label=(f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf"),
+        alpha=0.4
+    )
+
+plt.xlabel('Radial Position (cm)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, 5])
+plt.ylim([0, 60])
+plt.legend()
+plt.savefig("/Users/ezhu/Downloads/radial_histogram.png", dpi=3000, bbox_inches='tight')
+plt.show()
