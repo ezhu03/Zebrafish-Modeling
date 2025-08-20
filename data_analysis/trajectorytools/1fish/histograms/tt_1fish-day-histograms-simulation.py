@@ -20,6 +20,8 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 # iterate through the dpf values
 x = int(input('dpf : '))
+arrnames = ['clear', 'sanded', 'half']
+
 if x==7 or x==14 or x==21:
     blind = input('Blind fish? (Y/N) : ')
     indiv = input('Individual plots? (Y/N) : ')
@@ -127,20 +129,20 @@ if x==7 or x==14 or x==21:
             file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-half2-crispr/trajectories/validated.npy"
             half = [file1, file2, file3, file4, file5, file6, file7]
     elif x==21:
-        clear = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_clear.npy"
+        clear = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_clear.npy"]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear2-crispr/trajectories/validated.npy"
             file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
             clear = [file1,file2,file3]
-        sanded = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"
+        sanded = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
             file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded3-crispr/trajectories/validated.npy"
             sanded = [file1,file2,file3]
         
-        half = "modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_half.npy"
+        half = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_half.npy"]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-half2-crispr/trajectories/validated.npy"
@@ -213,8 +215,8 @@ for files in arr:
     phalf['r'] = np.sqrt(phalf['x']**2 + phalf['y']**2)
     phalf['theta'] = np.arctan2(-1*phalf['x'],phalf['y'])
     print(phalf)
-        
     outputs.append(phalf)
+        
         
 
 
@@ -223,14 +225,14 @@ for files in arr:
     '''
     convert arrays into dataframes and then merge the dataframes together into one large dataframe
     '''
-
+    '''
     plt.hist2d(phalf[:, 0], phalf[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.015)
     plt.xlabel('X-bins')
     plt.ylabel('Y-bins')
     plt.title('Heatmap for 1 Fish Half Sanded Tank ' + str(x)+'dpf')
     plt.colorbar(label='Frequency')
     plt.show()
-            
+    '''        
     '''
     with the dataframe, we can now plot the data, referencing the title of the plot
     '''
@@ -341,7 +343,7 @@ for files in arr:
         plt.xlim(0,10)
         plt.grid(True)
         plt.show()
-    turns = np.array(turns)
+    #turns = np.array(turns)
     '''plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
     plt.xlabel('X-bins')
     plt.ylabel('Y-bins')
@@ -353,20 +355,6 @@ for files in arr:
     plt.colorbar(label='Frequency')
     plt.show()'''
 
-    outputs.append(half_df)
-
-import matplotlib.pyplot as plt
-arrnames = ['clear', 'sanded', 'half']
-# Histogram overlay
-plt.figure(figsize=(10, 6))
-for i, output in enumerate(outputs):
-    plt.hist(output['theta'], bins=40, range=[-np.pi, np.pi], alpha=0.4, label=arrnames[i], density=True)
-plt.xlabel('Theta')
-plt.ylabel('Density')
-plt.title('Overlay of Theta Positioning (Histogram) for Each Output')
-plt.legend()
-plt.show()
-
 
 #plt.rcParams['figure.dpi'] = 300
 # KDE overlay (kept as separate)
@@ -377,7 +365,7 @@ plt.figure(figsize=(10, 6))
 colors = ['blue', 'red', 'purple']
 theta_grid = np.linspace(-np.pi, np.pi, 512)
 
-for i, output in enumerate(outputs):
+for output, label, color in zip(outputs, arrnames, colors):
     data = output['theta'].dropna().values
     # circular wrapping for continuity
     wrapped = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
@@ -386,7 +374,7 @@ for i, output in enumerate(outputs):
     # normalize to percentage (area under curve = 100)
     area = np.trapz(vals, theta_grid)
     vals_pct = (vals / area) * 100.0
-    plt.plot(theta_grid, vals_pct, label=arrnames[i], alpha=0.4, linewidth=5., color=colors[i])
+    plt.plot(theta_grid, vals_pct, label=label, alpha=0.4, linewidth=5., color=color)
 
 plt.xlabel('Angular Distribution (θ, radians)')
 plt.ylabel('Probability (% per radian)')
@@ -407,14 +395,14 @@ ax = plt.subplot(111, polar=True)
 n_points = 360
 theta_grid = np.linspace(-np.pi, np.pi, n_points)
 
-for i, output in enumerate(outputs):
+for output, label, color in zip(outputs, arrnames, colors):
     data = output['theta'].dropna().values
     wrapped = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
     kde = gaussian_kde(wrapped, bw_method=0.05)
     vals = kde(theta_grid)
     area = np.trapz(vals, theta_grid)
     vals_pct = (vals / area) * 100.0
-    ax.plot(theta_grid, vals_pct, label=arrnames[i], linewidth=5, color=colors[i], alpha=0.4)
+    ax.plot(theta_grid, vals_pct, label=label, linewidth=5, color=color, alpha=0.4)
 
 ax.set_theta_zero_location('N')
 ax.set_theta_direction(-1)
@@ -435,27 +423,36 @@ ax = plt.subplot(111, polar=True)
 n_bins = 24
 edges = np.linspace(-np.pi, np.pi, n_bins + 1)
 width = edges[1] - edges[0]
-
+print(outputs[0]['theta'].dropna().values)
 for i, output in enumerate(outputs):
-    data = output['theta'].dropna().values
-    # Histogram in angular bins
-    counts, _ = np.histogram(data, bins=edges)
-    # Convert to percentage of samples per bin
-    perc = counts / counts.sum() * 100.0 if counts.sum() > 0 else np.zeros_like(counts)
-    centers = edges[:-1] + width / 2.0
-    # Draw bars for each group with transparency for overlay
-    ax.bar(centers, perc, width=width, bottom=0, alpha=0.35, color=colors[i], edgecolor='none', label=arrnames[i])
+    vals = output['theta'].dropna().values
+    print(vals)
+    if vals.size == 0:
+        continue
+    # Use weights so the histogram reports percentage per bin (summing to 100%)
+    weights = np.full_like(vals, 100.0 / vals.size, dtype=float)
+    ax.hist(
+        vals,
+        bins=edges,
+        weights=weights,
+        histtype='bar',
+        linewidth=2,
+        edgecolor=colors[i],
+        facecolor='none',
+        fill=False,
+        label=arrnames[i],
+        alpha=0.4)
 
 ax.set_theta_zero_location('N')
 ax.set_theta_direction(-1)
 # radial labels as percentages
 ax.set_rlabel_position(225)
-ax.set_ylim([0, 20])  # set radial limits
-ax.set_yticks([5, 10, 15, 20])
-ax.set_yticklabels(['5%', '10%', '15%', '20%'])
-ax.set_ylabel('Percent of samples per bin', labelpad=20)
+ax.set_ylim([0, 10])  # set radial limits
+ax.set_yticks([5, 10])
+ax.set_yticklabels(['5%', '10%'])
+ax.set_ylabel('Percentage (%)', labelpad=40)
 
 plt.legend(loc='upper right', bbox_to_anchor=(1.05, 1.05))
 plt.tight_layout()
-#plt.savefig('/Users/ezhu/Downloads/angular_histogram_circular.png', dpi=3000)
+plt.savefig('/Users/ezhu/Downloads/angular_histogram_circular.png', dpi=3000)
 plt.show()
