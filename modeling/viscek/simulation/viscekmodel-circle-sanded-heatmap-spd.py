@@ -177,7 +177,7 @@ for a in range(iterations):
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 3
+    const = 10
     radius = 0
     starttime=300
     noise_ratio = 0.3

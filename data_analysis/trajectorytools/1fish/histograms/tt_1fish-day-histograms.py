@@ -580,7 +580,7 @@ for i, output in enumerate(outputs):
     vals = kde(theta_grid)
     area = np.trapz(vals, theta_grid)
     vals_pct = (vals / area) * 100.0
-    ax.plot(theta_grid, vals_pct, label=arrnames[i], linewidth=5, color=colors[i], alpha=0.4)
+    ax.plot(-theta_grid, vals_pct, label=arrnames[i], linewidth=5, color=colors[i], alpha=0.4)
 
 ax.set_theta_zero_location('N')
 ax.set_theta_direction(-1)
@@ -603,7 +603,7 @@ edges = np.linspace(-np.pi, np.pi, n_bins + 1)
 width = edges[1] - edges[0]
 
 for i, output in enumerate(outputs):
-    data = output['theta'].dropna().values
+    data = -1*output['theta'].dropna().values
     if data.size == 0:
         continue
     # Use weights so the histogram reports percentage per bin (summing to 100%)
@@ -634,30 +634,36 @@ plt.tight_layout()
 plt.savefig('/Users/ezhu/Downloads/angular_histogram_circular.png', dpi=3000)
 plt.show()
 
-from scipy.stats import gaussian_kde
-
 plt.figure(figsize=(10, 6))
-colors = ['blue', 'red', 'purple']
-theta_grid = np.linspace(-np.pi, np.pi, 512)
+
+# 1D histogram settings
+bin_edges = np.linspace(0, 5, 11)  # 0–10 range into 20 bins
 
 for i, output in enumerate(outputs):
     data = output['r'].dropna().values
-    # circular wrapping for continuity
-    wrapped = np.concatenate([data - 2*np.pi, data, data + 2*np.pi])
-    kde = gaussian_kde(wrapped, bw_method=0.05)
-    vals = kde(theta_grid)
-    # normalize to percentage (area under curve = 100)
-    area = np.trapz(vals, theta_grid)
-    vals_pct = (vals / area) * 100.0
-    plt.plot(theta_grid, vals_pct, label=arrnames[i], alpha=0.4, linewidth=5., color=colors[i])
+    if data.size == 0:
+        continue
+    # Scale to percent per bin so each series sums to 100%
+    weights = np.ones_like(data, dtype=float) * (100.0 / data.size)
+    # Draw normal histogram bars but unfilled (outlined only)
+    plt.hist(
+        data,
+        bins=bin_edges,
+        weights=weights,
+        histtype='bar',
+        linewidth=2.5,
+        edgecolor=colors[i % len(colors)],
+        facecolor='none',
+        fill=False,
+        label=arrnames[i],
+        alpha=0.4
+    )
 
-plt.xlabel('Radial Distribution (θ, radians)')
-plt.ylabel('Probability (% per radian)')
-plt.xlim([-np.pi, np.pi])
-plt.ylim([0,50])
+plt.xlabel('Radial Position (cm)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, 5])
+plt.ylim([0, 60])
 plt.legend()
-
-
-#plt.savefig('/Users/ezhu/Downloads/angular_overlay.png', dpi=3000, bbox_inches='tight')
+plt.savefig("/Users/ezhu/Downloads/radial_histogram.png", dpi=3000, bbox_inches='tight')
 plt.show()
 

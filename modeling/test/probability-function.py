@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # Constants
 R = 5
-const = 10
+const = 3
 
 # Define the function p(r)
 def p(r):
@@ -28,7 +28,7 @@ ax.grid(which='major', linestyle='--', linewidth=0.5, alpha=0.7)
 
 # Create a custom legend handle that shows a single dot
 custom_legend = Line2D([], [], color='darkblue', marker='o', linestyle='None', markersize=8,
-                         label="$p(d) = e^{-\gamma d/R}$ \n $\gamma = 10$ \n $R=5$")
+                         label="$p(d) = e^{-\gamma d/R}$ \n $\gamma = 3$ \n $R=5$")
 plt.legend(handles=[custom_legend])
-plt.savefig('/Users/ezhu/Downloads/turning_probability_function10.png', dpi=3000, bbox_inches='tight')
+plt.savefig('/Users/ezhu/Downloads/turning_probability_function3.png', dpi=3000, bbox_inches='tight')
 plt.show()

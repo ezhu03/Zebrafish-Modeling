@@ -371,6 +371,37 @@ for x in arr:
     plt.savefig("/Users/ezhu/Downloads/cs-histogram.png", dpi=3000, bbox_inches='tight')
     plt.show()
 
+    # Duplicate: square-proportion 2D histogram with colorbar
+    fig, ax = plt.subplots(figsize=(6, 6))
+    plt.rcParams['figure.dpi'] = 100
+
+    # Reuse boundary circle
+    ax.plot(xc, yc, label=f'Circle with radius {radius}')
+
+    # Draw 2D histogram with square bounds (so bins render as squares)
+    h = ax.hist2d(
+        phalf[:, 0],
+        -1 * phalf[:, 1],
+        bins=(10, 10),
+        range=[[-radius, radius], [-radius, radius]],
+        cmap=sns.color_palette("light:b", as_cmap=True),
+        density=True,
+        vmin=0,
+        vmax=0.05,
+    )
+
+    # Make axes square and match limits to radius
+    ax.set_aspect('equal', adjustable='box')
+    ax.set_xlim(-radius, radius)
+    ax.set_ylim(-radius, radius)
+
+    # Colorbar attached to this Axes
+    fig.colorbar(h[-1], ax=ax, label='Frequency')
+
+    # Save a square version alongside the original
+    plt.savefig("/Users/ezhu/Downloads/cs-histogram-square.png", dpi=3000, bbox_inches='tight')
+    plt.show()
+
 
 
 

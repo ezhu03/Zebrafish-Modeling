@@ -10,7 +10,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 
 day = int(input('dpf: '))
-spds = np.load('speeddistribution'+str(day)+'dpf.npy')
+spds = np.load('/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/modeling/data/speeddistribution/speeddistribution'+str(day)+'dpf.npy')
 sv = input('save (Y/N): ')
 class MarkovChain:
     def __init__(self):
@@ -146,10 +146,10 @@ for a in range(iterations):
     # Set up the simulation parameters
     box_radius = 5
     num_agents = 1
-    speed = np.zeros((num_agents,1))
+    speed = np.zeros(num_agents)
     noise = np.zeros(num_agents)
     time = 1200
-    const = 3
+    const = 10
     radius = 0
     starttime=300
     noise_ratio = 0.3
@@ -168,7 +168,7 @@ for a in range(iterations):
     y = radii * np.sin(angles)
         
     positions = np.column_stack((x, y))
-    velocities = np.random.uniform(size=(num_agents, 2)) * speed
+    velocities = np.random.uniform(size=(num_agents, 2)) * speed[:, None]
     print(a, "...running...")
     fig, ax = plt.subplots(figsize=(5, 5))
     for i in range(time):
@@ -228,22 +228,25 @@ for a in range(iterations):
                         curr_angle = np.pi + np.arctan(velocities[j][1]/velocities[j][0])
                         new_angle = curr_angle - np.random.normal(0.75, 0.5, 1)
                                     
-                    velocities[j][0]=speed[j]*np.cos(new_angle)+veladj[0]
-                    velocities[j][1]=speed[j]*np.sin(new_angle)+veladj[1]
+                    s = float(speed[j])
+                    velocities[j][0] = s * np.cos(new_angle) + veladj[0]
+                    velocities[j][1] = s * np.sin(new_angle) + veladj[1]
                 else:
 
                     random_index = random.choice(indices_with_1)
-                    angle = random_index/100
-                    rx = box_radius*np.cos(angle)
-                    ry = box_radius*np.sin(angle)
-                    vx = rx - positions[j][0]
-                    vy = ry - positions[j][1]
-                    vn = np.array([vx,vy])
-                    vn = np.linalg.norm(vn)
-                    new_v = vn * speed[j]
-                            #print(vector,veladj)
-                    velocities[j]=new_v+ veladj
-                        #print(vector,veladj)
+                    # Convert index to angle (radians) using the same resolution as in `reflection`
+                    angle = random_index / 100.0
+                    rx = box_radius * np.cos(angle)
+                    ry = box_radius * np.sin(angle)
+                    # Direction vector from current position to the chosen boundary point
+                    vec = np.array([rx - positions[j][0], ry - positions[j][1]])
+                    vec_norm = np.linalg.norm(vec)
+                    if vec_norm != 0:
+                        vec = vec / vec_norm
+                    # Ensure speed[j] is a scalar and set the new velocity toward the reflection point
+                    s = float(speed[j])
+                    new_v = vec * s
+                    velocities[j] = new_v + veladj
                 
         newpositions = positions + velocities
 

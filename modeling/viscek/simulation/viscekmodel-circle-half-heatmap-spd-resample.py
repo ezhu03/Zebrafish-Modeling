@@ -13,6 +13,7 @@ day = int(input('dpf: '))
 spds = np.load('modeling/data/speeddistribution/speeddistribution'+str(day)+'dpf.npy')
 sv = input('save (Y/N): ')
 turn = input('turn (Y/N): ')
+path = input('path (Y/N): ')
 # Define a class for the Markov chain
 class MarkovChain:
     def __init__(self):
@@ -356,7 +357,7 @@ for a in range(iterations):
     #for position in positions3:
     #    xpositions.append(position[0,0])
     #    ypositions.append(position[0,1])
-    if a < 5: 
+    if path == 'Y' and a < 5: 
         fig, ax = plt.subplots(figsize=(6,6))
         center = (0, 0)
         theta = np.linspace(0, 2 * np.pi, 300)
@@ -418,7 +419,7 @@ arrsize = len(allxpos)
 data = np.array([allxpos,allypos]).T
 print(data)
 if sv == 'Y':
-    os.chdir('modeling/data')
+    os.chdir('modeling/data/boundary')
     file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_half.npy'%(const,radius,box_radius,iterations,num_agents,day)
     with open(file_name, 'w') as file:
         pass
