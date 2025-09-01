@@ -124,8 +124,8 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     axis.scatter(xbound[non_reflect_idx], ybound[non_reflect_idx], s=4, alpha=0.35, zorder=3)
     axis.scatter(xbound[reflect_idx], ybound[reflect_idx], s=8, alpha=0.7, zorder=4)
 
-    # Draw velocity direction vector (unit) at fish location
-    axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
+    # Draw velocity direction vector (length reflects velocity magnitude) at fish location
+    axis.quiver(xposition, yposition, xvelocity, yvelocity, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
 
 
 '''

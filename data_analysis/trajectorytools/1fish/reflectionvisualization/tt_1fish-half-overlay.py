@@ -99,9 +99,8 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
         elif label == 2:
             colors.append('Sanded')
     sns.scatterplot(x=xbound, y=ybound, hue=colors, palette={'No Reflection': 'dimgrey', 'Reflection': 'lightgrey', 'Sanded': 'darkred'}, ax=axis)
-    axis.legend(loc='upper right')
-    axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
-    axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
+    axis.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=3, frameon=False)
+    axis.quiver(xposition, yposition, xvelocity/1024, yvelocity/1024, angles='xy', scale_units='xy', scale=1, width=0.004)
 
 # Function to update the frame
 def update(frame):
