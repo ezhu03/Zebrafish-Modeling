@@ -28,7 +28,7 @@ video: path to the tracked video file to be displayed
 
 radius = 5
 
-file = "data/07.16.24/session_1fish-1fps-15min-21dpf-half1/trajectories/validated.npy"
+file = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
 video = "data/07.16.24/session_1fish-1fps-15min-21dpf-half1/1fish-1fps-15min-21dpf-half1_2024-07-16-122129-0000_tracked.avi"
 
 #file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
@@ -184,6 +184,7 @@ ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
 
 # Assuming `ani` is your animation object
-ani.save('reflection-visualization-clear-21dpf-1.mp4', writer=writer)
+ani.save('data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-overlay-clear-21dpf-1.mp4', writer=writer)
+
 
 cap.release()
