@@ -28,8 +28,8 @@ video: path to the tracked video file to be displayed
 
 radius = 5
 
-file = "data/07.16.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
-video = "data/07.16.24/session_1fish-1fps-15min-21dpf-half1/1fish-1fps-15min-21dpf-half1_2024-07-16-122129-0000_tracked.avi"
+file = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/trajectories/validated.npy"
+video = "data/5.21.24/session_1fish-1fps-15min-21dpf-clear1/1fish-1fps-15min-21dpf-clear1_2024-05-21-134623-0000_tracked.avi"
 
 #file = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/trajectories/validated.npy"
 #video = "/Volumes/Hamilton/Zebrafish/AVI/3.13.24/session_1fish15min1fps-half-1-21dpf/1fish15min1fps-half-1-21dpf_tracked.avi"
