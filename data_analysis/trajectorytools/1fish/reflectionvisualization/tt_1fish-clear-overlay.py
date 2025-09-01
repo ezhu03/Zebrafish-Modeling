@@ -121,11 +121,12 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     # Non-reflective = darker, reflective = lighter, with transparency so the video is visible
     non_reflect_idx = labels == 0
     reflect_idx = labels == 1
-    axis.scatter(xbound[non_reflect_idx], ybound[non_reflect_idx], s=4, alpha=0.35, zorder=3)
-    axis.scatter(xbound[reflect_idx], ybound[reflect_idx], s=8, alpha=0.7, zorder=4)
+    axis.scatter(xbound[non_reflect_idx], ybound[non_reflect_idx], s=4, alpha=0.35, c='dimgrey', label='No Reflection', zorder=3)
+    axis.scatter(xbound[reflect_idx], ybound[reflect_idx], s=8, alpha=0.7, c='lightgrey', label='Reflection', zorder=4)
+    axis.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2, frameon=False)
 
     # Draw velocity direction vector (length reflects velocity magnitude) at fish location
-    axis.quiver(xposition, yposition, xvelocity, yvelocity, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
+    axis.quiver(xposition, yposition, xvelocity/1024, yvelocity/1024, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
 
 
 '''
