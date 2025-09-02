@@ -80,9 +80,9 @@ def processtr(tr):
 
 tr = processtr(tr)
 
-positions = tr.s*(radius/tr.params['radius'])
+positions = tr.s*(radius*tr.params['body_length_px']/1024)
 
-velocities = tr.v
+velocities = tr.v*radius*tr.params['body_length_px']/(1024*tr.params['frame_rate'])
 
 
 
@@ -126,7 +126,7 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     axis.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2, frameon=False)
 
     # Draw velocity direction vector (length reflects velocity magnitude) at fish location
-    axis.quiver(xposition, yposition, xvelocity/1024, yvelocity/1024, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
+    axis.quiver(xposition, yposition, xvelocity, yvelocity, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
 
 
 '''
@@ -151,8 +151,8 @@ def update(frame):
     # Get fish state for this frame (flip y to match earlier convention)
     x = positions[frame-1][0][0]
     y = -1 * positions[frame-1][0][1]
-    vx = velocities[frame-1][0][0]
-    vy = -1 * velocities[frame-1][0][1]
+    vx = velocities[frame-1][0][0]  # Convert to BL/s
+    vy = -1 * velocities[frame-1][0][1]  # Convert to BL/s
 
     # Overlay reflection directly on top of video
     plotReflection(x, y, vx, vy, ax1)

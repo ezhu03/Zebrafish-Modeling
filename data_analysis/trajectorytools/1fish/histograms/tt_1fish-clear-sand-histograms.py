@@ -485,11 +485,11 @@ for x in arr:
         #ax = sns.histplot(half_df, x="x", y="y",bins=(10, 10), binrange=[[-10,10],[-10,10]],cmap = sns.color_palette("light:b",as_cmap=True),cbar=True)
         #ax.set_aspect('equal')
 
-        nearwall_df = half_df[half_df['r'] > 8]
+        nearwall_df = half_df[half_df['r'] > 4]
         sns.histplot(data=nearwall_df, x='phi',stat='percent',bins=10,binrange=[0,np.pi/2],color=color,alpha=0.5)
         plt.xlabel('Phi')
         plt.ylabel('Percent')
-        plt.ylim(0,30)
+        plt.ylim(0,50)
         if x % 10 == 0:
             n = int(x/10)
             plt.title('Phi Histogram for 1 Fish Sanded Tank ' +str(n) +'dpf')
@@ -497,6 +497,7 @@ for x in arr:
             plt.title('Phi Histogram for 1 Fish Clear Tank ' + str(x)+'dpf')
         #plt.colorbar(label='Frequency')
         plt.show()
+        '''
         sns.histplot(data=half_df, x='theta',stat='percent',bins=20,binrange=[-np.pi,np.pi],color=color,alpha=0.5)
         plt.xlabel('Theta')
         plt.ylabel('Percent')
@@ -575,6 +576,7 @@ for x in arr:
         plt.xlim(0,10)
         plt.grid(True)
         plt.show()
+        '''
     turns = np.array(turns)
     '''plt.hist2d(turns[:, 0], turns[: , 1], bins=(10, 10), range=[[-10,10],[-10,10]], cmap=sns.color_palette("light:b", as_cmap=True), density=True, vmin = 0, vmax = 0.04)
     plt.xlabel('X-bins')
@@ -678,4 +680,49 @@ plt.xlim([0, 5])
 plt.ylim([0, 60])
 plt.legend()
 plt.savefig("/Users/ezhu/Downloads/radial_histogram.png", dpi=3000, bbox_inches='tight')
+plt.show()
+
+# Overlayed Phi (near-wall) histogram using the same outlined formatting
+plt.figure(figsize=(10, 6))
+colors = ['blue', 'purple', 'red']
+
+# Phi histogram settings: 0 to pi/2 split into 10 bins (11 edges), upper edge open
+phi_bin_edges = np.linspace(0, np.nextafter(np.pi/2, 0), 9)
+
+for i, output in enumerate(outputs):
+    # near-wall filter as in the single-plot version
+    nearwall_df = output[output['r'] > 4]
+    data = nearwall_df['phi'].dropna().values
+    if data.size == 0:
+        continue
+    # Keep values in [0, pi/2) — drop exact pi/2 to avoid right-edge pileup
+    mask = (data >= 0) & (data < np.pi/2)
+    data = data[mask]
+
+    # Use seaborn histplot with outlined (unfilled) bars and percent scaling
+    sns.histplot(
+        x=data,
+        bins=phi_bin_edges,
+        stat='percent',
+        element='step',
+        fill=False,
+        linewidth=2.5,
+        alpha=0.4,
+        color=colors[i % len(colors)],
+        label=(f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf"),
+        common_norm=False,
+    )
+
+plt.xlabel('Angle From Wall (rad)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, np.pi/2])
+plt.ylim([0, 60])
+# Title follows the same clear/sanded convention
+x0 = arr[0]
+#if x0 % 10 == 0:
+    #plt.title('Fish Angle to (near wall) Histogram Over Time — Sanded Tank')
+#else:
+    #plt.title('Phi (near wall) Histogram Over Time — Clear Tank')
+plt.legend()
+plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-clear.png', dpi=3000, bbox_inches='tight')
 plt.show()
