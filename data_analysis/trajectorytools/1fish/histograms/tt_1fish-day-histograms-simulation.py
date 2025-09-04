@@ -26,7 +26,7 @@ if x==7 or x==14 or x==21:
     blind = input('Blind fish? (Y/N) : ')
     indiv = input('Individual plots? (Y/N) : ')
     if x == 7:
-        clear = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_7dpf_clear.npy"]
+        clear = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_7dpf_sanded2.npy"]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
@@ -37,7 +37,7 @@ if x==7 or x==14 or x==21:
             file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear2-crispr/trajectories/validated.npy"
             file8 = "data/10.17.24/session_1fish-1fps-15min-7dpf-clear3-crispr/trajectories/validated.npy"
             clear = [file1,file2,file3,file4,file5,file6,file7,file8]
-        sanded = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_7dpf_sanded.npy"]
+        sanded = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_7dpf_sanded1.npy"]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
@@ -47,7 +47,7 @@ if x==7 or x==14 or x==21:
             file6 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
             sanded = [file1,file2,file3,file5,file6,file7]
-        half = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_7dpf_half.npy"]
+        half = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_7dpf_sanded3.npy"]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-half2-crispr/trajectories/validated.npy"

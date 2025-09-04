@@ -39,7 +39,7 @@ def extract_frame(input_path: str, frame_number: int, output_path: str) -> None:
     print(f"Frame {frame_number} saved to {png_path} and {tiff_path}")
 
 if __name__ == "__main__":
-    input_path = "data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-half-21dpf-1.mp4"
+    input_path = "data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-overlay-clear-21dpf-1.mp4"
     
     # Ask user for frame number
     frame_number = int(input("Enter the frame number to extract: "))

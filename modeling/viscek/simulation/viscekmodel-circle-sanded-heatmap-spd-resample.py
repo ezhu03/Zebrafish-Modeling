@@ -166,7 +166,7 @@ for a in range(iterations):
     speed = np.zeros((num_agents,1))
     noise = np.zeros(num_agents)
     time = 1200
-    const = 10
+    const = 3
     radius = 0
     starttime=300
     noise_ratio = 0.3
@@ -361,7 +361,7 @@ data = np.array([allxpos,allypos]).T
 print(data)
 if sv == 'Y':
     os.chdir('modeling/data/boundary')
-    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_sanded.npy'%(const,radius,box_radius,iterations,num_agents,day)
+    file_name = 'const%sradius%sboxradius%siter%sfish%s_15min_%sdpf_sanded1.npy'%(const,radius,box_radius,iterations,num_agents,day)
     with open(file_name, 'w') as file:
         pass
     np.save(file_name, data)

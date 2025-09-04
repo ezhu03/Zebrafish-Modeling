@@ -19,6 +19,8 @@ from matplotlib.animation import FFMpegWriter
 from matplotlib.animation import PillowWriter
 
 plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
+# Render/export controls
+OUTPUT_DPI = 200  # high DPI for sharper output
 '''
 SET THESE VALUES BEFORE RUNNING THE CODE
 radius: radius of the tank (for reflection calculation)
@@ -123,7 +125,7 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     reflect_idx = labels == 1
     axis.scatter(xbound[non_reflect_idx], ybound[non_reflect_idx], s=4, alpha=0.35, c='dimgrey', label='No Reflection', zorder=3)
     axis.scatter(xbound[reflect_idx], ybound[reflect_idx], s=8, alpha=0.7, c='lightgrey', label='Reflection', zorder=4)
-    axis.legend(loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2, frameon=False)
+    axis.legend(loc='upper right', frameon=True)
 
     # Draw velocity direction vector (length reflects velocity magnitude) at fish location
     axis.quiver(xposition, yposition, xvelocity, yvelocity, angles='xy', scale_units='xy', scale=1, width=0.004, zorder=5)
@@ -143,10 +145,10 @@ def update(frame):
         frame_img_rgb = cv2.cvtColor(frame_img, cv2.COLOR_BGR2RGB)
         # Draw the frame with coordinates matching tank coordinates so overlays align
         # Map image extent to [-radius, radius] in both x and y; ensure equal aspect
-        ax1.imshow(frame_img_rgb, extent=[-radius, radius, -radius, radius])
+        ax1.imshow(frame_img_rgb, extent=[-radius, radius, -radius, radius], interpolation='nearest')
         ax1.set_aspect('equal')
         ax1.axis('off')
-        ax1.set_title(f'Frame {frame}')
+        #ax1.set_title(f'Frame {frame}')
 
     # Get fish state for this frame (flip y to match earlier convention)
     x = positions[frame-1][0][0]
@@ -172,9 +174,18 @@ cap = cv2.VideoCapture(video_path)
 # Get total number of frames
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-# Create a single-axes figure; we will overlay the reflection plot directly on the video
-fig = plt.figure(figsize=(6, 6))
+# Derive source video properties for optimal export
+fps_src = cap.get(cv2.CAP_PROP_FPS)
+fps = int(round(fps_src)) if fps_src and fps_src > 0 else 15
+frame_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) or 1024
+frame_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) or 1024
+
+# Create a single-axes figure sized to the video dimensions
+fig = plt.figure()
+fig.set_dpi(OUTPUT_DPI)
+fig.set_size_inches(frame_w / OUTPUT_DPI, frame_h / OUTPUT_DPI)
 ax1 = fig.add_subplot(1, 1, 1)
+plt.tight_layout(pad=0)
 
 # Create the animation for the video
 ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
@@ -182,10 +193,25 @@ ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 # Release the video capture object
 
 
-writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writer = FFMpegWriter(
+    fps=fps,
+    codec='libx264',
+    metadata=dict(artist='Me'),
+    bitrate=None,  # let CRF control quality
+    extra_args=[
+        '-crf', '14',           # lower = higher quality; 14–18 is visually lossless
+        '-preset', 'slow',      # better compression at the cost of compute
+        '-pix_fmt', 'yuv420p',  # broad compatibility
+        '-profile:v', 'high',
+        '-movflags', '+faststart'
+    ]
+)
 
 # Assuming `ani` is your animation object
-ani.save('data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-overlay-clear-21dpf-1.mp4', writer=writer)
+output_path = 'data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-overlay-clear-21dpf-1.mp4'
+ani.save(output_path, writer=writer, dpi=OUTPUT_DPI)
+output2_path = '/Users/ezhu/Downloads/reflection-visualization-overlay-clear-21dpf-1.mp4'
+ani.save(output2_path, writer=writer, dpi=OUTPUT_DPI)
 
 
 cap.release()

@@ -18,6 +18,9 @@ from matplotlib.animation import PillowWriter
 
 plt.rcParams['animation.ffmpeg_path'] = '/Users/ezhu/Documents/GitHub/Zebrafish-Modeling/ffmpeg'
 
+# Render/export controls
+OUTPUT_DPI = 200  # adjust higher (e.g., 150–200) for even sharper output
+
 #file = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/trajectories/validated.npy"
 #video = "/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_tracked.avi"
 
@@ -102,36 +105,8 @@ def plotReflection(xposition, yposition, xvelocity, yvelocity, axis):
     axis.legend(loc='upper right')
     axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
     axis.quiver(xposition, yposition, xvelocity/magv, yvelocity/magv)
-# Function to update the frame
-"""def update(frame):
-    # Clear the current axis
-    plt.clf()
-    # Read the frame
-    cap.set(cv2.CAP_PROP_POS_FRAMES, frame)  # Set the frame position
-    ret, frame_img = cap.read()
-    if ret:
-        # Convert from BGR to RGB (OpenCV uses BGR)
-        frame_img_rgb = cv2.cvtColor(frame_img, cv2.COLOR_BGR2RGB)
-        # Display the frame
-        plt.imshow(frame_img_rgb)
-        plt.axis('off')  # Turn off axis
-        plt.title(f'Frame {frame}')  # Add a title with frame number
-
-# Open the video file
-video_path = '/Volumes/Hamilton/Zebrafish/AVI/2.28.24/session_1fish15min1fps-half-2/1fish15min1fps-half-2_2024-02-28-143116-0000_tracked.avi'
-cap = cv2.VideoCapture(video_path)
-
-# Get total number of frames
-total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-# Create the animation
-fig = plt.figure()
-ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=50)  # Adjust interval as needed
-
-plt.show()
-
-# Release the video capture object
-cap.release()"""
+    axis.set_aspect('equal', adjustable='box')
+    axis.set_xlim(-radius, radius); axis.set_ylim(-radius, radius)
 
 from matplotlib.gridspec import GridSpec
 
@@ -141,13 +116,12 @@ def update(frame):
     ax1.clear()
     # Read the frame
     cap.set(cv2.CAP_PROP_POS_FRAMES, frame)
-    cv2.imshow('Video', frame)  # Set the frame position
     ret, frame_img = cap.read()
     if ret:
         # Convert from BGR to RGB (OpenCV uses BGR)
         frame_img_rgb = cv2.cvtColor(frame_img, cv2.COLOR_BGR2RGB)
         # Display the frame
-        ax1.imshow(frame_img_rgb)
+        ax1.imshow(frame_img_rgb, interpolation='nearest')
         ax1.axis('off')  # Turn off axis
         ax1.set_title(f'Frame {frame}')  # Add a title with frame number
     # Clear the current axis
@@ -166,11 +140,19 @@ def update(frame):
 video_path = video
 cap = cv2.VideoCapture(video_path)
 
+# Derive source video properties for optimal export
+fps_src = cap.get(cv2.CAP_PROP_FPS)
+fps = int(round(fps_src)) if fps_src and fps_src > 0 else 15
+frame_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)) or 1024
+frame_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) or 1024
+
 # Get total number of frames
 total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-# Create the figure and gridspec
-fig = plt.figure(figsize=(11, 5))
+# Create the figure sized to native pixel dimensions (two panels side-by-side)
+fig = plt.figure()
+fig.set_dpi(OUTPUT_DPI)
+fig.set_size_inches((2 * frame_w) / OUTPUT_DPI, frame_h / OUTPUT_DPI)
 gs = GridSpec(1, 2, width_ratios=[1, 1])  # 1 row, 2 columns, video takes 3/4 of the width
 
 # Subplot for the video
@@ -178,6 +160,8 @@ ax1 = fig.add_subplot(gs[0, 0])
 
 # Subplot for the additional plot
 ax2 = fig.add_subplot(gs[0, 1])
+
+plt.tight_layout(pad=0)
 
 # Create the animation for the video
 ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
@@ -191,9 +175,21 @@ ani = animation.FuncAnimation(fig, update, frames=total_frames, interval=500)
 # Release the video capture object
 
 
-writer = FFMpegWriter(fps=15, metadata=dict(artist='Me'), bitrate=1800)
+writer = FFMpegWriter(
+    fps=fps,
+    codec='libx264',
+    metadata=dict(artist='Me'),
+    bitrate=None,  # let CRF control quality
+    extra_args=[
+        '-crf', '14',           # lower = higher quality; 14–18 is visually lossless
+        '-preset', 'slow',      # better compression at the cost of compute
+        '-pix_fmt', 'yuv420p',  # broad compatibility
+        '-profile:v', 'high',
+        '-movflags', '+faststart'
+    ]
+)
 
-# Assuming `ani` is your animation object
-ani.save('reflection-visualization-half-21dpf-1.mp4', writer=writer)
+output_path = 'reflection-visualization-half-21dpf-1.mp4'
+ani.save(output_path, writer=writer, dpi=OUTPUT_DPI)
 
 cap.release()

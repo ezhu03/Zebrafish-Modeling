@@ -100,7 +100,7 @@ for x in arr:
             file3 = "data/11.20.24/session_1fish-1fps-15min-21dpf-clear3-crispr/trajectories/validated.npy"
             files = [file1,file2,file3]
     elif x==70:
-        files = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_7dpf_sanded.npy"]
+        files = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_7dpf_sanded.npy"]
         if blind == 'Y':
             file1 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/07.30.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
@@ -111,7 +111,7 @@ for x in arr:
             file7 = "data/10.17.24/session_1fish-1fps-15min-7dpf-sanded2-crispr/trajectories/validated.npy"
             files = [file1,file2,file3,file5,file6,file7]
     elif x==140:
-        files = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_14dpf_sanded.npy"]
+        files = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_14dpf_sanded.npy"]
         if blind == 'Y':
             file1 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/08.12.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
@@ -122,7 +122,7 @@ for x in arr:
             file7 = "data/11.13.24/session_1fish-1fps-15min-14dpf-sanded2-crispr/trajectories/validated.npy"
             files = [file1,file2,file3,file4,file5, file6, file7]
     elif x == 210:
-        files = ["modeling/data/boundary/const3radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"]
+        files = ["modeling/data/boundary/const10radius0boxradius5iter10fish1_15min_21dpf_sanded.npy"]
         if blind == 'Y':
             file1 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded1-crispr/trajectories/validated.npy"
             file2 = "data/11.20.24/session_1fish-1fps-15min-21dpf-sanded2-crispr/trajectories/validated.npy"
