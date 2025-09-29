@@ -150,7 +150,8 @@ for x in arr:
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-        pos1= tr.s*tr.params['length_unit']*(2*radius/2048)
+        offset = tr.params['_center'] - np.array([1048, 1048])
+        pos1= tr.s*tr.params['length_unit']*(2*radius/2048)+offset*radius/1024
 
         pos1 = np.array(pos1.reshape(pos1.shape[0],2))
 
@@ -180,7 +181,8 @@ for x in arr:
     for temp in trs:
         processed_temp = processtr(temp)
         border_turning(processed_temp)
-        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
+        offset = processed_temp.params['_center'] - np.array([1048, 1048])
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048) + offset*radius/1024
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)
@@ -425,7 +427,7 @@ for x in arr:
 
     
 
-    outputs.append(half_df)
+    outputs.append(half_df.reset_index(drop=True))
 
 plt.errorbar(x=arr,y=tt_avg_s,yerr = tt_std_s,fmt='o',color='red', alpha = 0.5, label = 'sanded')
 plt.errorbar(x=arr,y=tt_avg_c,yerr = tt_std_c,fmt='o',color='blue', alpha = 0.5, label = 'clear')
@@ -440,7 +442,9 @@ else:
 plt.show()
 for i in range(len(outputs)):
     outputs[i]['Age'] = str(arr[i])+'dpf'
-combined_df = pd.concat(outputs)
+combined_df = pd.concat(outputs, ignore_index=True)
+# NOTE: ignore_index=True prevents duplicate index labels across concatenated frames,
+# which otherwise breaks seaborn (pandas>=2.2 disallows reindexing on duplicate labels).
 '''colors=sns.color_palette(palette='YlGnBu_r')
 for i in range(len(outputs)):
     #plt.hist(data=outputs[i],x='center',density=True,bins=10,range=[0,10],color=(colors[i], 0.3))
@@ -451,4 +455,146 @@ for i in range(len(outputs)):
 sns.histplot(data=combined_df, x='r',stat='percent',hue='Age',bins=10,binrange=[0,10],palette=sns.color_palette(palette='YlGnBu_r'),alpha=0.75,multiple='dodge',common_norm=False)
 x = arr[0]
 plt.title('Distance From Center for 1 Fish Half Sanded Tank Over Time')
+plt.show()
+
+# Overlayed Phi (near-wall) histogram using the same outlined formatting
+plt.figure(figsize=(10, 6))
+colors = ['blue', 'purple', 'red']
+
+# Phi histogram settings: 0 to pi/2 split into 10 bins (11 edges), upper edge open
+phi_bin_edges = np.linspace(0, np.nextafter(np.pi/2, 0), 9)
+
+# --- (1) x < 0 only ---
+plt.figure(figsize=(10, 6))
+for i, output in enumerate(outputs):
+    nearwall_df = output[(output['r'] > 4) & (output['x'] < 0)]
+    data = nearwall_df['phi'].dropna().values
+    if data.size == 0:
+        continue
+    mask = (data >= 0) & (data < np.pi/2)
+    data = data[mask]
+
+    sns.histplot(
+        x=data,
+        bins=phi_bin_edges,
+        stat='percent',
+        element='step',
+        fill=False,
+        linewidth=2.5,
+        alpha=0.4,
+        color=colors[i % len(colors)],
+        label=(f"{int(arr[i]/10)}dpf (x<0)" if arr[i] % 10 == 0 else f"{arr[i]}dpf (x<0)"),
+        common_norm=False,
+    )
+plt.xlabel('Angle From Wall (rad)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, np.pi/2])
+plt.ylim([0, 60])
+plt.legend()
+#plt.title('Phi (near wall) — x < 0')
+plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half_xneg.png', dpi=3000, bbox_inches='tight')
+plt.show()
+
+# --- (2) x > 0 only ---
+plt.figure(figsize=(10, 6))
+for i, output in enumerate(outputs):
+    nearwall_df = output[(output['r'] > 4) & (output['x'] > 0)]
+    data = nearwall_df['phi'].dropna().values
+    if data.size == 0:
+        continue
+    mask = (data >= 0) & (data < np.pi/2)
+    data = data[mask]
+
+    sns.histplot(
+        x=data,
+        bins=phi_bin_edges,
+        stat='percent',
+        element='step',
+        fill=False,
+        linewidth=2.5,
+        alpha=0.4,
+        color=colors[i % len(colors)],
+        label=(f"{int(arr[i]/10)}dpf (x>0)" if arr[i] % 10 == 0 else f"{arr[i]}dpf (x>0)"),
+        common_norm=False,
+    )
+plt.xlabel('Angle From Wall (rad)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, np.pi/2])
+plt.ylim([0, 60])
+plt.legend()
+#plt.title('Phi (near wall) — x > 0')
+plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half_xpos.png', dpi=3000, bbox_inches='tight')
+plt.show()
+
+# --- (3) Combined overlay: x<0 (dashed) and x>0 (solid) on one plot ---
+plt.figure(figsize=(10, 6))
+for i, output in enumerate(outputs):
+    # x < 0
+    nearwall_df_neg = output[(output['r'] > 4) & (output['x'] < 0)]
+    data_neg = nearwall_df_neg['phi'].dropna().values
+    data_neg = data_neg[(data_neg >= 0) & (data_neg < np.pi/2)]
+
+    # x > 0
+    nearwall_df_pos = output[(output['r'] > 4) & (output['x'] > 0)]
+    data_pos = nearwall_df_pos['phi'].dropna().values
+    data_pos = data_pos[(data_pos >= 0) & (data_pos < np.pi/2)]
+
+    # Use matplotlib for line styles while keeping same bins/stat via density scaling
+    # Compute histogram (percent) with shared bin edges
+    counts_neg, _ = np.histogram(data_neg, bins=phi_bin_edges)
+    counts_pos, _ = np.histogram(data_pos, bins=phi_bin_edges)
+
+    # Convert counts to percent of samples in this subset
+    total_neg = data_neg.size if data_neg.size > 0 else 1
+    total_pos = data_pos.size if data_pos.size > 0 else 1
+    percent_neg = 100.0 * counts_neg / total_neg
+    percent_pos = 100.0 * counts_pos / total_pos
+
+    # Bin centers for plotting step lines
+    bin_centers = 0.5 * (phi_bin_edges[:-1] + phi_bin_edges[1:])
+    label_base = (f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf")
+
+    plt.plot(bin_centers, percent_pos, drawstyle='steps-mid', linewidth=2.5,
+             color=colors[i % len(colors)], alpha=0.4, label=f"{label_base} (x>0)")
+    plt.plot(bin_centers, percent_neg, drawstyle='steps-mid', linewidth=2.5,
+             color=colors[i % len(colors)], alpha=0.4, linestyle='--', label=f"{label_base} (x<0)")
+
+plt.xlabel('Angle From Wall (rad)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, np.pi/2])
+plt.ylim([0, 60])
+plt.legend(ncol=2)
+#plt.title('Phi (near wall) — x<0 dashed vs x>0 solid')
+plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half_combined.png', dpi=3000, bbox_inches='tight')
+plt.show()
+
+# --- (4) Original plot: all data together (no x split) ---
+plt.figure(figsize=(10, 6))
+for i, output in enumerate(outputs):
+    nearwall_df_all = output[output['r'] > 4]
+    data_all = nearwall_df_all['phi'].dropna().values
+    if data_all.size == 0:
+        continue
+    data_all = data_all[(data_all >= 0) & (data_all < np.pi/2)]
+
+    sns.histplot(
+        x=data_all,
+        bins=phi_bin_edges,
+        stat='percent',
+        element='step',
+        fill=False,
+        linewidth=2.5,
+        alpha=0.4,
+        color=colors[i % len(colors)],
+        label=(f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf"),
+        common_norm=False,
+    )
+
+plt.xlabel('Angle From Wall (rad)')
+plt.ylabel('Percentage (%)')
+plt.xlim([0, np.pi/2])
+plt.ylim([0, 60])
+plt.legend()
+#plt.title('Phi (near wall) — all x (original overlay)')
+plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half.png', dpi=3000, bbox_inches='tight')
 plt.show()

@@ -81,8 +81,9 @@ def processtr(tr):
     return tr
 
 tr = processtr(tr)
-
-positions = tr.s*(radius*tr.params['body_length_px']/1024)
+offset = tr.params['_center'] - np.array([1048, 1048])
+print(tr.params['_center'])
+positions = tr.s*(radius*tr.params['body_length_px']/1024)+2*offset*radius/1024
 
 velocities = tr.v*radius*tr.params['body_length_px']/(1024*tr.params['frame_rate'])
 

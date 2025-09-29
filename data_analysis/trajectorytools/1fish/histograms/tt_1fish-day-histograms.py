@@ -274,8 +274,8 @@ for files in arr:
     def border_turning(tr):
     #phalf = np.concatenate([tr1.s*(10/tr1.params['radius']), tr2.s*(10/tr2.params['radius']), tr3.s*(10/tr3.params['radius']), tr4.s*(10/tr4.params['radius']), tr5.s*(10/tr5.params['radius'])],axis=0)
     #phalf = np.reshape(phalf, [phalf.shape[0]*phalf.shape[1], 2])
-        pos1= tr.s*tr.params['length_unit']*(20/2048)
-
+        offset = tr.params['_center'] - np.array([1048, 1048])
+        pos1= tr.s*tr.params['length_unit']*(2*radius/2048)+offset*radius/1024
         pos1 = np.array(pos1.reshape(pos1.shape[0],2))
 
         for i in range(len(pos1)):
@@ -306,7 +306,8 @@ for files in arr:
     for temp in trs:
         processed_temp = processtr(temp)
         border_turning(processed_temp)
-        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048)
+        offset = processed_temp.params['_center'] - np.array([1048, 1048])
+        temppos = processed_temp.s*processed_temp.params['length_unit']*(2*radius/2048) + offset*radius/1024
         tempvel = processed_temp.v*(processed_temp.params['length_unit']/processed_temp.params['time_unit'])*(2*radius/2048)
         processedpos.append(temppos)
         processedvel.append(tempvel)

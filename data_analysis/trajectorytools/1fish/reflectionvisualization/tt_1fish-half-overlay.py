@@ -67,8 +67,8 @@ def processtr(tr):
     return tr
 
 tr = processtr(tr)
-
-positions = tr.s*(radius*tr.params['body_length_px']/1024)
+offset = tr.params['_center'] - np.array([1048, 1048])
+positions = tr.s*(radius*tr.params['body_length_px']/1024)+offset*radius/1024
 
 velocities = tr.v*radius*tr.params['body_length_px']/(1024*tr.params['frame_rate'])
 
@@ -183,7 +183,7 @@ writer = FFMpegWriter(
 # Assuming `ani` is your animation object
 output_path = 'data_analysis/trajectorytools/1fish/reflectionvisualization/reflection-visualization-overlay-half-21dpf-1.mp4'
 ani.save(output_path, writer=writer, dpi=OUTPUT_DPI)
-output2_path = 'Users/ezhu/Downloads/reflection-visualization-overlay-half-21dpf-1.mp4'
-ani.save(output2_path, writer=writer, dpi=OUTPUT_DPI)
+#output2_path = 'Users/ezhu/Downloads/reflection-visualization-overlay-half-21dpf-1.mp4'
+#ani.save(output2_path, writer=writer, dpi=OUTPUT_DPI)
 
 cap.release()
