@@ -49,10 +49,10 @@ Y_FLIP = -1                  # multiply y by this to align coordinate convention
 # All runtime choices come from the user; data files are selected based on surface/age/vision.
 
 # ---------- USER INPUT VALIDATION ----------
-val_raw = input('Tank surface (Sanded/Clear): ').strip().lower()
-if val_raw == 'sanded':
+val_raw = input('Tank surface (Sanded/Clear): ').strip()
+if val_raw == 'Sanded':
     arr = [70, 140, 210]
-elif val_raw == 'clear':
+elif val_raw == 'Clear':
     arr = [7, 14, 21]
 else:
     print("Invalid input for tank surface. Please enter 'Sanded' or 'Clear'. Exiting.")
@@ -690,7 +690,11 @@ for i, output in enumerate(outputs):
 plt.xlabel('Angle From Wall (rad)')
 plt.ylabel('Percentage (%)')
 plt.xlim([0, np.pi/2])
-plt.ylim([0, 60])
+plt.ylim([0, 100])
 plt.legend()
-plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-sanded-blind.png', dpi=SAVE_DPI, bbox_inches='tight')
+plt.title(f"Distribution of Orientations to Wall for {val_raw}")
+if blind == 'Y':
+    plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-'+val_raw.lower()+'-blind.png', dpi=SAVE_DPI, bbox_inches='tight')
+else:  
+    plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-'+val_raw.lower()+'.png', dpi=SAVE_DPI, bbox_inches='tight')
 plt.show()

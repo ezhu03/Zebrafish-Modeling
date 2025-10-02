@@ -439,7 +439,7 @@ for i, output in enumerate(outputs):
         x=data, bins=PHI_BIN_EDGES, stat='percent',
         element='step', fill=False, linewidth=2.5, alpha=0.4,
         color=colors[i % len(colors)],
-        label=(f\"{int(arr[i]/10)}dpf (x<0)\" if arr[i] % 10 == 0 else f\"{arr[i]}dpf (x<0)\"),
+        label=(f"{int(arr[i]/10)}dpf (Clear)" if arr[i] % 10 == 0 else f"{arr[i]}dpf (Clear)"),
         common_norm=False,
     )
 plt.xlabel('Angle From Wall (rad)'); plt.ylabel('Percentage (%)')
@@ -459,7 +459,7 @@ for i, output in enumerate(outputs):
         x=data, bins=PHI_BIN_EDGES, stat='percent',
         element='step', fill=False, linewidth=2.5, alpha=0.4,
         color=colors[i % len(colors)],
-        label=(f\"{int(arr[i]/10)}dpf (x>0)\" if arr[i] % 10 == 0 else f\"{arr[i]}dpf (x>0)\"),
+        label=(f"{int(arr[i]/10)}dpf (Sanded)" if arr[i] % 10 == 0 else f"{arr[i]}dpf (Sanded)"),
         common_norm=False,
     )
 plt.xlabel('Angle From Wall (rad)'); plt.ylabel('Percentage (%)')
@@ -480,14 +480,15 @@ for i, output in enumerate(outputs):
     total_pos = pos.size if pos.size else 1
     percent_neg = 100.0 * counts_neg / total_neg
     percent_pos = 100.0 * counts_pos / total_pos
-    bin_centers = 0.5*(PHI_BIN_EDGES[:-1] + PHI_BIN_EDGES[1:])
-    label_base = (f\"{int(arr[i]/10)}dpf\" if arr[i] % 10 == 0 else f\"{arr[i]}dpf\")
-    plt.plot(bin_centers, percent_pos, drawstyle='steps-mid', linewidth=2.5,
-             color=colors[i % len(colors)], alpha=0.4, label=f\"{label_base} (x>0)\")
-    plt.plot(bin_centers, percent_neg, drawstyle='steps-mid', linewidth=2.5,
-             color=colors[i % len(colors)], alpha=0.4, linestyle='--', label=f\"{label_base} (x<0)\")
+    bin_edges_left = PHI_BIN_EDGES[:-1]
+    label_base = (f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf")
+    plt.step(bin_edges_left, percent_pos, where='post', linewidth=2.5,
+             color=colors[i % len(colors)], alpha=0.4, label=f"{label_base} (Sanded)")
+    plt.step(bin_edges_left, percent_neg, where='post', linewidth=2.5,
+             color=colors[i % len(colors)], alpha=0.4, linestyle='--', label=f"{label_base} (Clear)")
 plt.xlabel('Angle From Wall (rad)'); plt.ylabel('Percentage (%)')
-plt.xlim([0, np.pi/2]); plt.ylim([0, 60]); plt.legend(ncol=2)
+plt.xlim([0, np.pi/2]); plt.ylim([0, 100]); plt.legend(ncol=2)
+plt.title("Distribution of Orientations to Wall for Half-Sanded (Clear dashed, Sanded solid)")
 plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half_combined.png', dpi=SAVE_DPI, bbox_inches='tight')
 plt.show()
 
@@ -502,10 +503,11 @@ for i, output in enumerate(outputs):
         x=data, bins=PHI_BIN_EDGES, stat='percent',
         element='step', fill=False, linewidth=2.5, alpha=0.4,
         color=colors[i % len(colors)],
-        label=(f\"{int(arr[i]/10)}dpf\" if arr[i] % 10 == 0 else f\"{arr[i]}dpf\"),
+        label=(f"{int(arr[i]/10)}dpf" if arr[i] % 10 == 0 else f"{arr[i]}dpf"),
         common_norm=False,
     )
 plt.xlabel('Angle From Wall (rad)'); plt.ylabel('Percentage (%)')
 plt.xlim([0, np.pi/2]); plt.ylim([0, 60]); plt.legend()
+plt.title(f"Distribution of Orientations to Wall for Half-Sanded")
 plt.savefig('/Users/ezhu/Downloads/phi_histogram_overlay-half.png', dpi=SAVE_DPI, bbox_inches='tight')
 plt.show()
